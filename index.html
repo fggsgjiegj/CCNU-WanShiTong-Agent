@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>华大万事通 · AI学长</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #0b0f19; font-family: system-ui, "Noto Sans SC", sans-serif; }
+    .card { background: rgba(148,163,184,.06); border: 1px solid rgba(148,163,184,.14); border-radius: 18px; }
+  </style>
+</head>
+<body class="text-slate-200 min-h-screen">
+  <aside class="fixed left-0 top-0 h-screen w-[240px] border-r border-white/10 p-5">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 grid place-items-center text-lg">🦁</div>
+      <div>
+        <div class="text-lg font-bold">华大万事通</div>
+        <div class="text-[10px] text-slate-500 font-mono">AI学长 · v0.1</div>
+      </div>
+    </div>
+    <nav class="mt-9 space-y-1 text-[13px] text-slate-400">
+      <div class="px-3 py-2 rounded-lg bg-white/5 text-slate-200">校园广场</div>
+      <div class="px-3 py-2 rounded-lg">我的任务</div>
+      <div class="px-3 py-2 rounded-lg">校园情报</div>
+      <div class="px-3 py-2 rounded-lg">消息中心</div>
+      <div class="px-3 py-2 rounded-lg">校园快讯</div>
+      <div class="px-3 py-2 rounded-lg">办事指南</div>
+      <div class="px-3 py-2 rounded-lg">设置</div>
+    </nav>
+  </aside>
+  <main class="ml-[240px]">
+    <header class="h-[88px] flex items-center px-6 border-b border-white/10">
+      <div>
+        <h1 class="text-2xl font-bold">中午好呀，华大人 ☀️</h1>
+        <p class="text-xs text-slate-500 font-mono mt-1">2026 年 10 月 23 日 星期五 · 武汉</p>
+      </div>
+    </header>
+    <section class="p-6 grid grid-cols-3 gap-4">
+      <div class="card p-6 h-32"><div class="text-xs text-slate-500 mb-2">今日接单</div><div class="text-3xl font-bold text-slate-600">--</div></div>
+      <div class="card p-6 h-32"><div class="text-xs text-slate-500 mb-2">待办</div><div class="text-3xl font-bold text-slate-600">--</div></div>
+      <div class="card p-6 h-32"><div class="text-xs text-slate-500 mb-2">未读通知</div><div class="text-3xl font-bold text-slate-600">--</div></div>
+      <div class="card p-6 col-span-2 h-64 grid place-items-center text-slate-500 text-sm">对话面板施工中…</div>
+      <div class="card p-6 h-64 grid place-items-center text-slate-500 text-sm">数据面板施工中…</div>
+    </section>
+  </main>
+</body>
+</html>
