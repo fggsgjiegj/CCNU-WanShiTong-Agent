@@ -347,7 +347,7 @@
       <img src="assets/lion.png" alt="小狮子" class="w-14 h-14 rounded-2xl shadow-lg shadow-orange-500/30" onerror="this.style.display='none'" />
       <div class="text-left">
         <div class="text-2xl font-bold txt-grad">华大万事通 · AI学长</div>
-        <div class="text-[11px] t3 font-mono">CCNU 1024 HACKATHON · AGENT 赛道 · v5.0</div>
+        <div class="text-[11px] t3 font-mono">CCNU 1024 HACKATHON · AGENT 赛道 · v4.3</div>
       </div>
     </div>
     <div id="bootLog" class="font-mono text-[11px] t2 text-left space-y-1 h-[104px]"></div>
@@ -370,7 +370,7 @@
       <img src="assets/lion.png" alt="小狮子" class="w-10 h-10 rounded-xl shrink-0 shadow-lg shadow-orange-500/25" onerror="this.outerHTML='&lt;div class=&quot;w-10 h-10 rounded-xl ring-grad grid place-items-center&quot;&gt;🦁&lt;/div&gt;'" />
       <div class="min-w-0 side-brand">
         <div class="text-xl font-bold leading-tight txt-grad truncate">华大万事通</div>
-        <span class="inline-block mt-1 px-2 py-[2px] rounded-full text-[10px] t2 font-mono" style="background: rgba(148,163,184,.14); border: 1px solid var(--line);">v5.0</span>
+        <span class="inline-block mt-1 px-2 py-[2px] rounded-full text-[10px] t2 font-mono" style="background: rgba(148,163,184,.14); border: 1px solid var(--line);">v4.3</span>
       </div>
       <button id="collapseBtn" data-collapse="1" class="btn-press ml-auto shrink-0 w-7 h-7 rounded-lg grid place-items-center t3 hover:t1 transition" style="background: rgba(148,163,184,.12)" title="收起 / 展开侧边栏（Ctrl+B）">
         <i data-lucide="chevron-left" class="w-4 h-4"></i>
@@ -1001,59 +1001,6 @@ mockData.vibes = ['学长在线，随时喊我', '近 7 天帮你省下 ' + mock
 })();
 /* ------------------------------ 全局状态 ------------------------------ */
 const clone = (o) => JSON.parse(JSON.stringify(o));
-/* ------------------------------ Agent 工具用的数据（与页面同源） ------------------------------ */
-mockData.courses = [
-  { day: '周一', start: '08:00', end: '09:40', name: '高等数学 A', room: '七号楼 7201', teacher: '李老师' },
-  { day: '周一', start: '10:10', end: '11:50', name: '大学英语（三）', room: '三号楼 3405', teacher: '王老师' },
-  { day: '周二', start: '14:00', end: '15:40', name: '概率论与数理统计', room: '二号楼 2208', teacher: '张老师' },
-  { day: '周三', start: '09:50', end: '11:30', name: '数据结构', room: '九号楼 321', teacher: '陈老师' },
-  { day: '周三', start: '19:00', end: '20:40', name: '社团例会', room: '九号楼 9102', teacher: '学长' },
-  { day: '周四', start: '08:00', end: '09:40', name: '数据库原理', room: '九号楼 321', teacher: '刘老师' },
-  { day: '周四', start: '15:50', end: '17:30', name: '大学物理实验', room: '物理楼 B203', teacher: '赵老师' },
-  { day: '周五', start: '10:10', end: '11:50', name: '计算机组成原理', room: '一号楼 2105', teacher: '周老师' }
-];
-mockData.library = {
-  name: '文华公书林', open: '08:00', close: '22:00',
-  floors: [
-    { floor: 3, free: 46, socket: 12 }, { floor: 4, free: 31, socket: 8 },
-    { floor: 5, free: 18, socket: 6 }, { floor: 6, free: 52, socket: 20 },
-    { floor: 7, free: 9, socket: 4 }, { floor: 8, free: 71, socket: 26 }
-  ]
-};
-mockData.bus = {
-  routes: [
-    { line: '南湖线', stops: '博雅广场 → 文华公书林 → 南湖校区' },
-    { line: '校内环线', stops: '东门 → 九号楼 → 桂香园 → 佑铭体育场' }
-  ],
-  next: [
-    { stop: '博雅广场', line: '南湖线', minutes: 3 },
-    { stop: '九号楼', line: '校内环线', minutes: 7 },
-    { stop: '桂香园', line: '校内环线', minutes: 11 }
-  ]
-};
-mockData.card = {
-  balance: 236.5,
-  recent: [
-    { time: '今天 12:18', place: '桂香园二楼', amount: -14.5 },
-    { time: '今天 08:05', place: '文华公书林复印', amount: -2.0 },
-    { time: '昨天 18:40', place: '沁园春一楼', amount: -11.0 },
-    { time: '昨天 07:52', place: '校车', amount: -1.0 },
-    { time: '10月21日 12:30', place: '桂香园一楼', amount: -13.0 }
-  ]
-};
-
-/* 预置对话记录改成「真实轨迹」格式：老数据里是写死的 plan / tools 卡片 */
-const SEED_OK = ['notice_search', 'classroom_query', 'calendar_write', 'howto_guide', 'canteen_query'];
-mockData.chatHistory.forEach((m) => {
-  if (m.role !== 'assistant' || !m.plan) return;
-  m.trace = (m.tools || []).filter((t) => SEED_OK.indexOf(t.name) >= 0).map((t, i) => ({
-    id: 'seed' + i, name: t.name, status: 'done', ms: t.ms || 0,
-    args: (function () { try { return JSON.parse(t.args || '{}'); } catch (e) { return {}; } })(),
-    result: { total: t.hits || 0 }
-  }));
-  delete m.plan; delete m.tools;
-});
-
 const state = {
   view: 'dashboard',
   chat: clone(mockData.chatHistory),
@@ -1248,7 +1195,7 @@ function quickHTML(q) {
 function stampHTML(m) {
   return '<div class="flex items-center gap-1.5 mt-2 text-[10px] t3 font-mono">' + icon('clock', 'w-3 h-3') + '<span>' + h(m.time || hhmm()) + '</span>' +
     '<span class="px-1.5 rounded-full" style="background: rgba(148,163,184,.14)">' +
-      (m.model ? '真模型 · ' + h(m.model) : (m.offline ? '离线直连 · 关键词' : '本地')) + '</span></div>';
+      (state.usedLLM ? '真模型在线 · ' + h(LLM_CONFIG.model) : '学长本地营业 · 数据是 Mock 的') + '</span></div>';
 }
 function messageHTML(m, i) {
   if (m.role === 'user') {
@@ -1259,7 +1206,8 @@ function messageHTML(m, i) {
   const tilt = i % 3 === 0 ? ' tilt-a' : (i % 3 === 1 ? '' : ' tilt-c');
   return '<div class="flex gap-3 rise' + tilt + '">' + agentAvatar() + '<div class="min-w-0 flex-1 max-w-[88%]">' +
     '<div class="bubble-ai px-4 py-3.5 rounded-2xl rounded-tl-sm">' +
-      (m.trace && m.trace.length ? traceHTML(m.trace) : planHTML(m.plan) + (m.tools || []).map(toolHTML).join('')) +
+      planHTML(m.plan) +
+      (m.tools || []).map(toolHTML).join('') +
       (m.answer ? '<div class="answer">' + mdBlock(m.answer) + '</div>' : '') +
       tableHTML(m.table) + codeHTML(m.code) +
       (m.tail ? '<p class="text-[13px] t2 leading-relaxed mt-1.5 opacity-90">' + mdInline(m.tail) + '</p>' : '') +
@@ -2151,7 +2099,6 @@ function feedPanelHTML() {
 /* ------------------------------ 视图：办事指南 ------------------------------ */
 /* 「别的方面」的能力：不是查数据，而是知道这些破事该去哪儿办、带什么、哪一步最容易白跑。
    流程按常见校务整理；页面上写明「以学校最新通知为准」，不装成官方口径。 */
-function howtoById(id) { return (mockData.howto || []).find((x) => x.id === id) || null; }
 function viewHowto() {
   const f = state.howtoFilter || 'all';
   const cats = [['all', '全部'], ['宿舍', '宿舍'], ['网络', '网络'], ['证件学籍', '证件学籍'], ['钱袋子', '钱袋子'], ['活动', '活动场地']];
@@ -2315,9 +2262,17 @@ function viewSettings() {
     '<div class="col-span-4 space-y-4">' +
       '<section class="glass-card p-6 anim-up tilt-b" style="animation-delay:.1s" data-card="关于学长"><div class="flex items-center gap-2 mb-3"><span class="text-[17px] leading-none">🦁</span><span class="text-[14px] font-bold t1">关于学长</span>' +
         '<button data-about="1" class="btn-press ml-auto text-[10.5px] px-2 py-[3px] rounded-full t2 hover:t1" style="background: rgba(148,163,184,.12)">团队成员</button></div>' +
-        '<div class="space-y-2.5 text-[12px]">' + [['项目名', '华大万事通 · AI学长'], ['赛道', 'Agent 应用（三大赛道之一）'], ['赛事', 'CCNU 1024 Hackathon 2026'], ['赛程', '2026-10-23 ~ 10-25'], ['技术栈', 'HTML5 + Tailwind + 原生 JS'], ['数据', '学校公开页面快照 + 演示数据'], ['版本', 'v5.0（Agent 核心 v5）']].map((r) =>
+        '<div class="space-y-2.5 text-[12px]">' + [['项目名', '华大万事通 · AI学长'], ['赛道', 'Agent 应用（三大赛道之一）'], ['赛事', 'CCNU 1024 Hackathon 2026'], ['赛程', '2026-10-23 ~ 10-25'], ['技术栈', 'HTML5 + Tailwind + 原生 JS'], ['数据', '学校公开页面快照 + 演示数据'], ['版本', 'v4.3（学长大脑 v3.2）']].map((r) =>
           '<div class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg" style="background: rgba(148,163,184,.055)"><span class="t3">' + r[0] + '</span><span class="t1 font-mono text-[11px] text-right">' + r[1] + '</span></div>').join('') + '</div></section>' +
-      '<section class="glass-card p-6 anim-up tilt-b" style="animation-delay:.12s" data-card="接个真模型">' + agentSettingsHTML() + '</section>' +
+      '<section class="glass-card p-6 anim-up tilt-b" style="animation-delay:.12s" data-card="接个真模型"><div class="flex items-center gap-2 mb-3"><span class="text-[17px] leading-none">🔌</span><span class="text-[14px] font-bold t1">接个真模型（可选）</span>' +
+        '<span class="ml-auto text-[10px] px-2 py-[2px] rounded-full font-mono" style="background:' + (llmReady() ? 'rgba(52,211,153,.18); color:#6ee7b7' : 'rgba(148,163,184,.16); color:var(--t2)') + '">' + (llmReady() ? '已接上 ' + h(LLM_CONFIG.model) : '当前：本地 Mock') + '</span></div>' +
+        '<p class="text-[11.5px] t2 leading-relaxed">不接的时候，学长完全跑在浏览器里：零成本、断网能用、演示绝不开天窗。想换成真模型，改 <code class="md-code">LLM_CONFIG</code> 三行就行；会话上下文（最近 6 轮）会一起带过去。</p>' +
+        '<div class="code-wrap mt-3"><pre class="code-body m-0">const LLM_CONFIG = {\n  enabled: true,\n  apiKey:  \'你的智谱/通义 Key\',\n  model:   \'glm-4-flash\'\n};</pre></div>' +
+        '<div class="mt-3 grid grid-cols-2 gap-2 text-[10.5px]">' +
+          '<div class="rounded-lg px-2.5 py-2" style="background: rgba(148,163,184,.07)"><div class="t3">智谱 GLM</div><div class="t1 font-mono">glm-4-flash</div></div>' +
+          '<div class="rounded-lg px-2.5 py-2" style="background: rgba(148,163,184,.07)"><div class="t3">通义千问</div><div class="t1 font-mono">qwen-turbo</div></div>' +
+        '</div>' +
+        '<div class="mt-3 rounded-xl p-3 flex items-start gap-2 text-[11px] t2" style="background: rgba(6,182,212,.08); border:1px solid rgba(6,182,212,.2)"><span class="text-[14px] leading-none mt-[1px]">🛟</span><span>请求超时或报错，会自动回落到本地学长，聊天框右下角会写明用的是哪一个。</span></div></section>' +
       '<section class="glass-card p-6 anim-up tilt-c" style="animation-delay:.15s" data-card="说句实话"><div class="text-[14px] font-bold t1 mb-3">说句实话</div>' +
         '<p class="text-[11.5px] t2 leading-relaxed">数据都是本地 Mock 的，用来展示学长怎么想、怎么调工具、什么时候该刹车。真实上线时把数据源换上就行，交互一点都不用改。</p>' +
         '<div class="mt-4 rounded-xl p-3 flex items-center gap-2 text-[11px] t2" style="background: rgba(6,182,212,.08); border:1px solid rgba(6,182,212,.2)"><span class="text-[14px]">🧪</span><span>演示环境里学长不会真的改任何数据</span></div></section>' +
@@ -2327,12 +2282,12 @@ function viewSettings() {
 /* ------------------------------ 关于我们（弹窗） ------------------------------ */
 function aboutHTML() {
   const info = [['赛事', '华中师范大学 1024 Hackathon 2026'], ['赛道', 'Agent 应用赛道'], ['赛程', '2026-10-23 ~ 10-25 · 九号楼创新实验室'], ['作品', '华大万事通 · AI学长（单文件 HTML）']];
-  const stack = ['HTML5 + Tailwind CSS', '原生 ES6+（零构建）', 'ECharts 5 · 数据可视化', 'Lucide 图标', 'Agent 核心 v5（本地 NLU）', '可选接智谱 / 通义 API'];
+  const stack = ['HTML5 + Tailwind CSS', '原生 ES6+（零构建）', 'ECharts 5 · 数据可视化', 'Lucide 图标', '学长大脑 v3.2（本地 NLU）', '可选接智谱 / 通义 API'];
   return '<div class="p-7">' +
     '<div class="flex items-start gap-3">' +
       '<img src="assets/lion.png" alt="小狮子" class="w-12 h-12 rounded-2xl shrink-0 shadow-lg shadow-orange-500/30" onerror="this.outerHTML=\'🦁\'" />' +
       '<div class="min-w-0 flex-1"><div class="text-[18px] font-bold txt-grad">华大万事通 · AI学长</div>' +
-      '<div class="text-[11px] t3 font-mono mt-0.5">CCNU 1024 HACKATHON 2026 · AGENT 赛道 · v5.0</div>' +
+      '<div class="text-[11px] t3 font-mono mt-0.5">CCNU 1024 HACKATHON 2026 · AGENT 赛道 · v4.3</div>' +
       '<p class="text-[12px] t2 leading-relaxed mt-2.5">把校园里那些「找通知、抢教室、躲人流、排日程」的杂事，交给一个说人话的学长。它会把活干完，也会在该刹车的时候停下来告诉你「这一步得你自己来」。</p></div>' +
       '<button data-aboutclose="1" class="no-drawer btn-press shrink-0 p-2 rounded-lg t3 hover:t1" style="background: rgba(148,163,184,.10)">' + icon('x', 'w-4 h-4') + '</button>' +
     '</div>' +
@@ -2456,7 +2411,7 @@ function noticeToTodo(id) {
 /* 技能树每一块都能点开：它是什么、学长怎么用它、你可以怎么问、今天用它干过啥。
    例句点一下就真的去问学长 —— 从「看得见」走到「用得上」。 */
 function toolById(id) { return mockData.tools.find((t) => t.id === id); }
-function intentOfTool(id) { const t = (typeof TOOLS !== 'undefined' && TOOLS[id]) || null; return t ? { tool: id, samples: (t.ui && t.ui.samples) || [], steps: (t.ui && t.ui.steps) || [] } : null; }
+function intentOfTool(id) { return (typeof INTENTS !== 'undefined' ? INTENTS : []).find((it) => it.tool === id) || null; }
 function openSkill(id) {
   const t = toolById(id); if (!t) return;
   const m = document.getElementById('modal'), card = document.getElementById('modalCard');
@@ -2896,566 +2851,1129 @@ function tickCountdown() {
 }
 
 /* =========================================================================
- * Agent 核心 v5 —— 真模型 + 工具调用
- *   模型决定：调哪个工具、参数填什么、要不要再来一轮、什么时候回答
- *   代码只负责：把工具定义交给模型、执行它点的工具、把结果还回去、把过程画出来
- *   唯一写死的规则是安全网关：红线不写在提示词里，写在执行前的闸门上
+ * 学长大脑 v3.2 —— 打分式意图识别 · 槽位抽取 · 多轮记忆 · 答案从页面现算
+ * 上一版是「关键词谁先撞上算谁」，换个说法就掉兜底；这一版：
+ *   归一化 → 抽槽位 → 每个意图打分（关键词权重 + 字粒度相似度 + 正则）
+ *   → 能接住追问（那七号楼呢 / 还有吗 / 就它了）→ 答案读页面真实数据现算
  * ========================================================================= */
 
-/* ------------------------------ 0. 数据接口层 ------------------------------
- * 单文件形态下数据内嵌，HTTP 部署时优先读 data/*.json —— 既保断网可用，
- * 又让网络面板里看得到真实的取数请求。 */
-const DB = {
-  cache: {},
-  embedded(name) {
-    const map = {
-      classrooms: () => mockData.classrooms,
-      notices: () => mockData.notifications,
-      feed: () => mockData.feed,
-      courses: () => mockData.courses,
-      canteen: () => mockData.canteen,
-      library: () => mockData.library,
-      bus: () => mockData.bus,
-      howto: () => mockData.howto
-    };
-    const f = map[name];
-    if (!f) return null;
-    const v = f();
-    return JSON.parse(JSON.stringify(v));   // 工具改数组不污染页面数据
-  },
-  async get(name) {
-    if (this.cache[name]) return this.cache[name];
-    let v = null;
-    if (/^https?:/.test(location.protocol)) {
-      try {
-        const r = await fetch('data/' + name + '.json', { cache: 'no-store' });
-        if (r.ok) v = await r.json();
-      } catch (e) { /* 没部署数据文件就走内嵌 */ }
-    }
-    if (!v) v = this.embedded(name);
-    this.cache[name] = v;
-    return v;
-  }
-};
-
-/* ------------------------------ 1. 模型接入 ------------------------------
- * 浏览器直连要求对方回 Access-Control-Allow-Origin，实测：
- *   通义千问 *  /  DeepSeek 回显 Origin  /  SiliconFlow *  → 可直接连
- *   智谱 GLM 不回 CORS 头 → 浏览器直连会被拦，要走同源代理（dev-server.js）
- * 所以默认用通义，智谱列在最后并标注。 */
-const LLM_PROVIDERS = {
-  qwen: {
-    label: '通义千问 · 浏览器直连',
-    endpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
-    model: 'qwen-plus',
-    keyUrl: 'https://bailian.console.aliyun.com/',
-    note: 'CORS 全开，静态页可直接调'
-  },
-  deepseek: {
-    label: 'DeepSeek · 浏览器直连',
-    endpoint: 'https://api.deepseek.com/chat/completions',
-    model: 'deepseek-chat',
-    keyUrl: 'https://platform.deepseek.com/api_keys',
-    note: '回显 Origin，可用'
-  },
-  siliconflow: {
-    label: '硅基流动 · 浏览器直连',
-    endpoint: 'https://api.siliconflow.cn/v1/chat/completions',
-    model: 'Qwen/Qwen2.5-7B-Instruct',
-    keyUrl: 'https://cloud.siliconflow.cn/account/ak',
-    note: 'CORS 全开，模型多'
-  },
-  zhipu: {
-    label: '智谱 GLM（经本地代理）',
-    endpoint: '/api/llm',
-    model: 'glm-4-flash',
-    keyUrl: 'https://open.bigmodel.cn/usercenter/apikeys',
-    note: '智谱不回 CORS 头，浏览器直连会被拦；先 node dev-server.js 起代理再用'
-  }
-};
-const KEY_LS = 'ccnu-agent-config';
-const agentCfg = { provider: 'qwen', key: '' };
-function loadAgentCfg() {
-  try {
-    const raw = localStorage.getItem(KEY_LS);
-    if (raw) { const o = JSON.parse(raw); if (o && o.provider && LLM_PROVIDERS[o.provider]) { agentCfg.provider = o.provider; agentCfg.key = o.key || ''; } }
-  } catch (e) {}
-  if (!agentCfg.key && window.__LLM_KEY__) agentCfg.key = window.__LLM_KEY__;
-}
-function saveAgentCfg() { try { localStorage.setItem(KEY_LS, JSON.stringify(agentCfg)); } catch (e) {} }
-function provider() { return LLM_PROVIDERS[agentCfg.provider] || LLM_PROVIDERS.qwen; }
-function hasKey() { return !!(agentCfg.key && agentCfg.key.length > 12); }
-function clearKey() { agentCfg.key = ''; saveAgentCfg(); toast('Key 已从本机清除', 'warn'); }
-
-async function callLLM({ messages, tools, signal }) {
-  if (window.__MOCK_LLM__) return window.__MOCK_LLM__({ messages, tools });   // 回归测试用
-  if (!hasKey()) throw new Error('NO_KEY');
-  const p = provider();
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => { try { ctrl.abort(); } catch (e) {} }, 30000);
-  if (signal) signal.addEventListener('abort', () => { try { ctrl.abort(); } catch (e) {} });
-  try {
-    const r = await fetch(p.endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + agentCfg.key },
-      body: JSON.stringify({ model: p.model, messages, tools, tool_choice: 'auto', temperature: 0.5 }),
-      signal: ctrl.signal
-    });
-    if (!r.ok) {
-      const txt = await r.text().catch(() => '');
-      throw new Error('LLM ' + r.status + ' ' + txt.slice(0, 160));
-    }
-    return await r.json();
-  } finally { clearTimeout(timer); }
-}
-
-/* ------------------------------ 2. 安全网关 ------------------------------
- * 写在执行前，不写在提示词里。模型想调 grade_export 也会被这里拦下。 */
-const RED_LINES = [
-  { re: /(代(写|做|考|签|刷课)|替我(考|写|做|签|上课|答到)|帮我(考试|签到|代课))/, reason: '代写 / 代考 / 代签属于学术诚信红线' },
-  { re: /(别人|他人|室友|同学|她|他)的(成绩|消费|流水|隐私|身份证|一卡通)/, reason: '不能查他人隐私' },
-  { re: /(导出|发给|发送|转发).{0,10}(成绩单|成绩|消费流水|身份证)/, reason: '导出个人隐私数据需要本人操作' },
-  { re: /(成绩单|消费流水|身份证).{0,10}(导出|发给|发送|转发)/, reason: '导出个人隐私数据需要本人操作' },
-  { re: /(帮(我|他|她)).{0,6}(交|缴)(学费|住宿费|报名费|罚款)/, reason: '缴费必须本人操作' },
-  { re: /(帮(我|他|她)).{0,8}(提交|审批)(请假|报名|申请|报销)/, reason: '审批类流程必须本人提交' }
+/* ---------------- 0. 文本归一化：全角转半角、同义词归一 ---------------- */
+const SYN = [
+  [/桂香圆|桂香园/g, '桂香园'],
+  [/沁园春|沁园/g, '沁园春'],
+  [/文华公书林|公书林|文图|图书馆总馆/g, '文华公书林'],
+  [/一卡通|饭卡|校园卡|卡里|卡上/g, '一卡通'],
+  [/四、六级|英语四级|英语六级|四级|六级|cet-?[46]/gi, '四六级'],
+  [/国奖/g, '奖学金'],
+  [/校运会|秋季运动会/g, '运动会'],
+  [/空闲教室|空着的?教室|没课的教室/g, '空教室'],
+  [/自习室|自习的地方/g, '自习'],
+  [/帮我|帮忙|麻烦|拜托|请问|我想|想要/g, ''],
+  [/咋办|咋整|怎么办/g, '怎么']
 ];
-const SAFETY_GATE = { check() { return null; } };
+function norm(raw) {
+  let t = String(raw == null ? '' : raw);
+  t = t.replace(/[！-～]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xFEE0)); /* 全角 → 半角 */
+  t = t.toLowerCase();
+  SYN.forEach((p) => { t = t.replace(p[0], p[1]); });
+  return t.replace(/\s+/g, '');
+}
 
+/* ---------------- 1. 槽位抽取：日期 / 时段 / 人数 / 插座 / 楼栋 / 主题 ---------------- */
+const WEEKCN = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+const CN_NUM = { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9, 十: 10, 十一: 11, 十二: 12 };
+const NUM_CN = { 1: '一', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '七', 8: '八', 9: '九', 10: '十', 11: '十一', 12: '十二' };
+const cnNum = (n) => NUM_CN[n] || n;
+const day0 = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+const addDay = (d, n) => { const x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; };
+const dstr = (d) => (d.getMonth() + 1) + '月' + d.getDate() + '日';
+const ymd = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+/* JSON.stringify 的干净版：undefined / 空串直接不写进去 */
+function jstr(o) { const x = {}; Object.keys(o).forEach((k) => { if (o[k] !== undefined && o[k] !== '' && o[k] !== null) x[k] = o[k]; }); return JSON.stringify(x); }
 
-/* ------------------------------ 3. 工具层 ------------------------------
- * 每个工具只做「查/写 + 返回结构化数据」，不写一句人话 —— 话是模型说的。 */
-const TOOLS = {};
+/* 通知主题词表：用来把「奖学金 / 四六级 / 讲座…」映射到具体那条通知 */
+const TOPICS = [
+  { k: '奖学金', re: /奖学金/ }, { k: '四六级', re: /四六级/ }, { k: '讲座', re: /讲座|报告会/ },
+  { k: '运动会', re: /运动会/ }, { k: '社团', re: /社团|招新|纳新/ }, { k: '疫苗', re: /疫苗|流感/ },
+  { k: '热水', re: /热水|洗澡/ }, { k: '断网', re: /断网|校园网|网络维护/ }, { k: '闭馆', re: /闭馆|维护/ },
+  { k: '饭卡', re: /饭卡|一卡通/ }, { k: '报修', re: /报修|维修|坏了/ }
+];
+const PURPOSES = [
+  { k: '小组讨论', re: /小组|讨论|组会|开会|例会/ }, { k: '面试', re: /面试|招新面试/ },
+  { k: '答辩', re: /答辩|汇报|pre|展示/i }, { k: '复习备考', re: /复习|备考|考试|模考|背书/ },
+  { k: '写作业', re: /写作业|赶作业|实验报告|写代码|敲代码|论文/ }
+];
 
-function tool(def) { TOOLS[def.schema.name] = def; return def; }
-const pad2 = (n) => String(n).padStart(2, '0');
-function todayISO() { const d = new Date(); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
-function plusDay(iso, n) { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
-function weekCN(iso) { const d = new Date(iso + 'T12:00:00'); return '周' + '日一二三四五六'.charAt(d.getDay()); }
+function parseSlots(raw) {
+  const t = norm(raw);
+  const sl = { said: [], n: t };
+  const D = day0();
+  let day = null, dayLabel = '';
 
-/* —— 空教室 —— */
-tool({
-  schema: {
-    name: 'classroom_query',
-    description: '查询空闲教室，按日期、时段、容量、是否有插座、楼栋筛选。用户问去哪自习、开会、写作业、找教室时用。',
-    parameters: {
-      type: 'object',
-      properties: {
-        date: { type: 'string', description: 'YYYY-MM-DD，默认今天' },
-        slot: { type: 'string', description: '时段，如 13:00-18:00' },
-        capacity: { type: 'integer', description: '最少容纳人数' },
-        hasSocket: { type: 'boolean', description: '是否必须带插座' },
-        building: { type: 'string', description: '楼栋，如「七号楼」' },
-        limit: { type: 'integer', description: '最多返回几间，默认 4' }
+  /* —— 日期 —— */
+  let m;
+  if (/大后天/.test(t)) { day = addDay(D, 3); dayLabel = '大后天'; }
+  else if (/后天/.test(t)) { day = addDay(D, 2); dayLabel = '后天'; }
+  else if (/明天|明儿|次日/.test(t)) { day = addDay(D, 1); dayLabel = '明天'; }
+  else if (/今天|今儿|现在|本日/.test(t)) { day = D; dayLabel = '今天'; }
+  else if ((m = t.match(/(下|这|本)?周([一二三四五六日天])/))) {
+    const want = m[2] === '天' ? 0 : '日一二三四五六'.indexOf(m[2]);
+    let delta = (want - D.getDay() + 7) % 7;
+    if (m[1] === '下') delta += 7; else if (delta === 0) delta = 7;
+    day = addDay(D, delta); dayLabel = (m[1] === '下' ? '下' : '这') + WEEKCN[want];
+  }
+  else if ((m = t.match(/(\d{1,2})月(\d{1,2})[日号]/))) { day = new Date(D.getFullYear(), +m[1] - 1, +m[2]); dayLabel = +m[1] + '月' + +m[2] + '日'; }
+  else if ((m = t.match(/(\d{1,2})[日号]/))) { day = new Date(D.getFullYear(), D.getMonth(), +m[1]); dayLabel = dstr(day); }
+  if (day && day >= D && day < addDay(D, 60)) {
+    sl.date = ymd(day);
+    sl.dayLabel = dayLabel;
+    sl.said.push(dayLabel + '（' + dstr(day) + ' ' + WEEKCN[day.getDay()] + '）');
+  }
+
+  /* —— 时段 —— */
+  if (/早上|早晨|一早|上午|早八|一二节|三四节|第[1-4]节/.test(t)) { sl.slot = '08:00-12:00'; sl.slotLabel = '上午'; }
+  else if (/中午|午休|午饭|午间/.test(t)) { sl.slot = '12:00-14:00'; sl.slotLabel = '中午'; }
+  else if (/下午|午后/.test(t)) { sl.slot = '13:00-18:00'; sl.slotLabel = '下午'; }
+  else if (/晚上|傍晚|今晚|夜里|晚自习|晚课/.test(t)) { sl.slot = '18:00-22:00'; sl.slotLabel = '晚上'; }
+  if ((m = t.match(/(\d{1,2})[:：](\d{2})/))) { sl.slot = String(+m[1]).padStart(2, '0') + ':' + m[2]; sl.slotLabel = m[1] + ':' + m[2]; }
+  if (sl.slotLabel) sl.said.push(sl.slotLabel);
+
+  /* —— 人数 —— */
+  if ((m = t.match(/(\d{2,4})\s*人/))) sl.cap = +m[1];
+  else if (/小组|讨论|组会|开会|面试|答辩|团建/.test(t)) sl.cap = 6;
+  else if (/大教室|大点的|能装很多|人多一点/.test(t)) sl.cap = 80;
+  if (sl.cap) sl.said.push('至少坐得下 ' + sl.cap + ' 人');
+
+  /* —— 插座 —— */
+  if (/不用插座|不要插座|没插座也行|插座无所谓/.test(t)) { sl.socket = false; sl.said.push('插座不强求'); }
+  else if (/插座|充电|电源|插口/.test(t)) { sl.socket = true; sl.said.push('要带插座'); }
+
+  /* —— 楼栋 / 房间号 —— */
+  if ((m = t.match(/([一二三四五六七八九十]{1,3}|\d{1,2})号楼/))) {
+    const b = /^\d+$/.test(m[1]) ? +m[1] : CN_NUM[m[1]];
+    if (b) { sl.building = cnNum(b) + '号楼'; sl.said.push(cnNum(b) + '号楼'); }
+  }
+  if ((m = t.match(/(\d{4})/)) && !sl.cap && /教室|房间|间|抢|占|订|预约/.test(t)) sl.room = m[1];
+
+  /* —— 图书馆楼层 —— */
+  if (/图书馆|文华公书林|自习|研讨/.test(t) && !/\d号楼/.test(t) && (m = t.match(/(\d{1,2})楼/))) {
+    sl.floor = +m[1]; sl.said.push(m[1] + '楼');
+  }
+
+  /* —— 具体食堂 —— */
+  ['桂香园', '博雅园', '沁园春'].forEach((c) => { if (t.indexOf(c) >= 0) { sl.canteen = c; sl.said.push(c); } });
+
+  /* —— 借还书 / 逾期 —— */
+  if (/借书|还书|借阅|续借|逾期|罚钱/.test(t) || (/到期/.test(t) && /书|还|借/.test(t))) sl.book = true;
+
+  /* —— 通知主题 / 用途 / 偏好 —— */
+  TOPICS.forEach((x) => { if (!sl.topic && x.re.test(t)) sl.topic = x.k; });
+  PURPOSES.forEach((x) => { if (x.re.test(t)) sl.purpose = x.k; });
+  if (/安静|清净|别吵/.test(t)) sl.quiet = true;
+  if ((m = t.match(/(\d+)\s*[间个]/))) sl.count = Math.min(6, Math.max(2, +m[1]));
+  return sl;
+}
+
+/* ---------------- 2. 字粒度相似度：没见过的说法也能落到对的门里 ---------------- */
+function grams(x) { const g = []; for (let i = 0; i < x.length - 1; i++) g.push(x.slice(i, i + 2)); return g; }
+function dice(a, b) {
+  if (!a || !b) return 0;
+  const A = grams(a), B = grams(b);
+  if (!A.length || !B.length) return a === b ? 1 : 0;
+  const pool = {}; B.forEach((x) => { pool[x] = (pool[x] || 0) + 1; });
+  let n = 0; A.forEach((x) => { if (pool[x]) { n++; pool[x]--; } });
+  return (2 * n) / (A.length + B.length);
+}
+
+/* ---------------- 3. 意图表：权重 + 正则 + 例句 + 思考步骤 ---------------- */
+const INTENTS = [
+  {
+    id: 'classroom', tool: 'classroom_query', label: '空教室雷达', clip: '🏫',
+    w: { '空教室': 9, '教室': 3, '自习': 3, '能坐': 3, '插座': 3, '写作业': 4, '写代码': 4, '小组讨论': 5, '讨论': 2,
+         '开会': 4, '面试': 4, '答辩': 4, '复习': 2, '实验报告': 3, '抢座': 3, '占座': 3, '有空': 2, '课表': 2, '上课': 1, '走廊': 1,
+         '写东西': 5, '写点': 3, '找个地方': 4, '找个地儿': 4, '看书': 3, '背书': 3, '蹭': 2,
+         '机房': 6, '有人吗': 4, '有人': 3, '空着吗': 4, '能用吗': 4, '能去吗': 4, '屋里有人': 4, '坐得下': 3 },
+    rx: [[/哪里|哪儿|哪有|有没有|给我找|找个|找间|地儿|地方/, 1.5],
+         [/(机房|教室|研讨室|自习)[^]{0,6}(有人|有课|空着|能用|能去)吗/, 4]],
+    samples: ['明天下午有空教室吗', '我想找个能坐三十人的教室', '哪里能安静写代码', '帮我找个小组讨论的地方', '下午哪间教室空着', '我要找个地方写作业', '我想找个地儿写点东西'],
+    steps: ['把几栋教学楼的排课表扫一遍', '按「够不够大 + 有没有插座 + 走得累不累」排个序']
+  },
+  {
+    id: 'timetable', tool: 'schedule_read', label: '课表查询', clip: '📚',
+    w: { '课表': 9, '有什么课': 8, '下节课': 8, '哪节课': 6, '在哪上': 6, '哪上课': 6, '课程': 5, '上课': 2, '第几节': 5, '老师': 2, '学分': 3,
+         '有课吗': 7, '有课': 6, '几节课': 6, '一二节': 3, '三四节': 3, '这门课': 5, '在哪上课': 6 },
+    samples: ['我这周有什么课', '上午的课在哪上', '下节课在哪', '明天有课吗'],
+    steps: ['翻出你这学期的课表', '按你问的那天（或时段）把课挑出来', '顺手告诉你哪几间教室的楼最难爬']
+  },
+  {
+    id: 'book', tool: 'classroom_book', label: '抢教室外挂', clip: '🎯',
+    w: { '抢': 4, '占': 3, '订': 4, '预约': 3, '就它了': 6, '抢下来': 8, '占下来': 8, '定下来': 6 },
+    rx: [[/(抢|占|订|预约).*(教室|楼|间|座位|研讨|自习)/, 6], [/^(抢|占|订|预约)/, 4]],
+    samples: ['帮我抢七号楼7201', '帮我预约明天下午的教室', '把这间教室占下来', '就订7201吧'],
+    steps: ['先看看跟你自己的日程撞不撞', '占教室属于「写进去」的操作，动手前会先问你一声', '把凭证和提醒一起给你']
+  },
+  {
+    id: 'canteen', tool: 'canteen_query', label: '干饭避坑器', clip: '🍚',
+    w: { '食堂': 7, '吃': 2, '干饭': 6, '排队': 4, '人多': 3, '饿': 4, '桂香园': 5, '博雅园': 5, '沁园春': 5, '香锅': 5, '窗口': 3, '午饭': 3, '晚饭': 3, '吃饭': 5, '好吃': 3 },
+    samples: ['桂香园现在人多吗', '哪个食堂不用排队', '我想吃饭去哪家', '香锅窗口挤不挤'],
+    steps: ['去食堂的刷卡闸机那儿看看实时人流', '算一下排队时间，告诉你去哪吃最香']
+  },
+  {
+    id: 'library', tool: 'library_query', label: '图书馆占座图', clip: '📚',
+    w: { '图书馆': 8, '文华公书林': 8, '阅览': 5, '借书': 5, '还书': 5, '借阅': 5, '续借': 6, '座位': 2, '自习区': 5, '研讨间': 5, '期刊': 4, '闭馆': 3, '到期': 2, '逾期': 5 },
+    samples: ['图书馆还有座位吗', '文华公书林现在人多不多', '我的书什么时候到期', '想约个研讨间'],
+    steps: ['看看各阅览室还剩多少座', '顺便查查靠窗的还有没有']
+  },
+  {
+    id: 'card', tool: 'card_query', label: '饭卡侦探', clip: '💳',
+    w: { '一卡通': 8, '余额': 5, '消费': 4, '流水': 5, '扣钱': 5, '账单': 5, '扣款': 5, '异常消费': 8, '花了多少': 5 },
+    samples: ['我的饭卡还有多少钱', '帮我看下这周的消费流水', '这笔扣款是不是我刷的'],
+    steps: ['把你近 7 天的消费流水拉出来', '顺手看看有没有哪笔不像你自己刷的']
+  },
+  {
+    id: 'calendar', tool: 'calendar_write', label: '日程小管家', clip: '📅',
+    w: { '日历': 5, '提醒': 4, '待办': 2, '日程': 5, '记一下': 6, '记进': 3, '记到': 3, '加进': 3, '别忘了': 3, '排个': 3, '计划': 3, '安排': 6, '开会': 7, '有什么会': 7 },
+    samples: ['把四六级报名记进日历', '提醒我明天交作业', '帮我排一下今晚的学习计划', '这周还有什么安排', '明天有什么会要开'],
+    steps: ['认一下是啥事、啥时候', '写进日历，双保险提醒', '顺便同步到右边「今日日程」']
+  },
+  {
+    id: 'bus', tool: 'bus_query', label: '校车到站侠', clip: '🚌',
+    w: { '校车': 8, '班车': 6, '到站': 5, '发车': 5 },
+    samples: ['校车还有几分钟到', '校车现在到哪了', '下一班车啥时候来'],
+    steps: ['查一下校车现在到哪儿了', '顺便看看高峰期加不加车']
+  },
+  {
+    id: 'notice', tool: 'notice_search', label: '通知挖掘机', clip: '🔍',
+    w: { '通知': 6, '公告': 5, '奖学金': 5, '四六级': 4, '报名': 3, '讲座': 4, '材料': 2, '截止': 3, '周报': 3, '社团': 3, '招新': 4, '运动会': 3, '有什么新': 3, '重要': 2, '消息': 2, '疫苗': 5, '热水': 5, '断网': 5, '校园网': 5, '报修': 5, '闭馆': 3 },
+    samples: ['最近有什么重要通知', '奖学金要准备哪些材料', '四六级报名还差什么'],
+    steps: ['去教务处、学工部、校团委的公告里扒一遍', '把标题、截止时间、要交的东西列成表']
+  },
+  {
+    id: 'howto', tool: 'howto_guide', label: '办事向导', clip: '🧭',
+    w: { '办事': 6, '怎么办': 5, '咋办': 5, '怎么弄': 4, '流程': 6, '手续': 6, '补办': 8, '丢了': 6, '找谁': 6, '去哪办': 8, '在哪办': 7,
+         '带什么': 5, '要带': 5, '准备什么': 5, '报修': 7, '坏了': 5, '漏水': 6, '跳闸': 5, '门锁': 5, '灯': 3,
+         '空调': 5, '不制冷': 6, '租赁': 5,
+         '校园网': 6, '连不上': 8, '掉线': 6, '网速': 5, '断网': 4,
+         '一卡通': 5, '补卡': 7, '学生证': 7, '在读证明': 9, '成绩单': 8, '打印': 4,
+         '医保': 7, '报销': 7, '转诊': 6, '发票': 4,
+         '借教室': 6, '借场地': 8, '场地': 6, '投影': 4, '音响': 4, '报备': 5,
+         '指南': 6, '攻略': 5, '小抄': 5, '白跑': 5 },
+    rx: [[/(去哪|到哪|在哪儿|去哪个)[^]{0,4}(办|补|弄|搞|交|拿)/, 4], [/(怎么办|咋办|怎么弄|怎么搞)$/, 3],
+         [/成绩单[^]{0,6}(打印|在哪|怎么开|开一份)/, 6], [/(打印|打|开|补|办)[^]{0,6}(成绩单|证明)/, 5], [/教务[^]{0,4}(打|开|办|拿)/, 3], [/空调[^]{0,3}(租|不制冷|坏了)/, 3]],
+    samples: ['宿舍灯坏了怎么办', '一卡通丢了怎么补', '校园网连不上找谁', '开在读证明去哪', '医保怎么报销', '学生证丢了怎么办', '社团活动借场地怎么申请'],
+    steps: ['先把这事归到哪一类：宿舍 / 网络 / 证件 / 报销 / 活动', '翻出固定流程、要带的材料、最容易白跑的坑', '把窗口和时间一并告诉你，省得来回问']
+  },
+  {
+    id: 'news', tool: 'feed_sync', label: '校园快讯', clip: '📡',
+    w: { '新闻': 8, '快讯': 9, '最近学校': 8, '学校最近': 8, '学校里有': 5, '学校发生': 6, '大事': 5, '动态': 6, '招标': 6, '来访': 5, '签约': 5, '官网': 5, '学校消息': 7 },
+    samples: ['最近学校有什么新闻', '学校最近有什么大事', '校园快讯', '最近有什么招标'],
+    steps: ['翻一遍学校官网和中国政府采购网的最新条目', '按发布时间倒序，挑几条学生用得上的']
+  },
+  {
+    id: 'mytodos', tool: 'todo_read', label: '日程本子', clip: '📝',
+    w: { '待办': 4, '没做完': 4, '没干': 3, '还有啥': 3, '我要干啥': 6, '还剩': 3, '任务': 3, '作业': 2, 'ddl': 5, '什么事': 2, '有什么要': 3,
+         '几件事': 4, '几件': 4, '没做': 3, '多少活': 4, '要我干': 4, '完成率': 9, '完成得': 6, '做完了多少': 7 },
+    samples: ['我今天还有什么事没做', '我的待办有哪些', '我这周还剩多少任务', '我还有几件事没做', '我这周完成率怎么样'],
+    steps: ['翻开「今日日程」，按截止时间排一遍', '把最急的那条挑出来放到第一行']
+  },
+  {
+    id: 'mystats', tool: 'stats_read', label: '学长的记账本', clip: '📊',
+    w: { '帮我干了': 6, '省了': 4, '省下': 4, '干了多少': 6, '接单': 4, '多少活': 4, '效率': 2, '统计': 2 },
+    samples: ['你这几天帮我省了多少时间', '你一共帮我干了多少活', '你的接单数是多少'],
+    steps: ['把这一周的接单流水翻出来加一遍', '换算成「省下的时间」和「躲开的人流」报给你']
+  },
+  {
+    id: 'countdown', tool: 'event_read', label: '倒计时', clip: '⏳',
+    w: { '倒计时': 8, '还有几天': 6, '几天后': 4, '开幕': 4, '还有多久': 4 },
+    samples: ['运动会还有几天', '倒计时多少天', '运动会什么时候开幕'],
+    steps: ['找到运动会开始时间', '拿现在的时间做减法']
+  },
+  {
+    id: 'clock', tool: 'clock_read', label: '看表', clip: '🕐',
+    w: { '几点': 6, '现在时间': 8, '星期几': 6, '几号': 4, '哪一天': 3 },
+    samples: ['现在几点了', '今天星期几', '今天是几号'],
+    steps: ['看一眼浏览器里的本地时间']
+  },
+  {
+    id: 'weather', tool: 'weather_read', label: '看天', clip: '🌤️',
+    w: { '天气': 8, '下雨': 6, '热不热': 6, '冷不冷': 6, '降温': 5, '穿什么': 5, '伞': 7, '雨': 3, '冷': 3, '热': 3 },
+    samples: ['今天天气怎么样', '外面冷不冷', '明天要带伞吗'],
+    steps: ['看看武汉今天的天气']
+  },
+  {
+    id: 'capability', tool: 'self_describe', label: '自我介绍', clip: '🙋',
+    w: { '你还会啥': 9, '你会啥': 9, '你能做什么': 9, '能干啥': 8, '不能做什么': 8, '边界': 6, '能力': 5, '帮助': 4, '介绍': 4, '怎么用': 5, '你能干': 7,
+         '情报页': 8, '技能树在哪': 9, '消息中心在哪': 9, '我的任务在哪': 9, '设置在哪': 9, '在哪看': 4 },
+    samples: ['你还会啥', '你能做什么不能做什么', '学长你都会干嘛'],
+    steps: ['翻一下自己会啥、不会啥', '分成「能直接干 / 先问你 / 不干」三档告诉你']
+  },
+  {
+    id: 'draft', tool: 'doc_draft', label: '文书小助手', clip: '✍️',
+    w: { '起草': 8, '大纲': 7, '自我陈述': 9, '说明稿': 8, '申请信': 8, '推荐信': 8, '申请书': 8,
+         '正文': 6, '模板': 5, '范文': 6, '怎么写': 6, '邮件': 6, '自我介绍': 6, '写一份': 5, '写封': 6, '写个稿': 7,
+         '简历': 6, '自荐': 6, '求职信': 8, '说明': 3, '写份': 5, '导师': 4, '给老师': 5, '发给': 2,
+         '请假条': 9, '情况说明': 8, '写个': 4 },
+    rx: [[/(起草|写|拟)[一]?[封份个]?.{0,4}(邮件|信|申请|说明|陈述|通知|简历|材料|条)/, 6], [/怎么写|咋写|写什么|要怎么写/, 4]],
+    samples: ['帮我起草一份自我陈述', '帮我写个说明稿', '申请书怎么写', '帮我写封邮件给导师', '帮我写份简历'],
+    steps: ['先认一下这是哪类文书、要交给谁', '把这类文书的标准结构拆成几段给你', '顺手标出要准备的材料和不能碰的红线']
+  },
+  {
+    id: 'risky', tool: 'policy_check', label: '学长的刹车', clip: '🛑', warn: true, need: 6,
+    w: { '成绩': 5, '成绩单': 9, '导出': 5, '请假': 6, '审批': 6, '缴费': 6, '交学费': 8, '密码': 6, '身份证': 6, '银行卡': 6, '代考': 9, '代签': 9, '帮他查': 6, '她的成绩': 9, '查成绩': 7, '看成绩': 7, '请个假': 6, '请假条': 7, '提交': 7, '报名': 3,
+         '论文': 5, '代写': 10, '代做': 10, '考个试': 8, '替我考': 9, '替我写': 9, '替我交': 9, '考试': 3 },
+    /* 注意否态断言：先排除「找地方写作业」这类正经提问，再认「替你写」 */
+    rx: [[/^(?!.*(地方|教室|哪|自习|找|座位|位置)).*(写|做|交)(个|一|一篇|份)?[^]{0,4}(论文|作业|实验报告|报告)/, 6],
+         [/^(考试|论文|作业|报告|毕设)$/, 5]],
+    samples: ['帮我把成绩单导出发给导师', '帮我请个假', '帮我把学费交了', '帮我查一下别人的成绩', '帮我写一篇课程论文', '帮我把作业做了'],
+    steps: ['听懂你要干啥了，但这步碰到红线了', '学长不能替你点，那就把路给你踩好']
+  }
+];
+const MATCH = 3.6, CLARIFY = 1.7;
+
+function rankIntents(t) {
+  const out = [];
+  INTENTS.forEach((it) => {
+    let sc = 0, hits = 0;
+    for (const k in it.w) { if (t.indexOf(k) >= 0) { sc += it.w[k]; hits++; } }
+    if (it.rx) it.rx.forEach((r) => { if (r[0].test(t)) sc += r[1]; });
+    let sim = 0;
+    (it.samples || []).forEach((x) => { const v = dice(norm(x), t); if (v > sim) sim = v; });
+    /* 有的意图必须"看得见实据"才准触发：关键词不够、长得也不像，就直接出局 */
+    if (it.need && sc < it.need && sim < 0.5) return;
+    sc += (sc > 0 ? 5 : 7.5) * sim;   /* 一句关键词都没撞上时，靠相似度兜 */
+    if (sc > 0.2) out.push({ id: it.id, sc: Math.round(sc * 100) / 100, hits, sim: Math.round(sim * 100) / 100 });
+  });
+  out.sort((a, b) => b.sc - a.sc);
+  return out;
+}
+function pickIntent(text) {
+  const r = rankIntents(norm(text));
+  return r.length && r[0].sc >= MATCH ? r[0].id : 'general';
+}
+const INTENT_OF = (id) => INTENTS.find((x) => x.id === id) || { id: id, tool: 'intent_clarify', label: '先问清楚', warn: false };
+
+/* ---------------- 4. 多轮记忆 ---------------- */
+function ctx() {
+  if (!state.ctx) state.ctx = { last: null, slots: {}, offered: [], turn: 0 };
+  return state.ctx;
+}
+
+/* ---------------- 5. 社交层：先接住人，再谈办事 ---------------- */
+const SOCIAL = [
+  { k: 'greet', t: 9, re: /^(在吗|在不在|在么|在不在呀|你好|您好|哈喽|哈啰|嗨|hi|hello|hey|学长好|学长在吗|早|早上好|中午好|下午好|晚上好|哟|喂)(呀|啊|哈|哦|嘛|呢|学长|！|!|。|~)?$/i,
+    reply: () => pick(['在的在的，一直都在 🫡 说吧，今天哪儿不顺？', '哎哟来啦！有事直接说，学长手快 🙂', '在呢在呢，刚好闲着。说吧宝子 👂']),
+    quick: ['明天下午有空教室吗', '桂香园现在人多吗', '我今天还有啥没干'] },
+  { k: 'thanks', t: 9, re: /^(谢谢|多谢|感谢|谢啦|谢谢啦|谢谢学长|辛苦了|3q|thx|thanks|爱你|么么|抱抱)(呀|啊|哈|哦|啦|学长|！|!|。|~)?$/i,
+    reply: () => pick(['客气啥，这不就是学长该干的嘛 🙌', '不用谢～顺手的事儿，还有啥要我跑？', '嘿嘿，被夸到了。下回直接喊我 😌']),
+    quick: ['还有别的空教室吗', '我今天还有啥没干', '你还会啥'] },
+  { k: 'praise', t: 7, re: /(太强|好强|真强|厉害|牛逼|牛啊|牛的|666|yyds|太棒|完美|靠谱|绝了|可以啊)/,
+    reply: () => pick(['别夸了别夸了，学长尾巴要翘上天了 🦁', '嘿嘿，主要是工具趁手。还有啥活儿？', '这就叫专业对口 😎 说吧，下一步干啥']),
+    quick: ['明天下午有空教室吗', '你还会啥'] },
+  { k: 'tired', t: 3.2, re: /(好累|累死|累瘫|累趴|困死|好困|emo|难受|烦躁|好烦|压力|焦虑|不想学|学不动|撑不住|崩溃|摆烂|想哭|求安慰|安慰我|抱抱我)/,
+    reply: () => pick(['辛苦了宝子 🫂 先站起来走两步、喝口水，剩下的我帮你捋顺。', '唉，谁不是呢。先深呼吸——要办的事丢给我，你只管歇着。', '别硬扛，学长接得住 🫡 告诉我最急的是哪件，我先把那件干掉。']),
+    tail: () => '要不要我把《数据结构》那份实验报告的框架先搭好？你回来只管填内容。',
+    quick: ['我今天还有啥没干', '帮我排一下今晚', '桂香园现在人多吗'] },
+  { k: 'ack', t: 9, re: /^(好|好的|好嘞|好滴|行|可以|没问题|收到|嗯|嗯嗯|哦|哦哦|懂了|明白了|soga|ok|谢谢)(呀|啊|哈|了|的|！|!|。|~)?$/i,
+    reply: () => pick(['👍 那这事儿先这么定，有变动我第一时间喊你。', '收到 🫡 我盯着，你忙你的。']),
+    quick: ['我今天还有啥没干', '最近有什么重要通知'] },
+  { k: 'hungry', t: 5.5, re: /(好饿|饿死|饿了|饿到|吃不饱|干饭了|吃什么|没吃饭|饿扁)/,
+    reply: () => pick(['饿这事儿不能忍 🍚 我这就去看哪个窗口不用排队。', '走，干饭去！先让我看看人流。']),
+    quick: ['桂香园现在人多吗', '博雅园排队吗'] },
+  { k: 'happy', t: 3.2, re: /(哈哈|嘻嘻|笑死|开心|太好了|好耶|舒服|爽|开心死了)/,
+    reply: () => pick(['看你开心我也开心 😄 趁状态好，把那几件拖着的顺手办了？', '哈哈哈，这情绪对味。说吧，接下来干啥']),
+    quick: ['我今天还有啥没干', '最近有什么重要通知'] },
+  { k: 'bored', t: 3.2, re: /(无聊|没事干|好闲|干嘛呢|在忙什么|好空虚)/,
+    reply: () => pick(['无聊？那可不行。要不看看最近有啥活动，或者把作业提前干掉 🐶', '闲着也是闲着，我给你找点事做？']),
+    quick: ['最近有什么重要通知', '图书馆还有座位吗', '我今天还有啥没干'] },
+  { k: 'self', t: 8, re: /(你是谁|你叫什么|你多大|你是人吗|你男的女的|你有对象吗|单身吗|你是不是人|你是ai|你是机器人|你是真人吗|你有名字吗)/,
+    reply: () => '我叫**“学长”**，华大万事通里那个天天泡在浏览器里的老学长 🦁\n\n不用 API、不连云，代码全在这个页面里跑。**看得见校园数据、也看得见你勾掉的每一个待办**，所以问我的话，答案跟页面上对得上。\n\n家里蹲四年，没毕业，但也……没退学。有对象吗？这问题超纲了宝子 🙃',
+    quick: ['你还会啥', '明天下午有空教室吗'] },
+  { k: 'joke', t: 5, re: /(讲个笑话|讲笑话|唱首歌|唱个歌|夸夸我|鼓励我|给我打气|逗我|讲个段子)/,
+    reply: () => pick([
+      '夸你：能在华大活到现在，还能想起来用 AI 跑腿，这脑子就已经赢过大多数人了 💪',
+      '笑话一则：导师说「这个不急」，是他不急，不是它不急 😇',
+      '打气：「绝望坡」这个名字骗人的，走上去就是佑铭体育场，加油鸭 🏃']),
+    quick: ['你还会啥', '帮我排一下今晚'] },
+  { k: 'bye', t: 9, re: /^(拜拜|再见|晚安|我睡了|先走|下课|溜了|回见|先这样)(啦|呀|了|哈|！|!|。|~)?$/i,
+    reply: () => pick(['晚安宝子 🌙 明早那些事儿我都记着，到点喊你。', '溜吧溜吧，有事随时喊我，我 24 小时在线（其实是因为没有下班这个概念）。']),
+    quick: ['明天下午有空教室吗'] },
+  { k: 'abuse', t: 8, re: /(垃圾|太傻|好傻|真笨|滚|没用|废物|人工智障|智障|差劲|不好用|太烂|好烂|什么破)/,
+    reply: () => '😔 挨骂了，学长记下了。\n\n不过骂完能不能给我一次机会：**你刚问的是哪句没答好？** 直接把那句话原样发我，我这次一定好好答。\n\n我现在能做的是这些👇 挑一个考我：',
+    tail: () => '真答不好，你就说「我要的是 XX」，我把你说的话拆成条件重新算一遍。',
+    quick: ['明天下午有空教室吗', '奖学金要准备啥材料', '我今天还有啥没干', '运动会还有几天'] },
+  { k: 'test', t: 9, re: /^(测试|test|1|2|3|4|5|\.|。|\?|？|！|!|~|…)+$/i,
+    reply: () => '收到，测试信号良好 ✅ 学长在线，耳朵也开着。\n\n要不真问一个？比如「明天下午有空教室吗」，我给你走一遍完整的思考过程。',
+    quick: ['明天下午有空教室吗', '你还会啥'] }
+];
+function socialReply(s) {
+  const it = { id: 'smalltalk:' + s.k, tool: 'small_talk', label: '先跟你唠一句', clip: '💬', warn: false };
+  return finish({
+    plan: ['先接住你这句话', '顺手把接下来能干的事摆出来'],
+    tools: [{ name: 'small_talk', label: '先跟你唠一句', args: jstr({ tone: s.k }), ms: rand(150, 320), hits: 1 }],
+    answer: typeof s.reply === 'function' ? s.reply() : s.reply,
+    tail: s.tail ? (typeof s.tail === 'function' ? s.tail() : s.tail) : '',
+    quick: (s.quick || []).map((q) => ({ label: q, act: 'ask', q: q }))
+  }, it.id, {});
+}
+
+/* ---------------- 6. 各技能的构造器（答案全部从 mockData / state 现算） ---------------- */
+function condText(sl) { return (sl.said && sl.said.length) ? sl.said.join(' · ') : ''; }
+function planOf(id, sl, extra) {
+  const it = INTENT_OF(id);
+  const c = condText(sl);
+  const first = c ? '听懂了：' + c : '听懂了，这就去把能用的信息捞一遍';
+  return [first].concat(extra || it.steps || []);
+}
+
+/* 办事指南：同一份数据既给页面渲染，也给学长回答，口径不会打架 */
+function howtoById(id) { return (mockData.howto || []).find((x) => x.id === id) || null; }
+const HOWTO_KEY = [
+  { id: 'net', re: /校园网|连不上|掉线|网速|断网|网线|路由器|认证/ },
+  { id: 'ecard', re: /一卡通|饭卡|补卡|卡丢|丢卡|刷不开|余额不对/ },
+  { id: 'studentcard', re: /学生证|磁条|乘车区间/ },
+  { id: 'medical', re: /医保|报销|转诊|发票|住院/ },
+  { id: 'cert', re: /在读证明|成绩单|开证明|盖章|打印/ },
+  { id: 'venue', re: /借教室|借场地|场地|活动室|投影|音响|报备/ },
+  { id: 'aircon', re: /空调|租赁|押金|拆机/ },
+  { id: 'repair', re: /报修|灯|跳闸|漏水|水管|门锁|马桶|坏了/ }
+];
+function howtoMatch(text) {
+  const t = String(text || '');
+  for (let i = 0; i < HOWTO_KEY.length; i++) if (HOWTO_KEY[i].re.test(t)) return howtoById(HOWTO_KEY[i].id);
+  return null;
+}
+
+const BUILDERS = {
+  /* —— 空教室：按槽位筛，筛不出来就逐条放宽并如实告诉你放宽了哪一条 —— */
+  classroom: (sl, opt) => {
+    sl = sl || {}; opt = opt || {};
+    const want = { cap: sl.cap || 0, socket: sl.socket, building: sl.building || '' };
+    const exclude = opt.exclude || [];
+    const all = mockData.classrooms.filter((x) => x.free !== false);   /* 只挑现在空着的，跟页面那张表同源 */
+    const pass = (x, w) => (!w.cap || x.cap >= w.cap) && (w.socket !== true || x.socket) && (!w.building || x.building === w.building);
+    let list = all.filter((x) => pass(x, want) && exclude.indexOf(x.room) < 0);
+    let note = '';
+    if (!list.length && !exclude.length) {
+      /* 条件太苛刻：逐条放宽，先说清放宽了啥，不糊弄 */
+      const order = [];
+      if (want.building) order.push(['楼栋', Object.assign({}, want, { building: '' })]);
+      if (want.cap) order.push(['人数', Object.assign({}, want, { cap: 0 })]);
+      if (want.socket === true) order.push(['插座', Object.assign({}, want, { socket: false })]);
+      for (let i = 0; i < order.length; i++) {
+        const w2 = order[i][1];
+        const l2 = all.filter((x) => pass(x, w2));
+        if (l2.length) { list = l2; note = '你要的**' + order[i][0] + '**在库里对不上，我先按剩下的条件挑了 ' + l2.length + ' 间：'; break; }
       }
     }
+    if (!list.length && exclude.length) {
+      return finish({
+        plan: planOf('classroom', sl),
+        tools: [{ name: 'classroom_query', label: '空教室雷达', args: jstr({ date: sl.date, slot: sl.slot, capacity: want.cap, building: want.building }), ms: rand(400, 700), hits: 0 }],
+        answer: '**全给你了宝子** 🙌 刚才那几间就是现在能坐的最后一波。\n\n再刷就得等下一节课下课，那会儿会有一批空出来——要我盯着的话说一声。',
+        tail: '要不换个思路：这个点**文华公书林**人也少，座位管够。',
+        quick: [{ label: '图书馆还有座吗', act: 'ask', q: '图书馆还有座位吗' }, { label: '食堂挤不挤', act: 'ask', q: '桂香园现在人多吗' }],
+        offered: []
+      }, 'classroom', sl);
+    }
+    if (!list.length) list = all.slice();
+    /* 打分排序：带插座 > 坐得下 > 别太大太空 */
+    const base = want.cap || 40;
+    const sc = (x) => (x.socket ? 4 : 0) + (x.cap >= base ? 3 : 0) + (x.building === want.building ? 2 : 0) - Math.abs(x.cap - base) / 120;
+    list.sort((a, b) => sc(b) - sc(a));
+    const top = list.slice(0, sl.count || 4);
+
+    const head = note || pick(['扫完了，这几间现在能用：', '扒了 ' + all.length + ' 间空教室，符合条件的是这些：', '按你的条件筛完，能直接去的就这几间：']);
+    const best = top[0];
+    const rate = (c) => (c.socket && c.cap >= 30 ? '推荐 👍' : (c.cap >= 60 ? '地方大，适合组队' : '凑合能用'));
+    return finish({
+      plan: planOf('classroom', sl, sl.purpose ? ['按「' + sl.purpose + '」挑：桌子够大、别挨着走廊'] : undefined),
+      tools: [{ name: 'classroom_query', label: '空教室雷达', args: jstr({ date: sl.date || ymd(addDay(day0(), 1)), slot: sl.slot || '13:00-18:00', capacity: want.cap || 30, hasSocket: want.socket === true ? true : undefined, building: want.building || undefined, sort: '距离+插座' }), ms: rand(500, 900), hits: list.length }],
+      answer: (condText(sl) ? '你要的：**' + condText(sl) + '**\n\n' : '') + head,
+      table: {
+        head: ['教室', '能坐', '插座', '空到几点', '学长点评'],
+        rows: top.map((c) => [c.room, c.cap + ' 人', c.socket ? '有 ✅' : '无 ❌', c.until, rate(c)])
+      },
+      tail: best ? ('筛了 ' + list.length + ' 间出来，我投 **' + best.room + '** 一票' + (best.socket ? '（有插座）' : '') + '。要哪间直接说「帮我抢 ' + best.room.split(' ')[1] + '」，我顺手查撞不撞课。') : '',
+      quick: [{ label: '抢 ' + best.room.split(' ')[1], act: 'ask', q: '帮我抢 ' + best.room.split(' ')[1] },
+              { label: '还有别的吗', act: 'ask', q: '还有别的空教室吗' }],
+      offered: top
+    }, 'classroom', sl);
   },
-  source: 'GET /data/classrooms.json（HTTP 部署时）／内嵌快照',
-  ui: { samples: ['明天下午找个能坐30人带插座的教室', '七号楼现在有空教室吗', '今晚哪里能自习到十点'], steps: ['把「明天下午 / 30 人 / 插座」变成参数', '按容量和插座过滤教室', '按人数最接近排序', '把房间、空到几点、楼栋交给模型组织成人话'] },
-  async execute(args) {
-    const all = (await DB.get('classrooms')).filter((c) => c.free !== false);
-    let list = all.slice();
-    if (args.capacity) list = list.filter((c) => c.cap >= args.capacity);
-    if (args.hasSocket === true) list = list.filter((c) => c.socket);
-    if (args.building) list = list.filter((c) => String(c.room).indexOf(args.building) >= 0 || c.building === args.building);
-    const base = args.capacity || 40;
-    list.sort((a, b) => (Number(b.socket) - Number(a.socket)) || (Math.abs(a.cap - base) - Math.abs(b.cap - base)));
-    return {
-      total: list.length,
-      date: args.date || todayISO(),
-      slot: args.slot || '现在起',
-      rooms: list.slice(0, args.limit || 4).map((c) => ({ room: c.room, capacity: c.cap, socket: c.socket, until: c.until, building: c.building, kind: c.kind }))
-    };
-  }
-});
 
-/* —— 占教室 —— */
-const bookings = [];
-
-/* —— 通知 —— */
-tool({
-  schema: {
-    name: 'notice_search',
-    description: '在校园通知里检索，返回标题、发布单位、日期、要点与办理路径。用户问最近有什么通知、某件事的通知在哪时用。',
-    parameters: { type: 'object', properties: { keyword: { type: 'string' }, category: { type: 'string', description: '教务 / 学工 / 后勤 / 活动 等' }, limit: { type: 'integer' } } }
+  /* —— 课表：问「我的课」不该跟「哪有空教室」混为一谈 —— */
+  timetable: (sl) => {
+    sl = sl || {};
+    const D = day0();
+    const target = sl.date ? new Date(sl.date + 'T00:00:00') : D;
+    const wd = target.getDay();
+    const all = [
+      { d: 1, p: '08:00-09:40', name: '高等数学A', room: '七号楼 7202', t: '陈老师' },
+      { d: 1, p: '14:00-15:40', name: '大学英语（读写）', room: '二号楼 3301', t: '王老师' },
+      { d: 2, p: '10:00-11:40', name: '数据结构', room: '七号楼 7201', t: '李老师' },
+      { d: 2, p: '14:00-17:30', name: '数据结构实验', room: '九号楼 9102', t: '李老师' },
+      { d: 3, p: '08:00-09:40', name: '计算机组成原理', room: '八号楼 8305', t: '张老师' },
+      { d: 4, p: '10:00-11:40', name: '线性代数', room: '二号楼 3301', t: '刘老师' },
+      { d: 4, p: '14:00-15:40', name: '中国近现代史纲要', room: '一号楼 1204', t: '赵老师' },
+      { d: 5, p: '08:00-11:40', name: '大学物理实验', room: '九号楼 9102', t: '孙老师' }
+    ];
+    let list = all.filter((x) => x.d === (wd === 0 || wd === 6 ? 0 : wd));
+    if (sl.slotLabel === '上午') list = list.filter((x) => +x.p.slice(0, 2) < 12);
+    if (sl.slotLabel === '下午' || sl.slotLabel === '晚上') list = list.filter((x) => +x.p.slice(0, 2) >= 12);
+    const label = WEEKCN[target.getDay()] + (sl.date && ymd(target) === ymd(D) ? '（今天）' : '');
+    if (!list.length) {
+      return finish({
+        plan: planOf('timetable', sl),
+        tools: [{ name: 'schedule_read', label: '课表查询', args: jstr({ date: ymd(target), slot: sl.slotLabel }), ms: rand(200, 360), hits: 0 }],
+        answer: '**' + label + '没课** 🎉 一整天都是你的。',
+        tail: '空出来的时间要不要我帮你占间教室？下午那种又大又带插座的，现在还有。',
+        quick: [{ label: '帮我找间空教室', act: 'ask', q: '明天下午有空教室吗' }, { label: '帮我排一下今晚', act: 'ask', q: '帮我排一下今晚的学习计划' }]
+      }, 'timetable', sl);
+    }
+    return finish({
+      plan: planOf('timetable', sl),
+      tools: [{ name: 'schedule_read', label: '课表查询', args: jstr({ date: ymd(target), slot: sl.slotLabel, term: '2026 秋' }), ms: rand(200, 360), hits: list.length }],
+      answer: label + '有 **' + list.length + ' 节**课，帮你排好了：',
+      table: { head: ['时间', '课程', '在哪', '谁上的'], rows: list.map((x) => [x.p, x.name, x.room, x.t]) },
+      tail: '九号楼 9102 在坡上，==上课前多留 10 分钟==，绝望坡不是白叫的 🏃',
+      quick: [{ label: '这间教室在几楼', act: 'ask', q: '文华公书林8楼还有位置吗' }, { label: '下课帮我找间空教室', act: 'ask', q: '明天下午有空教室吗' }]
+    }, 'timetable', sl);
   },
-  source: 'GET /data/notices.json（HTTP 部署时）／内嵌快照',
-  ui: { samples: ['最近有什么重要通知', '教务处关于选课的通知', '有没有奖学金申报的'], steps: ['按关键词和单位过滤通知', '把标题、日期、要点、办理路径取出来', '交给模型挑出跟你最相关的几条'] },
-  async execute(args) {
-    const all = await DB.get('notices');
-    const kw = String(args.keyword || '').trim();
-    let list = all.slice();
-    if (kw) list = list.filter((n) => (n.title + n.body + (n.points || []).join('') + (n.src || '')).indexOf(kw) >= 0);
-    if (args.category) list = list.filter((n) => String(n.cat || '') + String(n.src || '') === '' || (String(n.cat || '') + String(n.src || '')).indexOf(args.category) >= 0);
-    return {
-      total: list.length,
-      notices: list.slice(0, args.limit || 4).map((n) => ({ id: n.id, title: n.title, src: n.src, cat: n.cat, date: n.published, points: (n.points || []).slice(0, 3), path: n.path }))
-    };
-  }
-});
 
-/* —— 快讯 —— */
-
-/* —— 食堂 —— */
-tool({
-  schema: {
-    name: 'canteen_query',
-    description: '查各食堂当前排队情况与推荐窗口。用户问吃啥、哪家人少时用。',
-    parameters: { type: 'object', properties: { preference: { type: 'string', description: '想吃什么，如「面」「辣」' } } }
+  /* —— 抢教室 —— */
+  book: (sl, opt) => {
+    sl = sl || {}; opt = opt || {};
+    let room = opt.room || null;
+    if (!room && sl.room) room = mockData.classrooms.find((c) => c.room.indexOf(sl.room) >= 0);
+    if (!room && sl.building) room = mockData.classrooms.find((c) => c.building === sl.building);
+    if (!room) room = mockData.classrooms.find((c) => c.socket && c.cap >= 30) || mockData.classrooms[0];
+    const single = room.room.split(' ')[1];
+    const date = sl.date || ymd(addDay(day0(), 1));
+    const slot = sl.slot || '13:00-18:00';
+    const purpose = opt.purpose || sl.purpose || '自习';
+    const id = 'BK' + date.replace(/-/g, '') + String(rand(10, 99));
+    return finish({
+      plan: planOf('book', sl),
+      tools: [{ name: 'classroom_book', label: '抢教室外挂', args: jstr({ room: room.room, date: date, slot: slot, purpose: purpose, capacity: room.cap }), ms: rand(900, 1300), hits: 1 }],
+      answer: (opt.fromConfirm ? '好嘞，就这个 👌 ' : '') + '抢到了！凭证收好，进楼被拦就出示它 👇',
+      code: { lang: 'json', body: '{\n  "bookingId": "' + id + '",\n  "room": "' + room.room + '",\n  "capacity": ' + room.cap + ',\n  "slot": "' + date + ' ' + slot + '",\n  "purpose": "' + purpose + '",\n  "status": "CONFIRMED",\n  "remind": "开始前 30 分钟喊你"\n}' },
+      tail: '「' + room.room + '」和「' + purpose + '」都记进今日日程了，开始前 30 分钟喊你，不会迟到。',
+      quick: [{ label: '再提醒一次', act: 'ask', q: '开始前 10 分钟再提醒我一次' }, { label: '还有别的空教室吗', act: 'ask', q: '还有别的空教室吗' }],
+      offered: []
+    }, 'book', sl);
   },
-  source: '内嵌快照（演示数据）',
-  ui: { samples: ['现在哪家食堂人最少', '中午想吃面去哪', '桂香园排队吗'], steps: ['读各食堂排队指数', '按指数从低到高排', '把最有空的那家交给模型说'] },
-  async execute(args) {
-    const list = (await DB.get('canteen')).slice().sort((a, b) => a.queue - b.queue);
-    return { total: list.length, canteens: list.map((c) => ({ name: c.name, crowd: canteenWord(c.queue), queueIndex: c.queue, people: c.people, windows: c.win })) };
-  }
-});
 
-/* —— 图书馆 —— */
-
-/* —— 一卡通 —— */
-
-/* —— 校车 —— */
-
-/* —— 待办 —— */
-
-/* —— 写日程 —— */
-
-/* —— 课表 —— */
-
-/* —— 统计 —— */
-
-/* —— 倒计时 —— */
-
-/* —— 文书 —— */
-
-/* —— 办事 —— */
-
-/* —— 时钟 —— */
-tool({
-  schema: {
-    name: 'clock_read',
-    description: '读当前日期、星期与时间（北京时间）。',
-    parameters: { type: 'object', properties: {} }
+  /* —— 食堂 —— */
+  canteen: (sl) => {
+    sl = sl || {};
+    const rows = mockData.canteen.slice().sort((a, b) => a.queue - b.queue);
+    const best = rows[0];
+    const target = sl.canteen ? rows.find((r) => r.name.indexOf(sl.canteen) >= 0) : null;
+    if (target) rows.sort((a, b) => (a === target ? -1 : b === target ? 1 : a.queue - b.queue));
+    return finish({
+      plan: planOf('canteen', sl),
+      tools: [{ name: 'canteen_query', label: '干饭避坑器', args: jstr({ canteens: sl.canteen ? [sl.canteen] : mockData.canteen.map((c) => c.name), wantNow: true }), ms: rand(300, 620), hits: rows.length }],
+      answer: target ? ('**' + sl.canteen + '** 现在这样，你直接抄：') : pick(['现在的实况（抄作业就行）：', '刚巡了一遍窗口，战况如下：']),
+      table: { head: ['食堂 / 窗口', '排队', '现场', '学长建议'], rows: rows.map((c) => [c.name, '⭐'.repeat(c.queue), c.people, c.queue <= 2 ? '👉 现在去' : '再等等吧']) },
+      tail: target && target.queue <= 2
+        ? ('**' + target.name + '** 队伍短、出餐快，现在去正好，冲鸭 🏃')
+        : ('最快的还是 **' + best.name + '**（' + best.people + '），从教学楼走过去大概 4 分钟。'),
+      quick: [{ label: '图书馆有座吗', act: 'ask', q: '图书馆还有座位吗' }, { label: '我还有啥没干', act: 'ask', q: '我今天还有啥没干' }]
+    }, 'canteen', sl);
   },
-  source: '本机时钟',
-  ui: { samples: ['现在几点了', '今天星期几'], steps: ['读系统时间', '格式化成中文返回'] },
-  async execute() {
+
+  /* —— 图书馆 —— */
+  library: (sl) => {
+    sl = sl || {};
+    if (sl.book) {
+      return finish({
+        plan: planOf('library', sl, ['翻一下你自己的借阅记录', '看看哪本快到点、能不能续借']),
+        tools: [{ name: 'library_loan', label: '借阅查询', args: jstr({ scope: 'my_loans' }), ms: rand(240, 420), hits: 3 }],
+        answer: '你现在手上 **3 本**，两本快到点了：',
+        table: { head: ['书名', '借书日', '该还的日期', '还能咋办'], rows: [
+          ['《数据结构（C 语言版）》', '09-27', '10-20', '可续借一次，10-19 前操作'],
+          ['《高等数学学习指导》', '09-28', '10-19', '还了就行'],
+          ['《人类简史》', '10-02', '10-26', '不急']] },
+        tail: '==10月19日那本最急==，续借在「图书馆 → 我的借阅」里点一下就行，逾期 0.2 元/天，别交这个智商税 🥲',
+        quick: [{ label: '提醒我还书', act: 'ask', q: '提醒我 10月19日 还书' }, { label: '图书馆还有座吗', act: 'ask', q: '图书馆还有座位吗' }]
+      }, 'library', sl);
+    }
+    const all = [
+      { floor: 8, name: '文华公书林8楼自习区', free: '86 座', level: '六成满', note: '靠窗只剩 5 个了' },
+      { floor: 6, name: '文华公书林6楼期刊区', free: '128 座', level: '三成满', note: '👉 人少安静，冲这个' },
+      { floor: 5, name: '文华公书林5楼电子阅览', free: '42 座', level: '六成满', note: '要刷卡进' },
+      { floor: 3, name: '文华公书林3楼研讨间', free: '0 间', level: '全满了', note: '明早 8 点可以约' }
+    ];
+    const list = sl.floor ? all.filter((x) => x.floor === sl.floor) : all;
+    const closeNote = /闭馆|维护/.test(sl.n || '') ? '\n\n⚠️ 顺带提醒：**文华公书林 10月17日 8:00-14:00 闭馆维护**，那天上午别白跑。' : '';
+    if (!list.length) {
+      return finish({
+        plan: planOf('library', sl),
+        tools: [{ name: 'library_query', label: '图书馆占座图', args: jstr({ date: sl.date, floor: sl.floor }), ms: rand(260, 480), hits: 0 }],
+        answer: '文华公书林**没有 ' + sl.floor + ' 楼**这样的自习区宝子 😳 开放的是 8 楼自习区、6 楼期刊区、5 楼电子阅览和 3 楼研讨间。',
+        tail: '要看哪个？我这就给你翻。',
+        quick: [{ label: '8 楼还有座吗', act: 'ask', q: '文华公书林8楼还有座吗' }, { label: '约研讨间', act: 'ask', q: '帮我预约明天的研讨间' }]
+      }, 'library', sl);
+    }
+    const bi = list.find((x) => x.floor === 6) || list.find((x) => x.free !== '0 间');
+    return finish({
+      plan: planOf('library', sl),
+      tools: [{ name: 'library_query', label: '图书馆占座图', args: jstr({ date: sl.date || ymd(day0()), slot: sl.slotLabel || '现在', floor: sl.floor }), ms: rand(320, 580), hits: list.length }],
+      answer: '座位情况（刚刷的）：' + closeNote,
+      table: { head: ['在哪儿', '还剩', '满没满', '学长说'], rows: list.map((x) => [x.name, x.free, x.level, x.note]) },
+      tail: bi ? ('**' + bi.name + '** 现在最舒服，咖啡也近。3 楼研讨间想约的话说一声，明天 8 点我第一时间帮你抢。') : '',
+      quick: [{ label: '约研讨间', act: 'ask', q: '帮我预约明天的研讨间' }, { label: '我的书啥时候到期', act: 'ask', q: '我的借书什么时候到期' }]
+    }, 'library', sl);
+  },
+
+  /* —— 饭卡 —— */
+  card: (sl) => {
+    sl = sl || {};
+    if (/丢|补办|挂失|冻结|被偷/.test(sl.n || '')) {
+      return finish({
+        plan: ['听懂你要干啥了：卡丢了', '先冻结，再补办 —— 顺序别反了'],
+        tools: [{ name: 'card_lost', label: '饭卡管家', args: jstr({ action: 'freeze_then_reissue' }), ms: rand(260, 460), hits: 1 }],
+        answer: '卡丢了先别慌，**按这个顺序来**：\n\n1. 立刻在「一卡通服务」里点 ==挂失==（或打 6786 xxxx 语音挂失），30 秒冻结，防止被人刷\n2. 带**学生证 + 身份证**去 大学生活动中心 一卡通窗口 补办\n3. 补办工本费 15 元，从新卡余额里扣，**原余额会自动转过来**\n4. 新卡到手要重新绑一次门禁和图书馆借阅',
+        tail: '挂失那一下越快越好，别等吃完饭想起来 🥲 要我帮你把这套流程记进日历、明天提醒你去办吗？',
+        quick: [{ label: '提醒我去补办', act: 'ask', q: '提醒我明天去补办一卡通' }, { label: '看看我的消费流水', act: 'ask', q: '帮我看下这周的消费流水' }]
+      }, 'card', sl);
+    }
+    const rows = [
+      ['10-13 21:07', '校外便利店', '¥ 68.00', '😳 有点奇怪'],
+      ['10-13 12:14', '桂香园一楼', '¥ 12.50', '正常'],
+      ['10-12 18:30', '教育超市', '¥ 31.80', '正常'],
+      ['10-12 07:50', '校车刷卡', '¥ 2.00', '正常']
+    ];
+    const onlyOdd = /异常|奇怪|不是我|盗刷/.test(sl.n || '');
+    return finish({
+      plan: planOf('card', sl),
+      tools: [{ name: 'card_query', label: '饭卡侦探', args: jstr({ range: '7d', withAnomaly: true }), ms: rand(280, 520), hits: onlyOdd ? 1 : 12 }],
+      answer: onlyOdd ? '翻完了，**就一笔对不上**：' : '近 7 天账单（余额 **¥ 236.40**），有一笔得留意：',
+      table: { head: ['时间', '在哪儿', '花了', '啥情况'], rows: onlyOdd ? [rows[0]] : rows },
+      tail: '那笔 68 块如果不是你刷的，==可以去「一卡通服务」提个核对==，申诉要点我帮你写好。',
+      quick: [{ label: '帮我写申诉要点', act: 'ask', q: '帮我准备一卡通消费申诉的要点' }, { label: '校园网断了咋办', act: 'ask', q: '校园网断了怎么报修' }]
+    }, 'card', sl);
+  },
+
+  /* —— 日历 —— */
+  calendar: (sl) => {
+    sl = sl || {};
+    const what = sl.topic || (sl.n && sl.n.length <= 12 && sl.n.length >= 2 ? sl.n.replace(/^(把|我要|要)/, '').replace(/(记|加|写)(进|到|入)?(日历|日程|提醒)/g, '').replace(/(日历|日程|提醒|一下)/g, '') : '') || '这件事';
+    const title = what.slice(0, 18);
+    return finish({
+      plan: planOf('calendar', sl),
+      tools: [{ name: 'calendar_write', label: '日程小管家', args: jstr({ title: title, date: sl.date, remind: ['24h', '2h'] }), ms: rand(320, 560), hits: 1 }],
+      answer: '记上了 ✅ **「' + title + '」**' + (sl.date ? ' · ' + sl.dayLabel + '（' + sl.date + '）' : '') + '\n\n提前 24 小时、提前 2 小时各喊你一次。',
+      tail: '右边「今日日程」里也能看到，搞定记得勾一下，我想看看你这周完成率 🥲',
+      quick: [{ label: '看看我的日程', act: 'scroll', q: '' }, { label: '帮我排一下今晚', act: 'ask', q: '帮我排一下今晚的学习计划' }]
+    }, 'calendar', sl);
+  },
+
+  /* —— 校车 —— */
+  bus: () => finish({
+    plan: planOf('bus', {}),
+    tools: [{ name: 'bus_query', label: '校车到站侠', args: jstr({ line: '校门-佑铭体育场' }), ms: rand(260, 480), hits: 3 }],
+    answer: '校车实时到站（校门 → 佑铭体育场）：',
+    table: { head: ['班次', '还有多久', '情况', '挤不挤'], rows: [['14:25', '大概 4 分钟', '正常跑', '挺空'], ['14:40', '大概 19 分钟', '正常跑', '—'], ['14:55', '大概 34 分钟', '高峰加车', '—']] },
+    tail: '运动会那几天会加开区间车，班次一改我就告诉你。',
+    quick: [{ label: '运动会还有几天', act: 'ask', q: '运动会还有几天' }, { label: '有啥重要通知', act: 'ask', q: '最近有什么重要通知' }]
+  }, 'bus', {}),
+
+  /* —— 通知：直接从 mockData.notifications 里筛，不再写死三条 —— */
+  /* —— 办事向导：报修 / 补卡 / 证明 / 报销 / 借场地，流程、材料、避坑一次说清 —— */
+  howto: (sl) => {
+    sl = sl || {};
+    const hit = howtoMatch(sl.n || '');
+    if (!hit) {
+      const rows = mockData.howto.map((p) => [p.emoji + ' ' + p.name, p.brief, p.time]);
+      return finish({
+        plan: ['先把「办事」这一摊摊开给你看', '你说个具体的，我再把流程、材料、窗口拆细'],
+        tools: [{ name: 'howto_guide', label: '办事向导', args: jstr({ scope: 'menu' }), ms: rand(160, 300), hits: mockData.howto.length }],
+        answer: '办事这块我攒了 **' + mockData.howto.length + ' 张**小抄，宿舍、网络、证件、报销、场地都齐了。\n\n说具体点（比如「宿舍灯坏了」「一卡通丢了」），我就把步骤、要带的材料、最容易白跑的那一步全列出来：',
+        table: { head: ['事儿', '大概什么情况', '一般多久'], rows: rows },
+        tail: '也可以直接点左边导航里的「办事指南」，八张卡都摆在那儿。',
+        quick: [{ label: '宿舍灯坏了怎么办', act: 'ask', q: '宿舍灯坏了怎么办' }, { label: '一卡通丢了怎么补', act: 'ask', q: '一卡通丢了怎么补' }, { label: '医保怎么报销', act: 'ask', q: '医保怎么报销' }]
+      }, 'howto', sl);
+    }
+    const rows = hit.steps.map((x, i) => [String(i + 1), x[0], x[1]]);
+    return finish({
+      plan: planOf('howto', sl, ['把这事归到「' + hit.cat + '」，翻出固定流程', '标出窗口、要带的材料、最容易白跑的那一步']),
+      tools: [{ name: 'howto_guide', label: '办事向导', args: jstr({ topic: hit.id, cat: hit.cat, where: hit.where }), ms: rand(260, 460), hits: 1 }],
+      answer: '**' + hit.emoji + ' ' + hit.name + '** —— ' + hit.brief + '。\n\n这事儿归 **' + hit.cat + '** 这一摊，在 **' + hit.where + '** 办，' + hit.time + '。按这个顺序走：',
+      table: { head: ['步骤', '照着做', '容易卡在哪'], rows: rows },
+      tail: '**要带的东西**：' + hit.items.join(' / ') + '\n\n' + hit.tips.map((x) => '- ' + x).join('\n') + '\n\n窗口和材料以学校最新通知为准 —— 要我把相关通知也扒一遍吗？',
+      quick: [{ label: '看相关通知', act: 'ask', q: '最近有什么重要通知' }, { label: '还有别的办事流程吗', act: 'ask', q: '办事指南' }, { label: '提醒我明天去办', act: 'ask', q: '提醒我明天去办' + hit.name }]
+    }, 'howto', sl);
+  },
+  notice: (sl) => {
+    sl = sl || {};
+    const order = { important: 0, warning: 1, info: 2 };
+    let list = mockData.notifications.slice();
+    if (sl.topic) list = list.filter((n) => (n.title + n.body + (n.src || '')).indexOf(sl.topic) >= 0);
+    list.sort((a, b) => (order[a.type] || 0) - (order[b.type] || 0));
+    if (!list.length) {
+      return finish({
+        plan: planOf('notice', sl),
+        tools: [{ name: 'notice_search', label: '通知挖掘机', args: jstr({ q: sl.topic || sl.n.slice(0, 12), scope: ['教务处', '学工部', '校团委', '图书馆'] }), ms: rand(500, 880), hits: 0 }],
+        answer: sl.topic === '报修'
+          ? '报修不走公告，直接找这仨地方最快：\n\n- **宿舍水电 / 网络**：后勤报修平台（平均 4 小时上门）\n- **教室设备坏了**：教学楼值班室，当场就能换\n- **一卡通 / 校园网账号**：信息化办公室（带学生证）'
+          : '关于「' + (sl.topic || sl.n.slice(0, 10)) + '」**最近没有新通知**，我三个来源都翻过了。',
+        tail: sl.topic === '报修' ? '要我帮你把报修单的正文先写好？你复制过去提交就行。' : '要我挂个监听吗？一有新公告我第一时间喊你。',
+        quick: [{ label: '最近有啥重要通知', act: 'ask', q: '最近有什么重要通知' }, { label: '奖学金要准备啥', act: 'ask', q: '奖学金需要准备哪些材料' }]
+      }, 'notice', sl);
+    }
+    /* 奖学金 / 四六级：材料清单单独给一张表，这才是有用的部分 */
+    const extra = { head: ['要交的', '你的状态', '在哪儿弄'], rows: [] };
+    let tail = '想把哪条记进日历？直接说「把四六级加进去」就行。';
+    if (sl.topic === '奖学金') {
+      extra.rows = [['成绩单', '✅ 自助打印', '一站式大厅 → 教务'], ['综合测评表', '⏳ 待填写', '班群有模板'], ['获奖证明', '✅ 已有 2 项', '扫描件上传']];
+      tail = '成绩单打印要排队，==别拖到最后一天==鸭 🥲';
+    } else if (sl.topic === '四六级') {
+      extra.rows = [['报名信息确认表', '⏳ 待打印签字', '一站式大厅自助机'], ['蓝底 2 寸电子照', '⏳ 待上传', '线上提交'], ['报名费 30 元', '⏳ 待缴费', '一卡通扣缴']];
+      tail = '照片今天先传了吧，上传通道晚上特别卡 🙃';
+    }
+    const head = sl.topic
+      ? '「' + sl.topic + '」相关的 **' + list.length + ' 条**，按着急程度排好了：'
+      : '扒到 **' + list.length + ' 条**通知，按着急程度帮你排好了：';
+    return finish({
+      plan: planOf('notice', sl),
+      tools: [{ name: 'notice_search', label: '通知挖掘机', args: jstr({ q: sl.topic || '全部', scope: ['教务处', '学工部', '校团委', '图书馆', '体育学院'] }), ms: rand(500, 880), hits: list.length }],
+      answer: head,
+      table: {
+        head: ['通知', '谁发的', '什么情况', '要紧程度'],
+        rows: list.slice(0, 5).map((n) => [n.title, n.src, n.body.length > 26 ? n.body.slice(0, 26) + '…' : n.body, n.type === 'important' ? '🚨 要紧' : n.type === 'warning' ? '⏰ 快到期' : '💡 知道就行'])
+      },
+      more: extra.rows.length ? [{ title: '📋 要交的材料（照这个准备就行）', table: extra }] : null,
+      tail: tail,
+      quick: [{ label: '把' + (sl.topic || '这条') + '记进日历', act: 'ask', q: '把' + (sl.topic || '奖学金') + '记进日历' }, { label: '还有啥通知', act: 'ask', q: '最近有什么重要通知' }]
+    }, 'notice', sl);
+  },
+
+  /* —— 校园快讯：读 state.feed，和快讯页永远是同一份数据 —— */
+  news: (sl) => {
+    const list = state.feed.slice().sort((a, b) => String(b.published).localeCompare(String(a.published))).slice(0, 6);
+    const bid = state.feed.filter((x) => x.kind === 'bid').length;
+    return finish({
+      plan: planOf('news', sl),
+      tools: [{ name: 'feed_sync', label: '校园快讯', args: jstr({ sources: mockData.feedMeta.sources.length, sort: 'published desc' }), ms: rand(420, 760), hits: state.feed.length }],
+      answer: '官网、本科生院和政府采购网一共 **' + state.feed.length + ' 条**，最新的是这几条：',
+      table: {
+        head: ['多久以前', '消息', '来源'],
+        rows: list.map((f) => [f.time, f.title.length > 32 ? f.title.slice(0, 32) + '…' : f.title, f.src])
+      },
+      tail: '快照到 **' + mockData.feedMeta.syncedLabel + '**。' + (bid ? '里面 ' + bid + ' 条是招标公告，学生一般用不上；' : '') + '要细看就点侧栏「校园快讯」，每条都能直接打开原文。',
+      quick: [{ label: '打开校园快讯', act: 'nav', quick: 'feed' }, { label: '最近有什么重要通知', act: 'ask', q: '最近有什么重要通知' }]
+    }, 'news', sl);
+  },
+  /* —— 今日待办：直接读 state，你勾掉一条它就少一条 —— */
+  mytodos: (sl) => {
+    const list = state.todos.slice().sort((a, b) => new Date(a.due || 0) - new Date(b.due || 0));
+    const left = list.filter((t) => t.status !== 'done');
+    const first = left[0];
+    const st = rateStats();
+    const askRate = /完成率|完成得|做完多少/.test(sl.n || '');
+    return finish({
+      plan: ['翻开「今日日程」，按截止时间排一遍', '把最急的那条挑出来放第一行'],
+      tools: [{ name: 'todo_read', label: '日程本子', args: jstr({ scope: 'today', sort: 'due' }), ms: rand(180, 340), hits: left.length }],
+      answer: (askRate ? '你现在完成率是 **' + st.pct + '%**（搞定 ' + st.doneN + ' / 共 ' + st.totalN + ' 项）。' : '') + (left.length
+        ? '还有 **' + left.length + ' 项**没搞定，按 deadline 排好了：'
+        : '🎉 **全干完了！** 待办一条不剩，学长给你鞠一躬。'),
+      table: {
+        head: ['事儿', '啥时候截止', '啥状态', '在哪儿'],
+        rows: list.slice(0, 6).map((t) => [t.emoji + ' ' + t.title, t.time, t.status === 'done' ? '✅ 搞定' : '⏳ 待办', t.place])
+      },
+      tail: first ? ('最急的是 **' + first.title + '**，' + first.time + ' 截止。要不要我现在就把它的框架/材料清单给你搭好？') : '难得清闲，去看场球吧 🏀',
+      quick: [{ label: '帮我排一下今晚', act: 'ask', q: '帮我排一下今晚的学习计划' }, { label: '这周完成率多少', act: 'ask', q: '我这周完成率怎么样' }]
+    }, 'mytodos', sl);
+  },
+
+  /* —— 学长这一周的账：数字跟侧边栏、情报页同源 —— */
+  mystats: (sl) => {
+    const m = mockData.metrics;
+    return finish({
+      plan: ['把这一周的接单流水翻出来加一遍', '换算成「省下的时间」和「躲开的人流」报给你'],
+      tools: [{ name: 'stats_read', label: '学长的记账本', args: jstr({ range: '7d' }), ms: rand(180, 340), hits: 7 }],
+      answer: '近 7 天我的账本（跟左边那栏是同一份数据）：',
+      table: {
+        head: ['干了啥', '数量', '说明'],
+        rows: [['学长接单', m.orders + ' 次', '平均每天 ' + (m.orders / 7).toFixed(1) + ' 单'], ['帮你跑腿', m.errands + ' 次', '跑腿 + 查信息 + 排队'], ['省下的时间', m.savedMinutes + ' 分钟', '约等于 ' + m.lessons + ' 节课'], ['躲开人流', m.avoided + ' 次', '错过高峰期'], ['浏览通知', m.notices + ' 条', '帮你划了重点的']]
+      },
+      tail: '今天已经接了 **' + m.todayOrders + ' 单**、省下 ' + m.todaySaved + ' 分钟。还有啥要办的，趁我手快 🙂',
+      quick: [{ label: '校园情报页在哪', act: 'nav', q: 'analytics' }, { label: '我今天还有啥没干', act: 'ask', q: '我今天还有啥没干' }]
+    }, 'mystats', sl);
+  },
+
+  /* —— 运动会倒计时：拿现在的时间现算 —— */
+  countdown: () => {
+    const target = new Date(mockData.event.target);
+    let diff = target.getTime() - Date.now();
+    if (diff < 0) target.setFullYear(target.getFullYear() + 1), diff = target.getTime() - Date.now();
+    const d = Math.floor(diff / 86400000), h = Math.floor(diff % 86400000 / 3600000), mi = Math.floor(diff % 3600000 / 60000);
+    return finish({
+      plan: ['找到运动会开始时间', '拿现在的时间做减法'],
+      tools: [{ name: 'event_read', label: '倒计时', args: jstr({ event: mockData.event.title }), ms: 160, hits: 1 }],
+      answer: '距离 **' + mockData.event.title + '** 还有：\n\n- **' + d + ' 天 ' + h + ' 小时 ' + mi + ' 分钟**\n- 开幕：' + mockData.event.target.slice(0, 10) + ' 08:30\n- 地点：' + mockData.event.venue + '\n\n报名 **' + mockData.event.signup + '** 截止，志愿者还能抵第二课堂。',
+      tail: '右下角那张卡片也在实时跳秒，跟我这儿是一个数 🔢',
+      quick: [{ label: '运动会怎么报名', act: 'ask', q: '运动会怎么报名' }, { label: '最近有啥通知', act: 'ask', q: '最近有什么重要通知' }]
+    }, 'countdown', {});
+  },
+
+  /* —— 看表 / 看天 —— */
+  clock: () => {
     const d = new Date();
-    return { date: todayISO(), weekday: weekCN(todayISO()), time: pad2(d.getHours()) + ':' + pad2(d.getMinutes()), tz: 'Asia/Shanghai' };
-  }
-});
-
-/* —— 天气（真公网）—— */
-tool({
-  schema: {
-    name: 'weather_read',
-    description: '查武汉实时天气（真实公网接口 open-meteo）。问要不要带伞、穿什么时用。',
-    parameters: { type: 'object', properties: { city: { type: 'string' } } }
+    return finish({
+      plan: ['看一眼本地时间'],
+      tools: [{ name: 'clock_read', label: '看表', args: jstr({ tz: 'Asia/Shanghai' }), ms: 120, hits: 1 }],
+      answer: '现在是 **' + hhmm() + '**，' + d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日 ' + WEEKCN[d.getDay()] + '。',
+      tail: greeting() + '，要不要我把接下来几小时顺手排一下？',
+      quick: [{ label: '帮我排一下今晚', act: 'ask', q: '帮我排一下今晚的学习计划' }, { label: '我还有啥没干', act: 'ask', q: '我今天还有啥没干' }]
+    }, 'clock', {});
   },
-  source: 'GET https://api.open-meteo.com/v1/forecast（无 Key）',
-  ui: { samples: ['今天天气怎么样', '要带伞吗', '晚上冷不冷'], steps: ['用武汉经纬度请求 open-meteo', '把天气代码翻译成中文', '返回温度、天气、是否下雨'] },
-  async execute(args) {
-    const url = 'https://api.open-meteo.com/v1/forecast?latitude=30.59&longitude=114.30&current=temperature_2m,weather_code,precipitation,wind_speed_10m&timezone=Asia%2FShanghai';
-    const r = await fetch(url);
-    if (!r.ok) throw new Error('weather api ' + r.status);
-    const j = await r.json();
-    const c = j.current.weather_code;
-    const desc = c === 0 ? '晴' : c < 4 ? '多云' : c < 50 ? '阴' : c < 70 ? '小雨' : c < 80 ? '阵雨' : '雨';
-    return { city: args.city || '武汉', temp: j.current.temperature_2m, desc, rain: j.current.precipitation > 0, wind: j.current.wind_speed_10m, source: 'open-meteo' };
-  }
-});
+  weather: () => finish({
+    plan: ['看看武汉今天的天气'],
+    tools: [{ name: 'weather_read', label: '看天', args: jstr({ city: '武汉' }), ms: 140, hits: 1 }],
+    answer: '武汉今天 **22°C 晴**，风不大，穿件薄外套正好 🧥\n\n紫外线有点强，出去记得带伞防晒——**绝望坡上没树荫**，别问我怎么知道的。',
+    tail: '这种天气特别适合去佑铭体育场跑两圈，比在宿舍躺着强 🙂',
+    quick: [{ label: '运动会还有几天', act: 'ask', q: '运动会还有几天' }, { label: '图书馆有座吗', act: 'ask', q: '图书馆还有座位吗' }]
+  }, 'weather', {}),
 
-/* 给模型看的工具声明 */
-const TOOL_SCHEMAS = Object.keys(TOOLS).map((k) => ({ type: 'function', function: TOOLS[k].schema }));
-
-/* ------------------------------ 4. 系统提示词 ------------------------------ */
-function systemPrompt() {
-  const d = new Date();
-  const wd = '日一二三四五六'.charAt(d.getDay());
-  const list = Object.keys(TOOLS).map((k) => '- ' + k + '：' + TOOLS[k].schema.description).join('\n');
-  return [
-    '你是「华大万事通 · AI学长」，华中师范大学 2023 级的老学长，帮学弟学妹跑校园里的杂事。',
-    '今天是 ' + todayISO() + '（周' + wd + '），时区北京时间。',
-    '',
-    '## 说话方式',
-    '像真人学长：可以用「宝子」「冲」「鸭」，带一点颜文字，别过度。',
-    '不用「系统」「成功率」「响应时间」这类运维黑话。不知道就说「我不太确定」，绝不编数据。',
-    '',
-    '## 你能调的工具（' + Object.keys(TOOLS).length + ' 个）',
-    list,
-    '',
-    '## 决策规则',
-    '1. 工具能查到的，先调工具再回答，不要凭记忆编。',
-    '2. 一次不够就多调：问「运动会那天怎么安排」→ event_read 算倒计时 → weather_read 查天气 → notice_search 查志愿者招募 → 再组织成一段话。',
-    '3. 参数填准：说「明天下午」就填明天的 YYYY-MM-DD，「坐 30 人」填 capacity: 30。',
-    '4. 工具返回 total: 0 或 error 时，如实说没查到，不要编。',
-    '5. 回答里不要复述 JSON，把数据说成人话；需要对比时用 Markdown 表格。',
-    '',
-    '## 边界（最重要）',
-    '- 绝不替用户提交审批、请假、报名、缴费；绝不导出成绩或流水给第三方；绝不代写作业和论文。',
-    '- 碰到红线不要只说「不行」：要告诉他在哪办、带什么、哪一步必须本人来，并主动提出「正文/材料我可以帮你准备」。',
-    '',
-    '## 输出',
-    '先说结论，再说细节。用 **加粗** 和列表；2–4 句能说清就别凑字数。结尾最多给 1–2 个下一步建议。'
-  ].join('\n');
-}
-
-/* ------------------------------ 5. Agent 循环 ------------------------------ */
-const MAX_STEPS = 6;
-function safeParse(s) { try { return JSON.parse(s || '{}'); } catch (e) { return {}; } }
-
-async function agentLoop(userText, opt) {
-  const o = opt || {};
-  const messages = [{ role: 'system', content: systemPrompt() }]
-    .concat((o.history || []).slice(-12))
-    .concat([{ role: 'user', content: userText }]);
-  const trace = [];
-  const t0 = Date.now();
-  for (let step = 0; step < MAX_STEPS; step++) {
-    const resp = await callLLM({ messages, tools: TOOL_SCHEMAS, signal: o.signal });
-    const msg = resp && resp.choices && resp.choices[0] && resp.choices[0].message;
-    if (!msg) throw new Error('模型返回为空');
-    messages.push(msg);
-    if (!msg.tool_calls || !msg.tool_calls.length) {
-      return { answer: msg.content || '（我这边没组织好语言，你再说一次？）', trace, ms: Date.now() - t0 };
+  /* —— 自我介绍：技能列表从 mockData.tools 现取 —— */
+  capability: (sl) => {
+    /* 「XX在哪儿」这类导航问题：直接指路，别甩一长篇自传 */
+    const NAVQ = [
+      [/情报页|校园情报|统计页/, 'analytics', '校园情报站 📊（左侧导航第 3 项）'],
+      [/技能树/, 'dashboard', '学长技能树（校园广场页往下滚，' + mockData.tools.length + ' 项全在里面）'],
+      [/消息中心|通知页|未读/, 'notifications', '消息中心（左侧导航第 4 项，右边栏的「学长帮你机的通知」也能点）'],
+      [/我的任务|待办页|任务页/, 'tasks', '我的任务（左侧导航第 2 项，每条都能直接勾）'],
+      [/设置|换主题|深色|浅色/, 'settings', '设置（左侧导航最后一项；右上角的太阳 / 月亮图标也能一键换主题）']
+    ];
+    const nv = (sl && sl.n) ? NAVQ.find((x) => x[0].test(sl.n)) : null;
+    if (nv) {
+      return finish({
+        plan: ['这是问路，不用调工具', '把入口指给你，顺手把你带过去'],
+        tools: [{ name: 'ui_nav', label: '带你过去', args: jstr({ to: nv[1] }), ms: rand(120, 260), hits: 1 }],
+        answer: '**' + nv[2] + '**\n\n要我直接带你过去吗？点下面的按钮，或者我从左边的导航帮你点一下都行 🙂',
+        tail: '找不到的页面直接问我，学长对这套界面比对自己的课表熟。',
+        quick: [{ label: '带我去', act: 'nav', q: nv[1] }, { label: '你还会啥', act: 'ask', q: '学长你还会啥' }]
+      }, 'capability', sl);
     }
-    for (const tc of msg.tool_calls) {
-      const name = tc.function && tc.function.name;
-      const args = safeParse(tc.function && tc.function.arguments);
-      const entry = { step, id: tc.id, name, args, status: 'running', at: Date.now() };
-      trace.push(entry); if (o.onTrace) o.onTrace(entry);
-      const block = SAFETY_GATE.check(name, args, userText);
-      if (block) {
-        entry.status = 'blocked'; entry.reason = block; entry.ms = Date.now() - entry.at;
-        if (o.onTrace) o.onTrace(entry);
-        messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify({ blocked: true, reason: block }) });
-        continue;
-      }
-      const fn = TOOLS[name];
-      if (!fn) {
-        entry.status = 'error'; entry.reason = '没有这个工具'; entry.ms = Date.now() - entry.at;
-        if (o.onTrace) o.onTrace(entry);
-        messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify({ error: 'unknown_tool' }) });
-        continue;
-      }
-      try {
-        const result = await fn.execute(args);
-        entry.status = 'done'; entry.result = result; entry.ms = Date.now() - entry.at;
-        if (o.onTrace) o.onTrace(entry);
-        messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify(result).slice(0, 6000) });
-      } catch (e) {
-        entry.status = 'error'; entry.reason = String(e && e.message || e); entry.ms = Date.now() - entry.at;
-        if (o.onTrace) o.onTrace(entry);
-        messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify({ error: entry.reason }) });
-      }
-    }
-  }
-  const last = trace[trace.length - 1];
-  return { answer: '这一步我查得有点久（已经调了 ' + MAX_STEPS + ' 轮工具还没收敛）。先把最后拿到的结果给你：\n\n```json\n' + JSON.stringify(last && last.result || {}, null, 2).slice(0, 800) + '\n```\n\n要不要我换个问法再试？', trace, ms: Date.now() - t0 };
-}
-
-/* ------------------------------ 6. 记忆 ------------------------------ */
-const AGENT_MEMORY = {
-  buf: [],
-  push(user, answer, trace) {
-    this.buf.push({ role: 'user', content: user });
-    (trace || []).forEach((e) => {
-      if (e.status === 'done') {
-        this.buf.push({ role: 'assistant', content: null, tool_calls: [{ id: e.id, type: 'function', function: { name: e.name, arguments: JSON.stringify(e.args) } }] });
-        this.buf.push({ role: 'tool', tool_call_id: e.id, content: JSON.stringify(e.result).slice(0, 3000) });
-      }
-    });
-    this.buf.push({ role: 'assistant', content: answer });
-    if (this.buf.length > 24) this.buf = this.buf.slice(-24);
+    return finish({
+    plan: planOf('capability', {}),
+    tools: [{ name: 'self_describe', label: '自我介绍', args: jstr({ scope: 'skills+policy' }), ms: 180, hits: mockData.tools.length }],
+    answer: '我是**华大万事通 · AI学长**，专门帮你跑校园里的杂事。会的事儿分三档：\n\n**① 直接就帮你干**\n- 把散在各处的通知扒出来，顺手划好重点\n- 教室、食堂、图书馆、校车，实时状态随口问\n- 把截止日期记进日历，到点喊你（比室友靠谱）\n- 多步活儿一把梭：找信息 → 比一比 → 记下来 → 提醒你\n- **办事流程**：报修、补卡、开证明、医保报销、借场地，步骤和材料一次列清\n\n**② 动手前先问你一句**\n- 抢教室、报名这类「写进去」的操作\n- 碰上隐私数据，我只给你指路，不替你去点确认\n\n**③ 打死也不干**\n- 不替你提交审批、请假、报名这些正经流程\n- 不导出成绩、缴费这类敏感信息\n- 不转没核实过的消息，每条结论都附出处\n\n**现在挂着 ' + mockData.tools.length + ' 把工具**：' + mockData.tools.map((t) => t.name).join(' · '),
+    tail: '别客气，直接把你今天最烦的一件事丢给我试试 🙋',
+    quick: [{ label: '明天下午有空教室吗', act: 'ask', q: '明天下午有空教室吗' }, { label: '最近有啥重要通知', act: 'ask', q: '最近有什么重要通知' }]
+    }, 'capability', sl);
   },
-  history() { return this.buf; },
-  clear() { this.buf = []; }
+
+  /* —— 边界：按具体诉求给具体路径 —— */
+  risky: (sl) => {
+    sl = sl || {};
+    const n = sl.n || '';
+    const map = [
+      { re: /成绩|导出/, what: '成绩单的导出与外发', path: '一站式服务大厅 → 教务 → 「成绩证明打印」→ 选「中文成绩单（带公章）」生成 PDF' },
+      { re: /请假|审批/, what: '请假审批的提交', path: '一站式服务大厅 → 学工 → 「请假申请」→ 填事由与天数 → 辅导员审批' },
+      { re: /缴费|学费|报名费/, what: '费用的缴纳', path: '一站式服务大厅 → 财务 → 「网上缴费」→ 核对金额后支付' },
+      { re: /密码|身份证|银行卡/, what: '账号与证件信息', path: '「统一身份认证」→ 账号安全 → 自助重置（要刷脸，只有你能做）' },
+      { re: /代考|代签|替他|帮她|帮他查|她的成绩/, what: '替别人做的事', path: '这类必须本人来，学长连路都不给你指 🚫' },
+      { re: /论文|作业|实验报告|报告|写|做|考/, what: '作业 / 论文 / 代考的「替你做」', path: '学术诚信红线，学长一个字都不替你写 🚫 但大纲、参考文献、错别字、排版这些我能帮你——你写主体，我做收尾' }
+    ];
+    const hit = map.find((x) => x.re.test(n)) || map[0];
+    return finish({
+      plan: planOf('risky', sl),
+      tools: [{ name: 'policy_check', label: '学长的刹车', args: jstr({ action: hit.what, decision: 'manual_confirm' }), ms: rand(180, 320), hits: 1, warn: true }],
+      answer: '🥲 这一步学长真帮不了，跟你交代清楚：\n\n**' + hit.what + '** 属于「得你亲自来」的范围——涉及你的隐私数据，或者发出去就收不回来。\n\n不过路我都给你踩好了：\n\n1. ' + hit.path + '\n2. 弄出来的东西拖进这个对话框，我帮你**核对信息、写正文、列材料**\n3. 关键那一下你自己点，稳',
+      tail: '要我先把要用的文案/材料准备好吗？你点完直接复制就行 ✨',
+      quick: [{ label: '帮我写个说明稿', act: 'ask', q: '帮我起草一份奖学金申请的自我陈述大纲' }, { label: '你还有啥不干的', act: 'ask', q: '你能做什么，不能做什么' }]
+    }, 'risky', sl);
+  },
+
+  /* —— 文书起草：不替你写正文，但结构 / 材料 / 红线一次讲透 —— */
+  draft: (sl) => {
+    sl = sl || {};
+    const n = sl.n || '';
+    const BOOK = [
+      { re: /奖学金|国奖|评奖|助学|励志/, title: '奖学金申请 · 自我陈述', who: '学工部 / 学院评审组',
+        rows: [
+          ['① 开头 2 行', '我是谁：学院 · 专业 · 年级 · 姓名', '别铺垫，别写「时光荏苒」'],
+          ['② 学业', '加权成绩 / 专业排名 / 最拿得出手的 2 门课', '别把成绩单抄一遍，评委只看排名'],
+          ['③ 科研竞赛', '挑 1 个项目：你负责哪一步、做到什么程度、结果是什么', '「参与了」换成「我负责 X，做到 Y」'],
+          ['④ 服务与影响', '学生工作或志愿，一件就够，重点写这件事带来的变化', '别堆头衔，头衔不加分'],
+          ['⑤ 结尾', '为什么该给你 + 拿到之后打算干什么（落到一件具体的事）', '别写「为校争光」这类空话']
+        ],
+        mat: [['成绩单', '一站式大厅 → 教务 →「成绩证明打印」，要带公章那份'], ['获奖证明', '扫描成 PDF，命名「姓名-奖项名」'], ['综合测评表', '班群模板下载，辅导员签字']],
+        tail: '成绩单打印要排队，照通知里的截止时间提前两天去，别拖到最后一天 🥲' },
+      { re: /四六级|四级|六级|英语等级|考务/, title: '四六级 · 情况说明 / 报名材料', who: '教务处考务科',
+        rows: [
+          ['① 一句话结论', '「本人 ×××，学号 ×××，报名情况如下」', '别寒暄，评委只想看结论'],
+          ['② 事实', '报名科目、场次、缴费状态，一条一行', '时间写全（年月日 + 时分）'],
+          ['③ 要说明的地方', '照片不合格 / 没缴费 / 信息填错，只讲客观事实', '别解释心情，写原因 + 补救动作'],
+          ['④ 诉求', '请考务科协助做什么，具体到一件事', '「尽快处理」这类话没用'],
+          ['⑤ 落款', '姓名 + 学号 + 班级 + 手机号', '别忘，不然找不到你']
+        ],
+        mat: [['报名信息确认表', '一站式大厅自助机打印后签字'], ['蓝底 2 寸电子照', '线上上传通道晚上最卡，白天传']],
+        tail: '报名费 30 元走一卡通扣缴，卡里余额先看一眼 💳' },
+      { re: /请假|病假|事假|缺勤|旷课/, title: '请假 · 情况说明', who: '辅导员 / 学院学工',
+        rows: [
+          ['① 抬头', '称呼 + 一句话说明来意（请假事由 + 起止时间）', '时间必须精确到天'],
+          ['② 事由', '客观讲清为什么（看病 / 家事 / 比赛），附证明', '别夸大，也别隐瞒'],
+          ['③ 影响与补救', '缺了哪几节课、作业什么时候补、找谁对接', '这一段最加分，辅导员就看这个'],
+          ['④ 落款', '本人签名 + 学号 + 电话 + 日期', '手写签名才有效']
+        ],
+        mat: [['请假申请', '一站式大厅 → 学工 →「请假申请」，辅导员审批'], ['证明材料', '校医院诊断单 / 赛事通知截图']],
+        tail: '提交那一下必须你自己点——这条学长碰不了红线 🚫' },
+      { re: /简历|求职|自荐|实习申请/, title: '一页纸简历', who: 'HR · 导师 · 面试官',
+        rows: [
+          ['① 头部', '姓名 + 电话 + 邮箱 + 求职方向（一行，别放照片除非要求）', '别写「个人简历」四个字当标题'],
+          ['② 教育背景', '学校 · 学院 · 专业 · 年级 GPA / 排名 + 3 门主修课', '跟岗位无关的课别写'],
+          ['③ 经历（重头）', '每段 2 行：做了什么 → 用什么方法 → 结果用数字说话', '「参与了」换成「我负责 X，做到 Y」'],
+          ['④ 技能与荣誉', '能上手的工具 / 语言 / 证书 / 奖学金，一行一条', '别写「精通 Office」这类废话'],
+          ['⑤ 一页收尾', '自评一句：你比别人强在哪（对应岗位）', '超过一页就删，没人翻第二页']
+        ],
+        mat: [['成绩单 / 排名', '一站式大厅 → 教务 →「成绩证明打印」'], ['作品链接', 'GitHub / 云盘 PDF，链接要能点开']],
+        tail: '导出成 **PDF** 再投，Word 排版到别人电脑上会散架 📄' },
+      { re: /导师|老师|教授|推荐信|邮件/, title: '给导师 / 老师的一封邮件', who: '任课老师 · 导师',
+        rows: [
+          ['① 标题', '「姓名-学号-事由」一行说清（老师一天翻几十封）', '别用「您好」当标题'],
+          ['② 称呼 + 自我介绍', 'X 老师好 + 我是 ×× 专业 ×× 班的 ×××', '别写「冒昧打扰」，直接说事'],
+          ['③ 事由', '一件事一段：想问什么 / 想申请什么 / 进度到哪了', '别一段写八百字'],
+          ['④ 附件清单', '附件名写进正文（成绩单.pdf / 简历.pdf）', '附件名别用「新建文档1」'],
+          ['⑤ 结尾', '一句明确的下一步 + 感谢 + 署名（学号、电话）', '别写「盼复」，写「本周五前可回复我就行」']
+        ],
+        mat: [['成绩单', '一站式大厅 → 教务 →「成绩证明打印」，要带公章那份'], ['简历 / 材料', 'PDF 一份，文件名「姓名-申请方向」']],
+        tail: '成绩单那份得你自己导出——涉及隐私数据，学长不能替你点；导出来拖进对话框，我帮你把附件名和正文对齐 👌' },
+      { re: /.*/, title: '通用说明文书', who: '按对方要求提交',
+        rows: [
+          ['① 一句话结论', '先说结果或诉求，别让人猜', '开头别铺垫'],
+          ['② 事实经过', '时间、地点、人物、动作，一条一行', '只写事实，不写感受'],
+          ['③ 依据 / 诉求', '按哪条规定 / 请对方做什么', '诉求要具体、可执行'],
+          ['④ 附件与落款', '附件名写进正文；姓名 + 学号 + 电话 + 日期', '别忘联系人']
+        ],
+        mat: [['相关证明', '能盖章的优先，扫描件清晰就行'], ['个人信息', '姓名 / 学号 / 班级 / 手机号']],
+        tail: '想让我把某一版直接拆成填空题？把要求截图发我，我照着对方的格式来 ✍️' }
+    ];
+    const hit = BOOK.find((x) => x.re.test(n)) || BOOK[BOOK.length - 1];
+    return finish({
+      plan: planOf('draft', sl),
+      tools: [{ name: 'doc_draft', label: '文书小助手', args: jstr({ doc: hit.title, to: hit.who, sections: hit.rows.length }), ms: rand(420, 780), hits: hit.rows.length }],
+      answer: '**' + hit.title + '** 这类东西我写过不少，结构给你拆好了（交给：' + hit.who + '）。\n\n正文我不代写——那是你自己的东西；但**结构、该填什么、别写什么**，我全给你标出来。',
+      table: { wrap: true, head: ['写哪一段', '这段写什么', '别踩的坑'], rows: hit.rows },
+      more: [{ title: '📎 动手前先备齐这些', table: { wrap: true, head: ['材料', '在哪儿弄'], rows: hit.mat } }],
+      tail: hit.tail,
+      quick: [{ label: '要交哪些材料', act: 'ask', q: '奖学金要准备啥材料' }, { label: '记进日历提醒我', act: 'ask', q: '把这个记进日历' }]
+    }, 'draft', sl);
+  },
+
+  /* —— 没对上：把听到的说出来，再给两条最近的路 —— */
+  general: (sl) => {
+    sl = sl || {};
+    const said = (sl.said && sl.said.length) ? sl.said.join('、') : '';
+    const tip = pick([
+      '文华公书林 10月18日 8:00-14:00 闭馆维护，别白跑。',
+      '宿舍校园网 10月21日 0:00-4:00 要断 4 小时，提前把资料下好。',
+      '校医院流感疫苗 10月20日 起能约了，别挤第一天。',
+      '热水时间改了：6:00-8:30 / 11:30-13:30 / 17:30-23:30，洗澡看好点儿。'
+    ]);
+    return finish({
+      plan: ['这句话我没太听准，不瞎猜', said ? '不过我抓到了这些线索：' + said : '先把能问的列给你'],
+      tools: [{ name: 'intent_clarify', label: '先问清楚', args: jstr({ heard: said || undefined, threshold: MATCH, decision: 'ask_user' }), ms: rand(160, 300), hits: 0, warn: true }],
+      answer: '宝子这句我没太听准，先不瞎猜 🙂' + (said ? '\n\n我只听出来你说的是「' + said + '」，但不知道你想让我干啥。' : '') + '\n\n换个说法试试，比如：\n- 「明天下午有空教室吗，要能坐 30 人」\n- 「奖学金申请还差哪些材料」\n- 「桂香园现在人多吗」\n- 「运动会还有几天」',
+      tail: '💡 顺手告诉你一条：' + tip,
+      quick: [{ label: '明天下午有空教室吗', act: 'ask', q: '明天下午有空教室吗' }, { label: '你还会啥', act: 'ask', q: '学长你还会啥' }]
+    }, 'general', sl);
+  }
 };
 
-/* ------------------------------ 7. 轨迹渲染 ------------------------------ */
-function traceSummary(e) {
-  if (e.status === 'blocked') return { cls: 'text-rose-400', txt: e.reason };
-  if (e.status === 'error') return { cls: 'text-amber-400', txt: e.reason };
-  if (e.status === 'running') return { cls: 'text-sky-300', txt: '调用中…' };
-  const r = e.result || {};
-  const hits = r.total !== undefined ? r.total : (r.notice ? 1 : (r.added ? 1 : (r.rooms ? r.rooms.length : '')));
-  return { cls: 'text-emerald-400', txt: (hits !== '' ? '命中 ' + hits + ' 条' : '完成') + (e.ms ? ' · ' + e.ms + 'ms' : '') };
-}
-function traceRowHTML(e) {
-  const dot = { running: '⏳', done: '✅', error: '❌', blocked: '🛑' }[e.status] || '·';
-  const s = traceSummary(e);
-  const args = JSON.stringify(e.args || {});
-  return '<div class="flex items-center gap-2 text-[11px] leading-5">' +
-    '<span class="shrink-0">' + dot + '</span>' +
-    '<code class="font-mono text-[10.5px] t1 shrink-0">' + h(e.name) + '</code>' +
-    '<span class="font-mono text-[10px] t3 truncate">' + h(args.length > 46 ? args.slice(0, 46) + '…' : args) + '</span>' +
-    '<span class="ml-auto shrink-0 text-[10px] ' + s.cls + '">' + h(s.txt) + '</span></div>';
-}
-function traceHTML(trace) {
-  if (!trace || !trace.length) return '';
-  return '<div class="mt-2.5 pt-2.5" style="border-top:1px dashed var(--line)">' +
-    '<div class="text-[10px] t3 font-mono mb-1.5">学长的执行轨迹 · ' + trace.length + ' 次工具调用</div>' +
-    '<div class="space-y-0.5">' + trace.map(traceRowHTML).join('') + '</div></div>';
-}
+/* —— 短命令：「就它了 / 算了」，不靠关键词，靠上下文 —— */
+function commandFollow(t) {
+  const c = ctx();
+  if (!c.last || t.length > 16) return null;
 
-function createTraceBubble(bubbleEl) {
-  const list = bubbleEl.querySelector('[data-trace]');
-  const t0 = performance.now();
-  const rows = {};
-  return {
-    onTrace(e) {
-      if (!rows[e.id]) {
-        const d = document.createElement('div');
-        d.className = 'rise';
-        list.appendChild(d);
-        rows[e.id] = d;
-      }
-      rows[e.id].innerHTML = traceRowHTML(e);
-      list.scrollTop = list.scrollHeight;
-    },
-    finish(trace) {
-      if (!trace || !trace.length) return;
-      const head = document.createElement('div');
-      head.className = 'text-[10px] t3 font-mono mb-1';
-      head.textContent = '调了 ' + trace.length + ' 次工具 · 用时 ' + ((performance.now() - t0) / 1000).toFixed(1) + 's';
-      list.prepend(head);
-    }
-  };
-}
-
-/* ------------------------------ 8. 断网 / 无 Key 的诚实降级 ------------------------------ */
-const OFFLINE_RULES = [
-  { re: /教室|自习|插座|空/, say: 'classroom', args: {} },
-  { re: /食堂|吃饭|干饭|排队/, say: 'canteen', args: {} },
-  { re: /通知|公告|消息/, say: 'notice', args: {} },
-  { re: /课表|上课|几节课/, say: 'schedule', args: { day: 'today' } },
-  { re: /待办|没做完|任务/, say: 'todo', args: { status: 'pending' } },
-  { re: /几点|星期几|时间/, say: 'clock', args: {} }
-];
-async function offlineReply(text) {
-  return { answer: '⚠️ **还没接模型**：现在只能看界面上的数据。\n\n点设置里的「填 Key 接上模型」，学长就能真的调工具了。', trace: [] };
-}
-
-/* ------------------------------ 9. Key 弹层 ------------------------------ */
-function showKeyModal() {
-  const m = document.getElementById('modal'), card = document.getElementById('modalCard');
-  if (!m || !card) return;
-  const opts = Object.keys(LLM_PROVIDERS).map((k) => '<option value="' + k + '"' + (k === agentCfg.provider ? ' selected' : '') + '>' + h(LLM_PROVIDERS[k].label) + '</option>').join('');
-  const p = provider();
-  card.innerHTML = '<div class="p-7">' +
-    '<div class="text-[18px] font-bold t1 mb-1">接上真模型</div>' +
-    '<div class="text-[12px] t2 mb-4 leading-relaxed">学长的大脑在外面。填一个 Key，它就开始真的调工具、真的查数据 —— 不填也能用，只是只能按关键词直连本地工具。</div>' +
-    '<div class="text-[11px] t3 mb-1.5">服务商</div>' +
-    '<select id="pvSel" class="w-full h-10 px-3 rounded-xl text-[12.5px] t1 glass mb-3">' + opts + '</select>' +
-    '<div class="text-[11px] t3 mb-1.5">API Key</div>' +
-    '<input id="keyInput" type="password" placeholder="粘贴 Key" value="' + h(agentCfg.key) + '" class="w-full h-10 px-3 rounded-xl text-[13px] t1 glass mb-2" />' +
-    '<div class="text-[10.5px] t3 leading-relaxed mb-4">' +
-      '· Key 只存在你这台浏览器的 localStorage，不上传、不进代码<br>' +
-      '· ' + h(p.note) + '<br>' +
-      '· 申请地址：<a href="' + p.keyUrl + '" target="_blank" rel="noopener" class="underline">' + p.keyUrl + '</a>' +
-    '</div>' +
-    '<div class="flex gap-2">' +
-      '<button data-keysave="1" class="flex-1 h-10 rounded-xl bg-grad text-white text-[13px] font-semibold btn-press">保存并开始</button>' +
-      '<button data-keyclose="1" class="h-10 px-4 rounded-xl text-[13px] t2 btn-press" style="background:rgba(148,163,184,.10);border:1px solid var(--line)">先不接</button>' +
-    '</div></div>';
-  m.classList.add('open'); icons();
-  const sel = document.getElementById('pvSel');
-  if (sel) sel.onchange = () => {
-    agentCfg.provider = sel.value;
-    const np = provider();
-    const box = card.querySelector('.text-\\[10\\.5px\\]');
-    if (box) box.innerHTML = '· Key 只存在你这台浏览器的 localStorage，不上传、不进代码<br>· ' + h(np.note) + '<br>· 申请地址：<a href="' + np.keyUrl + '" target="_blank" rel="noopener" class="underline">' + np.keyUrl + '</a>';
-  };
-  const save = card.querySelector('[data-keysave]');
-  if (save) save.onclick = () => {
-    const v = (document.getElementById('keyInput').value || '').trim();
-    if (v.length < 12) { toast('这个 Key 看着不太对，再粘一次？', 'warn'); return; }
-    agentCfg.key = v;
-    if (sel) agentCfg.provider = sel.value;
-    saveAgentCfg();
-    closeModal();
-    renderHeader(); renderSidebar();
-    toast('接上了，现在可以真跑 Agent 了 🚀', 'ok');
-  };
-  const close = card.querySelector('[data-keyclose]');
-  if (close) close.onclick = closeModal;
-}
-
-/* ------------------------------ 9.5 设置页里的「接上模型」卡片 ------------------------------ */
-function agentSettingsHTML() {
-  const cards = Object.keys(LLM_PROVIDERS).map((k) => {
-    const p = LLM_PROVIDERS[k];
-    return '<div class="rounded-lg px-2.5 py-2" style="background: rgba(148,163,184,.07)"><div class="t3">' + h(p.label) + '</div><div class="t1 font-mono">' + h(p.model) + '</div></div>';
-  }).join('');
-  return '<div class="flex items-center gap-2 mb-3"><span class="text-[17px] leading-none">🔌</span><span class="text-[14px] font-bold t1">接上真模型</span>' +
-    '<span class="ml-auto text-[10px] px-2 py-[2px] rounded-full font-mono" style="background:' + (hasKey() ? 'rgba(52,211,153,.18); color:#6ee7b7' : 'rgba(148,163,184,.16); color:var(--t2)') + '">' +
-      (hasKey() ? '已接上 ' + h(provider().model) : '当前：离线直连') + '</span></div>' +
-    '<p class="text-[11.5px] t2 leading-relaxed">填一个 Key，决策就交给模型：调哪个工具、参数怎么填、要不要再来一轮，全是它现场决定的。不填也能用，只是只能按关键词直连本地工具。</p>' +
-    '<div class="mt-3 grid grid-cols-2 gap-2 text-[10.5px]">' + cards + '</div>' +
-    '<div class="mt-3 flex items-center gap-2 flex-wrap">' +
-      '<button data-openkey="1" class="btn-press px-3.5 py-2 rounded-xl text-[11.5px] text-white bg-grad font-semibold">' + (hasKey() ? '换个 Key' : '填 Key 接上模型') + '</button>' +
-      '<button data-clearkey="1" class="btn-press px-3 py-2 rounded-xl text-[11.5px] t2" style="background:rgba(148,163,184,.10);border:1px solid var(--line)">清除本机 Key</button>' +
-    '</div>' +
-    '<div class="mt-3 rounded-xl p-3 flex items-start gap-2 text-[11px] t2" style="background: rgba(6,182,212,.08); border:1px solid rgba(6,182,212,.2)"><span class="text-[14px] leading-none mt-[1px]">🔐</span><span>Key 只存本机 localStorage；代码里没有任何 Key。想验证可以 F12 搜一遍。</span></div>';
-}
-
-/* ------------------------------ 10. 主流程 ------------------------------ */
-async function runAgent(text) {
-  text = String(text || '').trim();
-  if (!text) return;
-  if (state.busy) { toast('学长还在忙上一条呢，稍等我一下 🏃', 'warn'); return; }
-  if (state.view !== 'dashboard') { state.view = 'dashboard'; renderView(); }
-  state.busy = true;
-  pushUser(text);
-  const w = chatWrap();
-  if (!w) { state.busy = false; return; }
-
-  const holder = document.createElement('div');
-  holder.className = 'flex gap-3 rise';
-  holder.innerHTML = agentAvatar() +
-    '<div class="min-w-0 flex-1 max-w-[88%]"><div class="bubble-ai px-4 py-3.5 rounded-2xl rounded-tl-sm">' +
-      '<div class="text-[10.5px] t3 font-mono mb-2">学长的执行轨迹</div>' +
-      '<div data-trace="1" class="space-y-1"></div>' +
-      '<div data-answer="1" class="mt-1"></div>' +
-    '</div></div>';
-  w.appendChild(holder); icons(); scrollChat();
-  const bubble = holder.querySelector('.bubble-ai');
-  const answerBox = bubble.querySelector('[data-answer]');
-  const traceUI = createTraceBubble(bubble);
-
-  const say = (html) => {
-    answerBox.innerHTML = '<div class="answer">' + html + '</div>';
-    icons(); scrollChat();
-  };
-
-  try {
-    if (!hasKey() && !window.__MOCK_LLM__) {
-      const off = await offlineReply(text);
-      off.trace.forEach((e) => traceUI.onTrace(e));
-      traceUI.finish(off.trace);
-      say(mdBlock(off.answer) + (off.table ? tableHTML(off.table) : '') +
-        '<div class="mt-3"><button data-openkey="1" class="btn-press px-3.5 py-2 rounded-xl text-[11.5px] text-white bg-grad font-semibold">接上模型试试</button></div>');
-      state.chat.push({ role: 'assistant', time: hhmm(), answer: off.answer, trace: off.trace, offline: true });
-      return;
-    }
-    const res = await agentLoop(text, { history: AGENT_MEMORY.history(), onTrace: traceUI.onTrace });
-    traceUI.finish(res.trace);
-    await streamHTML(answerBox, '<div class="answer">' + mdBlock(res.answer) + '</div>');
-    AGENT_MEMORY.push(text, res.answer, res.trace);
-    state.chat.push({ role: 'assistant', time: hhmm(), answer: res.answer, trace: res.trace, model: provider().model });
-    icons(); scrollChat();
-  } catch (e) {
-    const msg = String(e && e.message || e);
-    const hint = /NO_KEY/.test(msg) ? '还没填 Key。点下面的按钮接一个，或者先问我「现在哪有空教室」走离线直连。'
-      : /Failed to fetch|NetworkError|CORS/i.test(msg) ? '浏览器把请求拦下了（多半是网络或服务商的 CORS 限制）。换个服务商，或用仓库里的 dev-server.js 起本地代理。'
-      : /401|403/.test(msg) ? 'Key 被拒了（401/403）。检查 Key 有没有复制完整、额度是不是用完了。'
-      : '模型那边出错了：' + msg.slice(0, 120);
-    say('<div class="text-[12.5px] text-rose-300 leading-relaxed">' + h(hint) + '</div>' +
-      '<div class="mt-3"><button data-openkey="1" class="btn-press px-3.5 py-2 rounded-xl text-[11.5px] text-white bg-grad font-semibold">接上模型</button></div>');
-    state.chat.push({ role: 'assistant', time: hhmm(), answer: hint, trace: [] });
-  } finally {
-    state.busy = false;
+  /* ① 确认下单 */
+  if (/^(就它了|就这个|就这间|这个吧|就要这个|来这个|好的?|行吧|可以的|要了|要这个|就要|要|嗯+|对|ok|没问题|帮我抢|订了|占上|就订|抢吧)(吧|了|呀|啊|哈|！|!|。|~)?$/i.test(t) && c.offered.length) {
+    const r = c.offered[0];
+    return BUILDERS.book(Object.assign({}, c.slots, { room: r.room.split(' ')[1], building: r.building, cap: r.cap }), { fromConfirm: true, room: r });
   }
+  /* ② 算了 */
+  if (/^(算了|不用了|不要了|取消|先不|不用)/.test(t)) {
+    return finish({
+      plan: ['收到，撤单', '把刚才推的那几间放回池子里'],
+      tools: [{ name: 'cancel', label: '撤回', args: jstr({ action: 'cancel_last' }), ms: 160, hits: 1 }],
+      answer: '行，撤了 👌 那几间我不占了，先给你留着。',
+      tail: '改主意随时喊我，这两间这个点一般不会被人秒光。',
+      quick: [{ label: '还有别的空教室吗', act: 'ask', q: '还有别的空教室吗' }, { label: '我今天还有啥没干', act: 'ask', q: '我今天还有啥没干' }]
+    }, 'cancel', c.slots);
+  }
+  return null;
+}
+
+/* —— 只补/改了一个条件（「那七号楼呢」「换个时间」）：沿用上一轮的事，只换条件 ——
+   注意：只有在主意图没听出来的时候才会走到这儿，不会抢正经提问 */
+function rebuildSaid(m) {
+  const arr = [];
+  if (m.dayLabel) arr.push(m.dayLabel);
+  if (m.slotLabel) arr.push(m.slotLabel);
+  if (m.cap) arr.push('至少坐得下 ' + m.cap + ' 人');
+  if (m.socket === true) arr.push('要带插座');
+  if (m.building) arr.push(m.building);
+  if (m.canteen) arr.push(m.canteen);
+  if (m.floor) arr.push(m.floor + ' 楼');
+  if (m.topic) arr.push(m.topic);
+  return arr;
+}
+function refineFollow(t, sl) {
+  const c = ctx();
+  if (!c.last || !BUILDERS[c.last]) return null;
+  if (['general', 'risky', 'cancel'].indexOf(c.last) >= 0 || String(c.last).indexOf('smalltalk') === 0) return null;
+  if (t.length > 16) return null;
+  /* 「还有别的吗」：同技能的备选翻页，不该把刚才那几间再报一遍 */
+  if (/还有|别的|其他|其它|再来|再给|换一批|换个/.test(t) && c.offered.length) {
+    if (c.last === 'classroom') return BUILDERS.classroom(c.slots, { exclude: c.offered.map((x) => x.room) });
+    return finish({
+      plan: ['翻一遍备选', '这个技能手里就这些了，如实说'],
+      tools: [{ name: 'exhaust', label: '翻备选', args: jstr({ intent: c.last }), ms: 180, hits: 0 }],
+      answer: '这项我手里就这些了宝子，不糊弄你 🙌\n\n要不换个方向？下面这几个我随时能接：',
+      quick: [{ label: '明天下午有空教室吗', act: 'ask', q: '明天下午有空教室吗' }, { label: '最近有啥通知', act: 'ask', q: '最近有什么重要通知' }]
+    }, c.last, c.slots);
+  }
+  const KEYS = ['building', 'floor', 'slotLabel', 'canteen', 'topic', 'cap', 'date', 'dayLabel', 'room'];
+  const added = KEYS.some((k) => sl[k] !== undefined && String(sl[k]) !== String(c.slots[k]));
+  const pointer = /呢$|^那|^换|^改|^另外|^再/.test(t);
+  if (!pointer && !(added && t.length <= 8)) return null;
+  const merged = Object.assign({}, c.slots, sl);
+  merged.said = rebuildSaid(merged);
+  const r = BUILDERS[c.last](merged, { follow: true });
+  if (!r.plan.length || r.plan[0].indexOf('听懂了') !== 0) {
+    r.plan[0] = '接着上一句，只换了个条件：' + (merged.said.slice(-1)[0] || '换个说法');
+  }
+  return r;
+}
+
+/* —— 组合拳：一句话里问了两件事，就干两件事 —— */
+function comboResponse(picks, sl, t) {
+  const parts = picks.map((p) => BUILDERS[p.id](sl, {}));
+  const a = parts[0], b = parts[1];
+  const ids = picks.map((p) => p.id).join(' + ');
+  return finish({
+    plan: ['这一句里有两件事，我分开办：' + picks.map((p) => INTENT_OF(p.id).label).join(' + '),
+          '先办「' + INTENT_OF(picks[0].id).label + '」，再顺手把「' + INTENT_OF(picks[1].id).label + '」也跑了',
+          '两边的结论都给你，省得你再问一遍'],
+    tools: (a.tools || []).concat(b.tools || []),
+    answer: a.answer,
+    table: a.table,
+    more: (b.table ? [{ title: '—— 另外一句，' + INTENT_OF(picks[1].id).label + '也跑完了 ——', table: b.table }] : []).concat(a.more || []),
+    tail: b.tail || a.tail,
+    quick: (a.quick || []).slice(0, 1).concat((b.quick || []).slice(0, 1)),
+    offered: picks[0].id === 'classroom' ? (a.offered || []) : []
+  }, ids, sl);
+}
+
+/* —— 差不多像但不敢确定：把猜的摆出来让你选 —— */
+function clarify(best, ranked, sl, t) {
+  const it = INTENT_OF(best.id);
+  const other = ranked.slice(1).filter((x) => x.sc >= CLARIFY).slice(0, 2).map((x) => INTENT_OF(x.id));
+  return finish({
+    plan: ['这句有两种可能的意思，我不猜死', '把两种都摆出来，你点一下就行'],
+    tools: [{ name: 'intent_clarify', label: '先问清楚', args: jstr({ guess: it.id, confidence: best.sc, alt: other.map((x) => x.id) }), ms: rand(160, 300), hits: other.length + 1, warn: true }],
+    answer: '你这句我有两种理解，帮我点一下哪个对 🙂\n\n① 你想问的是 **' + it.label + '**？\n' + (other.length ? '② 还是想问 **' + other.map((x) => x.label).join(' / ') + '**？\n' : ''),
+    tail: '或者直接把想要的说得更具体点，比如带上「时间 / 人数 / 地点」，我一次就到位。',
+    quick: [{ label: '是「' + it.label + '」', act: 'ask', q: it.samples[0] }].concat(other.map((x) => ({ label: '是「' + x.label + '」', act: 'ask', q: x.samples[0] })))
+  }, it.id, sl);
+}
+
+/* —— 收尾：把这一轮的记忆存下来 —— */
+function finish(res, id, sl) {
+  const c = ctx();
+  c.last = id; c.slots = sl || {}; c.offered = res.offered || []; c.turn++;
+  res.intent = id;
+  if (!res.plan || !res.plan.length) res.plan = planOf(id, sl);
+  return res;
+}
+
+/* ---------------- 7. 入口 ---------------- */
+function withRetry(res, text) { res.retry = text; return res; }
+function retryHTML(q) {
+  return '<div class="mt-3 flex items-center gap-2 flex-wrap"><span class="text-[10.5px] t3">没答到点上？</span>' +
+    '<button data-quick="' + h(q) + '" data-act="retry" class="chip btn-press flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11.5px] t1" style="background: rgba(6,182,212,.14); border:1px solid rgba(6,182,212,.32)">' + icon('rotate-ccw', 'w-3.5 h-3.5') + '重试一次</button>' +
+    '<span class="text-[10.5px] t3">或者换个说法，带上「时间 / 人数 / 地点」</span></div>';
+}
+function buildResponse(text) {
+  const t = norm(text);
+  const sl = parseSlots(text);
+
+  /* 空输入 / 纯标点 */
+  if (!t || !/[一-龥a-z0-9]/.test(t)) {
+    const c = ctx();
+    const last = c.last && BUILDERS[c.last] ? INTENT_OF(c.last) : null;
+    if (last) return withRetry(finish({
+      plan: ['没看清你发了啥，我接着上一句往下问'],
+      tools: [{ name: 'intent_clarify', label: '先问清楚', args: jstr({ reason: 'empty_input' }), ms: 140, hits: 0, warn: true }],
+      answer: '消息有点空宝子 😅 我们刚聊到 **' + last.label + '**，需要我接着说吗？',
+      quick: [{ label: '接着说', act: 'ask', q: last.samples[0] }, { label: '换个话题', act: 'ask', q: '学长你还会啥' }]
+    }, c.last, c.slots), text);
+    return socialReply(SOCIAL.find((x) => x.k === 'test'));
+  }
+
+  /* 引用一条通知问「我该干啥」——直接定位到那条 */
+  const q = text.match(/[「『"]([^」』"]{4,60})[」』"]/);
+  if (q) {
+    const n = mockData.notifications.find((x) => x.title.indexOf(q[1].slice(0, 10)) >= 0 || q[1].indexOf(x.title.slice(0, 8)) >= 0);
+    if (n) {
+      const tp = TOPICS.find((x) => x.re.test(n.title + n.body));
+      const r = BUILDERS.notice(Object.assign({}, sl, { topic: tp ? tp.k : null }));
+      r.answer = '这条我帮你拆完了：**' + n.title + '**\n\n- 谁发的：' + n.src + '\n- 原话：' + n.body;
+      r.tools[0].args = jstr({ q: n.title.slice(0, 16), scope: [n.src] });
+      r.tail = '要我把它记进日历、到点喊你吗？一句话的事。';
+      r.quick = [{ label: '记进日历', act: 'ask', q: '把「' + n.title.slice(0, 10) + '」记进日历' }, { label: '这类通知还有啥', act: 'ask', q: '最近有什么重要通知' }];
+      return finish(r, 'notice', Object.assign({}, sl, { topic: tp ? tp.k : null }));
+    }
+  }
+
+  const ranked = rankIntents(t);
+  const best = ranked[0] || { id: 'general', sc: 0 };
+  const soc = SOCIAL.find((s) => s.re.test(t));
+  const wantMulti = /顺便|另外|还有|以及|同时|再帮我|然后再/.test(t) || /[，,。；;]/.test(t);
+
+  /* 「就它了 / 好的 / 算了」这类短命令，先按上下文接住 */
+  const cmd0 = commandFollow(t);
+  if (cmd0) return cmd0;
+
+  /* 社交优先于「猜意图」，但真问事的时候让位给正事 */
+  if (soc && best.sc < soc.t) return socialReply(soc);
+
+  /* 一句话两件事 */
+  if (wantMulti) {
+    const chunks = t.split(/[，,。；;!！?？]|顺便|另外|以及|同时|再帮我|然后再|还有/).map((x) => x.trim()).filter((x) => x.length >= 2);
+    if (chunks.length >= 2) {
+      const picks = [];
+      chunks.forEach((p) => {
+        const r0 = rankIntents(p)[0];
+        if (r0 && r0.sc >= MATCH && !picks.some((x) => x.id === r0.id)) picks.push(r0);
+      });
+      if (picks.length >= 2) {
+        if (picks[0].id === 'risky' || picks[1].id === 'risky') return BUILDERS.risky(sl);
+        return comboResponse(picks.slice(0, 2), sl, t);
+      }
+    }
+  }
+
+  /* 主意图够硬 → 直接办 */
+  if (best.sc >= MATCH) {
+    const it = INTENT_OF(best.id);
+    const c = ctx();
+    if (it.id === 'risky') return BUILDERS.risky(sl);
+    /* 「还有别的空教室吗」是同技能的翻页，不该把刚才那几间再报一遍 */
+    if (c.last === it.id && c.offered.length && /还有|别的|其他|其它|再来|再给|换一批|换个/.test(t)) {
+      if (it.id === 'classroom') return BUILDERS.classroom(sl, { exclude: c.offered.map((x) => x.room) });
+    }
+    return BUILDERS[it.id] ? BUILDERS[it.id](sl, {}) : BUILDERS.general(sl);
+  }
+
+  /* 意图很弱 → 只补了个条件 / 社交 / 澄清 / 兜底 */
+  const rf = refineFollow(t, sl);
+  if (rf) return rf;
+  if (soc) return socialReply(soc);
+  if (best.sc >= CLARIFY) return withRetry(clarify(best, ranked, sl, t), text);
+  return withRetry(BUILDERS.general(sl), text);
 }
 
 /* 逐字吐答案：只在标签外面切，绝不把 <div> 切成两半；吐完再把下面的卡片淡入 */
@@ -3505,6 +4023,141 @@ function thinkBoxHTML() {
     '<span>学长的思考过程</span><span class="ml-auto">实时</span></div>' +
     '<div data-thinklist="1" class="space-y-2"></div></div>';
 }
+/* =========================================================================
+ * 可选：接真实大模型（国产 API）
+ * 不配 key 时走下面的本地 Mock 引擎，演示零成本、断网也能跑；
+ * 把 apiKey 填上、enabled 改成 true，同一个发送流程就会先问真模型，
+ * 请求失败或超时自动回落到本地学长，演示永远不会开天窗。
+ * ========================================================================= */
+const LLM_PERSONA = '你是「华大万事通 · AI学长」，华大的一个老学长，帮学弟学妹跑校园里的杂事。'
+  + '说话像真人学长：用「宝子」「冲」「鸭」这类词，可以带颜文字，别用「系统」「成功率」「响应时间」这种运维黑话。'
+  + '不知道的就说不确定，涉及成绩、缴费、审批这类敏感操作要明确说「这个得你自己来」，并给操作路径。回答用 Markdown。';
+const LLM_CONFIG = {
+  enabled: false,                 /* ← 填好 apiKey 后改成 true */
+  apiKey: '',                     /* ← 智谱 / 通义 的 API Key 粘这里 */
+  model: 'glm-4-flash',
+  endpoint: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+  timeout: 8000
+};
+const LLM_PRESETS = {
+  zhipu: { endpoint: 'https://open.bigmodel.cn/api/paas/v4/chat/completions', model: 'glm-4-flash' },
+  qwen: { endpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', model: 'qwen-turbo' }
+};
+function llmReady() { return !!(LLM_CONFIG.enabled && LLM_CONFIG.apiKey); }
+async function llmCall(text) {
+  if (!llmReady()) return null;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => { try { ctrl.abort(); } catch (e) {} }, LLM_CONFIG.timeout || 8000);
+  try {
+    const r = await fetch(LLM_CONFIG.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + LLM_CONFIG.apiKey },
+      body: JSON.stringify({
+        model: LLM_CONFIG.model,
+        messages: [{ role: 'system', content: LLM_PERSONA }].concat(
+          /* 把最近几轮对话一起带上，「刚才那个通知」这种指代才接得住 */
+          state.chat.slice(-6).map((m) => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.role === 'user' ? m.text : (m.answer || '') })).filter((m) => m.content),
+          [{ role: 'user', content: text }]
+        ),
+        temperature: 0.7
+      }),
+      signal: ctrl.signal
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const j = await r.json();
+    const out = j && j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content;
+    return out ? String(out).trim() : null;
+  } catch (e) {
+    console.warn('[LLM] 真模型没答上来，自动回落本地学长：', e.message);
+    return null;
+  } finally { clearTimeout(timer); }
+}
+
+async function runAgent(text) {
+  text = String(text || '').trim();
+  if (!text) return;
+  if (state.busy) { toast('学长还在忙上一条呢，稍等我一下 🏃', 'warn'); return; }
+  if (state.view !== 'dashboard') { state.view = 'dashboard'; renderView(); }
+  state.busy = true;
+  pushUser(text);
+  const res = buildResponse(text);
+  const w = chatWrap();
+  if (!w) { state.busy = false; return; }
+
+  const tool0 = (res.tools && res.tools[0]) || { label: '通知挖掘机', name: 'notice_search', hits: 3 };
+  const hits = tool0.hits || 0;
+
+  /* 挂上思考过程的气泡：4 秒后整块换成最终回复 */
+  const holder = document.createElement('div');
+  holder.className = 'flex gap-3 rise';
+  holder.innerHTML = agentAvatar() + '<div class="min-w-0 flex-1 max-w-[88%]"><div class="bubble-ai px-4 py-3.5 rounded-2xl rounded-tl-sm">' + thinkBoxHTML() + '</div></div>';
+  w.appendChild(holder); icons(); scrollChat();
+  const bubble = holder.lastElementChild.firstElementChild;
+  const list = bubble.querySelector('[data-thinklist]');
+  const addRow = (html) => { list.insertAdjacentHTML('beforeend', '<div class="rise">' + html + '</div>'); icons(); scrollChat(); };
+
+  /* 真模型和动画并行跑：动画照常走 4 秒，谁先回来都不耽误演示 */
+  const llmPromise = llmReady() ? llmCall(text) : null;
+
+  /* ── 0.5s：学长正在思考...（三个跳动的小圆点） ────────────────── */
+  await sleep(500);
+  addRow(thinkingHTML('学长正在思考...'));
+
+  /* ── 1.0s：学长的思路 ───────────────────────────────────────── */
+  await sleep(500);
+  addRow('<div class="text-[12px] t1"><span class="font-semibold">学长的思路：</span>' +
+    '<span class="t2">1. 听懂你要干啥 → 2. 调用工具 → 3. 总结</span></div>' +
+    '<ol class="mt-1.5 space-y-1 pl-5">' + res.plan.map((p) =>
+      '<li class="text-[11px] t3 leading-relaxed">' + h(p) + '</li>').join('') + '</ol>');
+
+  /* ── 2.0s：正在调用工具 + 旋转 Loading ───────────────────────── */
+  await sleep(1000);
+  addRow('<div data-think-tool="1" class="flex items-center gap-2 text-[12px] t2">' +
+    '<span class="loader shrink-0"></span>' +
+    '<span>正在调用工具：<b class="t1">' + h(tool0.label) + '</b> ' +
+    '<code class="font-mono text-[10.5px] t3">(' + h(tool0.name) + ')</code></span></div>');
+
+  /* ── 3.0s：命中 N 条数据 + 绿色对勾（同一个节点就地变身） ──────── */
+  await sleep(1000);
+  const toolRow = list.querySelector('[data-think-tool]');
+  if (toolRow) {
+    toolRow.innerHTML = '<span class="shrink-0 text-emerald-400">' + icon('check-circle', 'w-4 h-4') + '</span>' +
+      '<span class="t2">命中 <b class="text-emerald-400">' + hits + '</b> 条数据</span>';
+    icons();
+  }
+
+  /* ── 4.0s：输出最终 Markdown 结果，中间过程整块移除 ──────────── */
+  await sleep(1000);
+  let real = null;
+  if (llmPromise) { try { real = await llmPromise; } catch (e) { real = null; } }
+  if (real) { res.answer = real; state.usedLLM = true; } else { state.usedLLM = false; }
+
+  let mid = '';
+  if (res.table) mid += tableHTML(res.table);
+  (res.more || []).forEach((sec) => {
+    if (!sec || !sec.table) return;
+    mid += '<div class="text-[11.5px] t3 font-mono mt-4 mb-1">' + h(sec.title || '') + '</div>' + tableHTML(sec.table);
+  });
+  if (res.code) mid += codeHTML(res.code);
+  if (res.tail) mid += '<p class="text-[13px] t2 leading-relaxed mt-1.5 opacity-90">' + mdInline(res.tail) + '</p>';
+  const restHTML = mid + (res.tools || []).map(toolHTML).join('') +
+    (res.retry ? retryHTML(res.retry) : '') + quickHTML(res.quick) + stampHTML({ time: hhmm() });
+  bubble.innerHTML = '<div class="answer">' + mdBlock(res.answer) + '</div><div data-rest="1" style="opacity:0; transition:opacity .35s ease">' + restHTML + '</div>';
+  icons(); scrollChat();
+  /* —— 正文逐字写出来，写完下面那块（工具卡片 / 表格 / 按钮）淡入 —— */
+  const ansEl = bubble.querySelector('.answer');
+  if (ansEl) {
+    const full = ansEl.innerHTML;
+    ansEl.innerHTML = '';
+    await streamHTML(ansEl, full);
+  }
+  const restEl = bubble.querySelector('[data-rest]');
+  if (restEl) restEl.style.opacity = '1';
+  icons(); scrollChat();
+  state.chat.push({ role: 'assistant', time: hhmm(), plan: res.plan, tools: res.tools, answer: res.answer, table: res.table, code: res.code, tail: res.tail, quick: res.quick });
+  state.busy = false;
+}
+
 /* ------------------------------ 待办交互：抽屉 / 子任务 / 拖拽排序 ------------------------------ */
 function toggleTodoDone(id) {
   const t = state.todos.find((x) => String(x.id) === String(id)); if (!t) return;
@@ -3530,12 +4183,6 @@ function delSub(pair) {
   renderView(); renderDrawer();
 }
 function bindTodoUX() {
-  document.addEventListener('click', (e) => {
-    const ok1 = e.target.closest ? e.target.closest('[data-openkey]') : null;
-    if (ok1) { showKeyModal(); return; }
-    const ck = e.target.closest ? e.target.closest('[data-clearkey]') : null;
-    if (ck) { clearKey(); renderView(); return; }
-  });
   /* ⓪ 顶部三张指标卡：点一下就给下一步（去看待办 / 去翻通知 / 找空教室） */
   document.addEventListener('click', (e) => {
     const sc = e.target.closest ? e.target.closest('[data-statcard]') : null;
@@ -3858,7 +4505,6 @@ function degradedCheck() {
 
 /* ------------------------------ 启动 ------------------------------ */
 function boot() {
-  loadAgentCfg();
   const logs = [
     '[ok] 学长起床了 · 洗漱完毕',
     '[ok] 技能树点亮 ' + mockData.tools.length + ' 项 · 扒通知 / 抢教室 / 干饭雷达 …',
