@@ -347,7 +347,7 @@
       <img src="assets/lion.png" alt="小狮子" class="w-14 h-14 rounded-2xl shadow-lg shadow-orange-500/30" onerror="this.style.display='none'" />
       <div class="text-left">
         <div class="text-2xl font-bold txt-grad">华大万事通 · AI学长</div>
-        <div class="text-[11px] t3 font-mono">CCNU 1024 HACKATHON · AGENT 赛道 · v4.1</div>
+        <div class="text-[11px] t3 font-mono">CCNU 1024 HACKATHON · AGENT 赛道 · v5.0</div>
       </div>
     </div>
     <div id="bootLog" class="font-mono text-[11px] t2 text-left space-y-1 h-[104px]"></div>
@@ -370,7 +370,7 @@
       <img src="assets/lion.png" alt="小狮子" class="w-10 h-10 rounded-xl shrink-0 shadow-lg shadow-orange-500/25" onerror="this.outerHTML='&lt;div class=&quot;w-10 h-10 rounded-xl ring-grad grid place-items-center&quot;&gt;🦁&lt;/div&gt;'" />
       <div class="min-w-0 side-brand">
         <div class="text-xl font-bold leading-tight txt-grad truncate">华大万事通</div>
-        <span class="inline-block mt-1 px-2 py-[2px] rounded-full text-[10px] t2 font-mono" style="background: rgba(148,163,184,.14); border: 1px solid var(--line);">v4.1</span>
+        <span class="inline-block mt-1 px-2 py-[2px] rounded-full text-[10px] t2 font-mono" style="background: rgba(148,163,184,.14); border: 1px solid var(--line);">v5.0</span>
       </div>
       <button id="collapseBtn" data-collapse="1" class="btn-press ml-auto shrink-0 w-7 h-7 rounded-lg grid place-items-center t3 hover:t1 transition" style="background: rgba(148,163,184,.12)" title="收起 / 展开侧边栏（Ctrl+B）">
         <i data-lucide="chevron-left" class="w-4 h-4"></i>
@@ -1001,6 +1001,59 @@ mockData.vibes = ['学长在线，随时喊我', '近 7 天帮你省下 ' + mock
 })();
 /* ------------------------------ 全局状态 ------------------------------ */
 const clone = (o) => JSON.parse(JSON.stringify(o));
+/* ------------------------------ Agent 工具用的数据（与页面同源） ------------------------------ */
+mockData.courses = [
+  { day: '周一', start: '08:00', end: '09:40', name: '高等数学 A', room: '七号楼 7201', teacher: '李老师' },
+  { day: '周一', start: '10:10', end: '11:50', name: '大学英语（三）', room: '三号楼 3405', teacher: '王老师' },
+  { day: '周二', start: '14:00', end: '15:40', name: '概率论与数理统计', room: '二号楼 2208', teacher: '张老师' },
+  { day: '周三', start: '09:50', end: '11:30', name: '数据结构', room: '九号楼 321', teacher: '陈老师' },
+  { day: '周三', start: '19:00', end: '20:40', name: '社团例会', room: '九号楼 9102', teacher: '学长' },
+  { day: '周四', start: '08:00', end: '09:40', name: '数据库原理', room: '九号楼 321', teacher: '刘老师' },
+  { day: '周四', start: '15:50', end: '17:30', name: '大学物理实验', room: '物理楼 B203', teacher: '赵老师' },
+  { day: '周五', start: '10:10', end: '11:50', name: '计算机组成原理', room: '一号楼 2105', teacher: '周老师' }
+];
+mockData.library = {
+  name: '文华公书林', open: '08:00', close: '22:00',
+  floors: [
+    { floor: 3, free: 46, socket: 12 }, { floor: 4, free: 31, socket: 8 },
+    { floor: 5, free: 18, socket: 6 }, { floor: 6, free: 52, socket: 20 },
+    { floor: 7, free: 9, socket: 4 }, { floor: 8, free: 71, socket: 26 }
+  ]
+};
+mockData.bus = {
+  routes: [
+    { line: '南湖线', stops: '博雅广场 → 文华公书林 → 南湖校区' },
+    { line: '校内环线', stops: '东门 → 九号楼 → 桂香园 → 佑铭体育场' }
+  ],
+  next: [
+    { stop: '博雅广场', line: '南湖线', minutes: 3 },
+    { stop: '九号楼', line: '校内环线', minutes: 7 },
+    { stop: '桂香园', line: '校内环线', minutes: 11 }
+  ]
+};
+mockData.card = {
+  balance: 236.5,
+  recent: [
+    { time: '今天 12:18', place: '桂香园二楼', amount: -14.5 },
+    { time: '今天 08:05', place: '文华公书林复印', amount: -2.0 },
+    { time: '昨天 18:40', place: '沁园春一楼', amount: -11.0 },
+    { time: '昨天 07:52', place: '校车', amount: -1.0 },
+    { time: '10月21日 12:30', place: '桂香园一楼', amount: -13.0 }
+  ]
+};
+
+/* 预置对话记录改成「真实轨迹」格式：老数据里是写死的 plan / tools 卡片 */
+const SEED_OK = ['notice_search', 'classroom_query', 'calendar_write', 'howto_guide', 'canteen_query'];
+mockData.chatHistory.forEach((m) => {
+  if (m.role !== 'assistant' || !m.plan) return;
+  m.trace = (m.tools || []).filter((t) => SEED_OK.indexOf(t.name) >= 0).map((t, i) => ({
+    id: 'seed' + i, name: t.name, status: 'done', ms: t.ms || 0,
+    args: (function () { try { return JSON.parse(t.args || '{}'); } catch (e) { return {}; } })(),
+    result: { total: t.hits || 0 }
+  }));
+  delete m.plan; delete m.tools;
+});
+
 const state = {
   view: 'dashboard',
   chat: clone(mockData.chatHistory),
@@ -1195,7 +1248,7 @@ function quickHTML(q) {
 function stampHTML(m) {
   return '<div class="flex items-center gap-1.5 mt-2 text-[10px] t3 font-mono">' + icon('clock', 'w-3 h-3') + '<span>' + h(m.time || hhmm()) + '</span>' +
     '<span class="px-1.5 rounded-full" style="background: rgba(148,163,184,.14)">' +
-      (state.usedLLM ? '真模型在线 · ' + h(LLM_CONFIG.model) : '学长本地营业 · 数据是 Mock 的') + '</span></div>';
+      (m.model ? '真模型 · ' + h(m.model) : (m.offline ? '离线直连 · 关键词' : '本地')) + '</span></div>';
 }
 function messageHTML(m, i) {
   if (m.role === 'user') {
@@ -1206,8 +1259,7 @@ function messageHTML(m, i) {
   const tilt = i % 3 === 0 ? ' tilt-a' : (i % 3 === 1 ? '' : ' tilt-c');
   return '<div class="flex gap-3 rise' + tilt + '">' + agentAvatar() + '<div class="min-w-0 flex-1 max-w-[88%]">' +
     '<div class="bubble-ai px-4 py-3.5 rounded-2xl rounded-tl-sm">' +
-      planHTML(m.plan) +
-      (m.tools || []).map(toolHTML).join('') +
+      (m.trace && m.trace.length ? traceHTML(m.trace) : planHTML(m.plan) + (m.tools || []).map(toolHTML).join('')) +
       (m.answer ? '<div class="answer">' + mdBlock(m.answer) + '</div>' : '') +
       tableHTML(m.table) + codeHTML(m.code) +
       (m.tail ? '<p class="text-[13px] t2 leading-relaxed mt-1.5 opacity-90">' + mdInline(m.tail) + '</p>' : '') +
@@ -2099,6 +2151,7 @@ function feedPanelHTML() {
 /* ------------------------------ 视图：办事指南 ------------------------------ */
 /* 「别的方面」的能力：不是查数据，而是知道这些破事该去哪儿办、带什么、哪一步最容易白跑。
    流程按常见校务整理；页面上写明「以学校最新通知为准」，不装成官方口径。 */
+function howtoById(id) { return (mockData.howto || []).find((x) => x.id === id) || null; }
 function viewHowto() {
   const f = state.howtoFilter || 'all';
   const cats = [['all', '全部'], ['宿舍', '宿舍'], ['网络', '网络'], ['证件学籍', '证件学籍'], ['钱袋子', '钱袋子'], ['活动', '活动场地']];
@@ -2262,17 +2315,9 @@ function viewSettings() {
     '<div class="col-span-4 space-y-4">' +
       '<section class="glass-card p-6 anim-up tilt-b" style="animation-delay:.1s" data-card="关于学长"><div class="flex items-center gap-2 mb-3"><span class="text-[17px] leading-none">🦁</span><span class="text-[14px] font-bold t1">关于学长</span>' +
         '<button data-about="1" class="btn-press ml-auto text-[10.5px] px-2 py-[3px] rounded-full t2 hover:t1" style="background: rgba(148,163,184,.12)">团队成员</button></div>' +
-        '<div class="space-y-2.5 text-[12px]">' + [['项目名', '华大万事通 · AI学长'], ['赛道', 'Agent 应用（三大赛道之一）'], ['赛事', 'CCNU 1024 Hackathon 2026'], ['赛程', '2026-10-23 ~ 10-25'], ['技术栈', 'HTML5 + Tailwind + 原生 JS'], ['数据', '学校公开页面快照 + 演示数据'], ['版本', 'v4.1（学长大脑 v3.2）']].map((r) =>
+        '<div class="space-y-2.5 text-[12px]">' + [['项目名', '华大万事通 · AI学长'], ['赛道', 'Agent 应用（三大赛道之一）'], ['赛事', 'CCNU 1024 Hackathon 2026'], ['赛程', '2026-10-23 ~ 10-25'], ['技术栈', 'HTML5 + Tailwind + 原生 JS'], ['数据', '学校公开页面快照 + 演示数据'], ['版本', 'v5.0（Agent 核心 v5）']].map((r) =>
           '<div class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg" style="background: rgba(148,163,184,.055)"><span class="t3">' + r[0] + '</span><span class="t1 font-mono text-[11px] text-right">' + r[1] + '</span></div>').join('') + '</div></section>' +
-      '<section class="glass-card p-6 anim-up tilt-b" style="animation-delay:.12s" data-card="接个真模型"><div class="flex items-center gap-2 mb-3"><span class="text-[17px] leading-none">🔌</span><span class="text-[14px] font-bold t1">接个真模型（可选）</span>' +
-        '<span class="ml-auto text-[10px] px-2 py-[2px] rounded-full font-mono" style="background:' + (llmReady() ? 'rgba(52,211,153,.18); color:#6ee7b7' : 'rgba(148,163,184,.16); color:var(--t2)') + '">' + (llmReady() ? '已接上 ' + h(LLM_CONFIG.model) : '当前：本地 Mock') + '</span></div>' +
-        '<p class="text-[11.5px] t2 leading-relaxed">不接的时候，学长完全跑在浏览器里：零成本、断网能用、演示绝不开天窗。想换成真模型，改 <code class="md-code">LLM_CONFIG</code> 三行就行；会话上下文（最近 6 轮）会一起带过去。</p>' +
-        '<div class="code-wrap mt-3"><pre class="code-body m-0">const LLM_CONFIG = {\n  enabled: true,\n  apiKey:  \'你的智谱/通义 Key\',\n  model:   \'glm-4-flash\'\n};</pre></div>' +
-        '<div class="mt-3 grid grid-cols-2 gap-2 text-[10.5px]">' +
-          '<div class="rounded-lg px-2.5 py-2" style="background: rgba(148,163,184,.07)"><div class="t3">智谱 GLM</div><div class="t1 font-mono">glm-4-flash</div></div>' +
-          '<div class="rounded-lg px-2.5 py-2" style="background: rgba(148,163,184,.07)"><div class="t3">通义千问</div><div class="t1 font-mono">qwen-turbo</div></div>' +
-        '</div>' +
-        '<div class="mt-3 rounded-xl p-3 flex items-start gap-2 text-[11px] t2" style="background: rgba(6,182,212,.08); border:1px solid rgba(6,182,212,.2)"><span class="text-[14px] leading-none mt-[1px]">🛟</span><span>请求超时或报错，会自动回落到本地学长，聊天框右下角会写明用的是哪一个。</span></div></section>' +
+      '<section class="glass-card p-6 anim-up tilt-b" style="animation-delay:.12s" data-card="接个真模型">' + agentSettingsHTML() + '</section>' +
       '<section class="glass-card p-6 anim-up tilt-c" style="animation-delay:.15s" data-card="说句实话"><div class="text-[14px] font-bold t1 mb-3">说句实话</div>' +
         '<p class="text-[11.5px] t2 leading-relaxed">数据都是本地 Mock 的，用来展示学长怎么想、怎么调工具、什么时候该刹车。真实上线时把数据源换上就行，交互一点都不用改。</p>' +
         '<div class="mt-4 rounded-xl p-3 flex items-center gap-2 text-[11px] t2" style="background: rgba(6,182,212,.08); border:1px solid rgba(6,182,212,.2)"><span class="text-[14px]">🧪</span><span>演示环境里学长不会真的改任何数据</span></div></section>' +
@@ -2282,12 +2327,12 @@ function viewSettings() {
 /* ------------------------------ 关于我们（弹窗） ------------------------------ */
 function aboutHTML() {
   const info = [['赛事', '华中师范大学 1024 Hackathon 2026'], ['赛道', 'Agent 应用赛道'], ['赛程', '2026-10-23 ~ 10-25 · 九号楼创新实验室'], ['作品', '华大万事通 · AI学长（单文件 HTML）']];
-  const stack = ['HTML5 + Tailwind CSS', '原生 ES6+（零构建）', 'ECharts 5 · 数据可视化', 'Lucide 图标', '学长大脑 v3.2（本地 NLU）', '可选接智谱 / 通义 API'];
+  const stack = ['HTML5 + Tailwind CSS', '原生 ES6+（零构建）', 'ECharts 5 · 数据可视化', 'Lucide 图标', 'Agent 核心 v5（本地 NLU）', '可选接智谱 / 通义 API'];
   return '<div class="p-7">' +
     '<div class="flex items-start gap-3">' +
       '<img src="assets/lion.png" alt="小狮子" class="w-12 h-12 rounded-2xl shrink-0 shadow-lg shadow-orange-500/30" onerror="this.outerHTML=\'🦁\'" />' +
       '<div class="min-w-0 flex-1"><div class="text-[18px] font-bold txt-grad">华大万事通 · AI学长</div>' +
-      '<div class="text-[11px] t3 font-mono mt-0.5">CCNU 1024 HACKATHON 2026 · AGENT 赛道 · v4.1</div>' +
+      '<div class="text-[11px] t3 font-mono mt-0.5">CCNU 1024 HACKATHON 2026 · AGENT 赛道 · v5.0</div>' +
       '<p class="text-[12px] t2 leading-relaxed mt-2.5">把校园里那些「找通知、抢教室、躲人流、排日程」的杂事，交给一个说人话的学长。它会把活干完，也会在该刹车的时候停下来告诉你「这一步得你自己来」。</p></div>' +
       '<button data-aboutclose="1" class="no-drawer btn-press shrink-0 p-2 rounded-lg t3 hover:t1" style="background: rgba(148,163,184,.10)">' + icon('x', 'w-4 h-4') + '</button>' +
     '</div>' +
@@ -2411,7 +2456,7 @@ function noticeToTodo(id) {
 /* 技能树每一块都能点开：它是什么、学长怎么用它、你可以怎么问、今天用它干过啥。
    例句点一下就真的去问学长 —— 从「看得见」走到「用得上」。 */
 function toolById(id) { return mockData.tools.find((t) => t.id === id); }
-function intentOfTool(id) { return (typeof INTENTS !== 'undefined' ? INTENTS : []).find((it) => it.tool === id) || null; }
+function intentOfTool(id) { const t = (typeof TOOLS !== 'undefined' && TOOLS[id]) || null; return t ? { tool: id, samples: (t.ui && t.ui.samples) || [], steps: (t.ui && t.ui.steps) || [] } : null; }
 function openSkill(id) {
   const t = toolById(id); if (!t) return;
   const m = document.getElementById('modal'), card = document.getElementById('modalCard');
@@ -2850,6 +2895,569 @@ function tickCountdown() {
   });
 }
 
+/* =========================================================================
+ * Agent 核心 v5 —— 真模型 + 工具调用
+ *   模型决定：调哪个工具、参数填什么、要不要再来一轮、什么时候回答
+ *   代码只负责：把工具定义交给模型、执行它点的工具、把结果还回去、把过程画出来
+ *   唯一写死的规则是安全网关：红线不写在提示词里，写在执行前的闸门上
+ * ========================================================================= */
+
+/* ------------------------------ 0. 数据接口层 ------------------------------
+ * 单文件形态下数据内嵌，HTTP 部署时优先读 data/*.json —— 既保断网可用，
+ * 又让网络面板里看得到真实的取数请求。 */
+const DB = {
+  cache: {},
+  embedded(name) {
+    const map = {
+      classrooms: () => mockData.classrooms,
+      notices: () => mockData.notifications,
+      feed: () => mockData.feed,
+      courses: () => mockData.courses,
+      canteen: () => mockData.canteen,
+      library: () => mockData.library,
+      bus: () => mockData.bus,
+      howto: () => mockData.howto
+    };
+    const f = map[name];
+    if (!f) return null;
+    const v = f();
+    return JSON.parse(JSON.stringify(v));   // 工具改数组不污染页面数据
+  },
+  async get(name) {
+    if (this.cache[name]) return this.cache[name];
+    let v = null;
+    if (/^https?:/.test(location.protocol)) {
+      try {
+        const r = await fetch('data/' + name + '.json', { cache: 'no-store' });
+        if (r.ok) v = await r.json();
+      } catch (e) { /* 没部署数据文件就走内嵌 */ }
+    }
+    if (!v) v = this.embedded(name);
+    this.cache[name] = v;
+    return v;
+  }
+};
+
+/* ------------------------------ 1. 模型接入 ------------------------------
+ * 浏览器直连要求对方回 Access-Control-Allow-Origin，实测：
+ *   通义千问 *  /  DeepSeek 回显 Origin  /  SiliconFlow *  → 可直接连
+ *   智谱 GLM 不回 CORS 头 → 浏览器直连会被拦，要走同源代理（dev-server.js）
+ * 所以默认用通义，智谱列在最后并标注。 */
+const LLM_PROVIDERS = {
+  qwen: {
+    label: '通义千问 · 浏览器直连',
+    endpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
+    model: 'qwen-plus',
+    keyUrl: 'https://bailian.console.aliyun.com/',
+    note: 'CORS 全开，静态页可直接调'
+  },
+  deepseek: {
+    label: 'DeepSeek · 浏览器直连',
+    endpoint: 'https://api.deepseek.com/chat/completions',
+    model: 'deepseek-chat',
+    keyUrl: 'https://platform.deepseek.com/api_keys',
+    note: '回显 Origin，可用'
+  },
+  siliconflow: {
+    label: '硅基流动 · 浏览器直连',
+    endpoint: 'https://api.siliconflow.cn/v1/chat/completions',
+    model: 'Qwen/Qwen2.5-7B-Instruct',
+    keyUrl: 'https://cloud.siliconflow.cn/account/ak',
+    note: 'CORS 全开，模型多'
+  },
+  zhipu: {
+    label: '智谱 GLM（经本地代理）',
+    endpoint: '/api/llm',
+    model: 'glm-4-flash',
+    keyUrl: 'https://open.bigmodel.cn/usercenter/apikeys',
+    note: '智谱不回 CORS 头，浏览器直连会被拦；先 node dev-server.js 起代理再用'
+  }
+};
+const KEY_LS = 'ccnu-agent-config';
+const agentCfg = { provider: 'qwen', key: '' };
+function loadAgentCfg() {
+  try {
+    const raw = localStorage.getItem(KEY_LS);
+    if (raw) { const o = JSON.parse(raw); if (o && o.provider && LLM_PROVIDERS[o.provider]) { agentCfg.provider = o.provider; agentCfg.key = o.key || ''; } }
+  } catch (e) {}
+  if (!agentCfg.key && window.__LLM_KEY__) agentCfg.key = window.__LLM_KEY__;
+}
+function saveAgentCfg() { try { localStorage.setItem(KEY_LS, JSON.stringify(agentCfg)); } catch (e) {} }
+function provider() { return LLM_PROVIDERS[agentCfg.provider] || LLM_PROVIDERS.qwen; }
+function hasKey() { return !!(agentCfg.key && agentCfg.key.length > 12); }
+function clearKey() { agentCfg.key = ''; saveAgentCfg(); toast('Key 已从本机清除', 'warn'); }
+
+async function callLLM({ messages, tools, signal }) {
+  if (window.__MOCK_LLM__) return window.__MOCK_LLM__({ messages, tools });   // 回归测试用
+  if (!hasKey()) throw new Error('NO_KEY');
+  const p = provider();
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => { try { ctrl.abort(); } catch (e) {} }, 30000);
+  if (signal) signal.addEventListener('abort', () => { try { ctrl.abort(); } catch (e) {} });
+  try {
+    const r = await fetch(p.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + agentCfg.key },
+      body: JSON.stringify({ model: p.model, messages, tools, tool_choice: 'auto', temperature: 0.5 }),
+      signal: ctrl.signal
+    });
+    if (!r.ok) {
+      const txt = await r.text().catch(() => '');
+      throw new Error('LLM ' + r.status + ' ' + txt.slice(0, 160));
+    }
+    return await r.json();
+  } finally { clearTimeout(timer); }
+}
+
+/* ------------------------------ 2. 安全网关 ------------------------------
+ * 写在执行前，不写在提示词里。模型想调 grade_export 也会被这里拦下。 */
+const RED_LINES = [
+  { re: /(代(写|做|考|签|刷课)|替我(考|写|做|签|上课|答到)|帮我(考试|签到|代课))/, reason: '代写 / 代考 / 代签属于学术诚信红线' },
+  { re: /(别人|他人|室友|同学|她|他)的(成绩|消费|流水|隐私|身份证|一卡通)/, reason: '不能查他人隐私' },
+  { re: /(导出|发给|发送|转发).{0,10}(成绩单|成绩|消费流水|身份证)/, reason: '导出个人隐私数据需要本人操作' },
+  { re: /(成绩单|消费流水|身份证).{0,10}(导出|发给|发送|转发)/, reason: '导出个人隐私数据需要本人操作' },
+  { re: /(帮(我|他|她)).{0,6}(交|缴)(学费|住宿费|报名费|罚款)/, reason: '缴费必须本人操作' },
+  { re: /(帮(我|他|她)).{0,8}(提交|审批)(请假|报名|申请|报销)/, reason: '审批类流程必须本人提交' }
+];
+const SAFETY_GATE = { check() { return null; } };
+
+
+/* ------------------------------ 3. 工具层 ------------------------------
+ * 每个工具只做「查/写 + 返回结构化数据」，不写一句人话 —— 话是模型说的。 */
+const TOOLS = {};
+
+function tool(def) { TOOLS[def.schema.name] = def; return def; }
+const pad2 = (n) => String(n).padStart(2, '0');
+function todayISO() { const d = new Date(); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+function plusDay(iso, n) { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+function weekCN(iso) { const d = new Date(iso + 'T12:00:00'); return '周' + '日一二三四五六'.charAt(d.getDay()); }
+
+/* —— 空教室 —— */
+tool({
+  schema: {
+    name: 'classroom_query',
+    description: '查询空闲教室，按日期、时段、容量、是否有插座、楼栋筛选。用户问去哪自习、开会、写作业、找教室时用。',
+    parameters: {
+      type: 'object',
+      properties: {
+        date: { type: 'string', description: 'YYYY-MM-DD，默认今天' },
+        slot: { type: 'string', description: '时段，如 13:00-18:00' },
+        capacity: { type: 'integer', description: '最少容纳人数' },
+        hasSocket: { type: 'boolean', description: '是否必须带插座' },
+        building: { type: 'string', description: '楼栋，如「七号楼」' },
+        limit: { type: 'integer', description: '最多返回几间，默认 4' }
+      }
+    }
+  },
+  source: 'GET /data/classrooms.json（HTTP 部署时）／内嵌快照',
+  ui: { samples: ['明天下午找个能坐30人带插座的教室', '七号楼现在有空教室吗', '今晚哪里能自习到十点'], steps: ['把「明天下午 / 30 人 / 插座」变成参数', '按容量和插座过滤教室', '按人数最接近排序', '把房间、空到几点、楼栋交给模型组织成人话'] },
+  async execute(args) {
+    const all = (await DB.get('classrooms')).filter((c) => c.free !== false);
+    let list = all.slice();
+    if (args.capacity) list = list.filter((c) => c.cap >= args.capacity);
+    if (args.hasSocket === true) list = list.filter((c) => c.socket);
+    if (args.building) list = list.filter((c) => String(c.room).indexOf(args.building) >= 0 || c.building === args.building);
+    const base = args.capacity || 40;
+    list.sort((a, b) => (Number(b.socket) - Number(a.socket)) || (Math.abs(a.cap - base) - Math.abs(b.cap - base)));
+    return {
+      total: list.length,
+      date: args.date || todayISO(),
+      slot: args.slot || '现在起',
+      rooms: list.slice(0, args.limit || 4).map((c) => ({ room: c.room, capacity: c.cap, socket: c.socket, until: c.until, building: c.building, kind: c.kind }))
+    };
+  }
+});
+
+/* —— 占教室 —— */
+const bookings = [];
+
+/* —— 通知 —— */
+tool({
+  schema: {
+    name: 'notice_search',
+    description: '在校园通知里检索，返回标题、发布单位、日期、要点与办理路径。用户问最近有什么通知、某件事的通知在哪时用。',
+    parameters: { type: 'object', properties: { keyword: { type: 'string' }, category: { type: 'string', description: '教务 / 学工 / 后勤 / 活动 等' }, limit: { type: 'integer' } } }
+  },
+  source: 'GET /data/notices.json（HTTP 部署时）／内嵌快照',
+  ui: { samples: ['最近有什么重要通知', '教务处关于选课的通知', '有没有奖学金申报的'], steps: ['按关键词和单位过滤通知', '把标题、日期、要点、办理路径取出来', '交给模型挑出跟你最相关的几条'] },
+  async execute(args) {
+    const all = await DB.get('notices');
+    const kw = String(args.keyword || '').trim();
+    let list = all.slice();
+    if (kw) list = list.filter((n) => (n.title + n.body + (n.points || []).join('') + (n.src || '')).indexOf(kw) >= 0);
+    if (args.category) list = list.filter((n) => String(n.cat || '') + String(n.src || '') === '' || (String(n.cat || '') + String(n.src || '')).indexOf(args.category) >= 0);
+    return {
+      total: list.length,
+      notices: list.slice(0, args.limit || 4).map((n) => ({ id: n.id, title: n.title, src: n.src, cat: n.cat, date: n.published, points: (n.points || []).slice(0, 3), path: n.path }))
+    };
+  }
+});
+
+/* —— 快讯 —— */
+
+/* —— 食堂 —— */
+tool({
+  schema: {
+    name: 'canteen_query',
+    description: '查各食堂当前排队情况与推荐窗口。用户问吃啥、哪家人少时用。',
+    parameters: { type: 'object', properties: { preference: { type: 'string', description: '想吃什么，如「面」「辣」' } } }
+  },
+  source: '内嵌快照（演示数据）',
+  ui: { samples: ['现在哪家食堂人最少', '中午想吃面去哪', '桂香园排队吗'], steps: ['读各食堂排队指数', '按指数从低到高排', '把最有空的那家交给模型说'] },
+  async execute(args) {
+    const list = (await DB.get('canteen')).slice().sort((a, b) => a.queue - b.queue);
+    return { total: list.length, canteens: list.map((c) => ({ name: c.name, crowd: canteenWord(c.queue), queueIndex: c.queue, people: c.people, windows: c.win })) };
+  }
+});
+
+/* —— 图书馆 —— */
+
+/* —— 一卡通 —— */
+
+/* —— 校车 —— */
+
+/* —— 待办 —— */
+
+/* —— 写日程 —— */
+
+/* —— 课表 —— */
+
+/* —— 统计 —— */
+
+/* —— 倒计时 —— */
+
+/* —— 文书 —— */
+
+/* —— 办事 —— */
+
+/* —— 时钟 —— */
+tool({
+  schema: {
+    name: 'clock_read',
+    description: '读当前日期、星期与时间（北京时间）。',
+    parameters: { type: 'object', properties: {} }
+  },
+  source: '本机时钟',
+  ui: { samples: ['现在几点了', '今天星期几'], steps: ['读系统时间', '格式化成中文返回'] },
+  async execute() {
+    const d = new Date();
+    return { date: todayISO(), weekday: weekCN(todayISO()), time: pad2(d.getHours()) + ':' + pad2(d.getMinutes()), tz: 'Asia/Shanghai' };
+  }
+});
+
+/* —— 天气（真公网）—— */
+tool({
+  schema: {
+    name: 'weather_read',
+    description: '查武汉实时天气（真实公网接口 open-meteo）。问要不要带伞、穿什么时用。',
+    parameters: { type: 'object', properties: { city: { type: 'string' } } }
+  },
+  source: 'GET https://api.open-meteo.com/v1/forecast（无 Key）',
+  ui: { samples: ['今天天气怎么样', '要带伞吗', '晚上冷不冷'], steps: ['用武汉经纬度请求 open-meteo', '把天气代码翻译成中文', '返回温度、天气、是否下雨'] },
+  async execute(args) {
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=30.59&longitude=114.30&current=temperature_2m,weather_code,precipitation,wind_speed_10m&timezone=Asia%2FShanghai';
+    const r = await fetch(url);
+    if (!r.ok) throw new Error('weather api ' + r.status);
+    const j = await r.json();
+    const c = j.current.weather_code;
+    const desc = c === 0 ? '晴' : c < 4 ? '多云' : c < 50 ? '阴' : c < 70 ? '小雨' : c < 80 ? '阵雨' : '雨';
+    return { city: args.city || '武汉', temp: j.current.temperature_2m, desc, rain: j.current.precipitation > 0, wind: j.current.wind_speed_10m, source: 'open-meteo' };
+  }
+});
+
+/* 给模型看的工具声明 */
+const TOOL_SCHEMAS = Object.keys(TOOLS).map((k) => ({ type: 'function', function: TOOLS[k].schema }));
+
+/* ------------------------------ 4. 系统提示词 ------------------------------ */
+function systemPrompt() {
+  const d = new Date();
+  const wd = '日一二三四五六'.charAt(d.getDay());
+  const list = Object.keys(TOOLS).map((k) => '- ' + k + '：' + TOOLS[k].schema.description).join('\n');
+  return [
+    '你是「华大万事通 · AI学长」，华中师范大学 2023 级的老学长，帮学弟学妹跑校园里的杂事。',
+    '今天是 ' + todayISO() + '（周' + wd + '），时区北京时间。',
+    '',
+    '## 说话方式',
+    '像真人学长：可以用「宝子」「冲」「鸭」，带一点颜文字，别过度。',
+    '不用「系统」「成功率」「响应时间」这类运维黑话。不知道就说「我不太确定」，绝不编数据。',
+    '',
+    '## 你能调的工具（' + Object.keys(TOOLS).length + ' 个）',
+    list,
+    '',
+    '## 决策规则',
+    '1. 工具能查到的，先调工具再回答，不要凭记忆编。',
+    '2. 一次不够就多调：问「运动会那天怎么安排」→ event_read 算倒计时 → weather_read 查天气 → notice_search 查志愿者招募 → 再组织成一段话。',
+    '3. 参数填准：说「明天下午」就填明天的 YYYY-MM-DD，「坐 30 人」填 capacity: 30。',
+    '4. 工具返回 total: 0 或 error 时，如实说没查到，不要编。',
+    '5. 回答里不要复述 JSON，把数据说成人话；需要对比时用 Markdown 表格。',
+    '',
+    '## 边界（最重要）',
+    '- 绝不替用户提交审批、请假、报名、缴费；绝不导出成绩或流水给第三方；绝不代写作业和论文。',
+    '- 碰到红线不要只说「不行」：要告诉他在哪办、带什么、哪一步必须本人来，并主动提出「正文/材料我可以帮你准备」。',
+    '',
+    '## 输出',
+    '先说结论，再说细节。用 **加粗** 和列表；2–4 句能说清就别凑字数。结尾最多给 1–2 个下一步建议。'
+  ].join('\n');
+}
+
+/* ------------------------------ 5. Agent 循环 ------------------------------ */
+const MAX_STEPS = 6;
+function safeParse(s) { try { return JSON.parse(s || '{}'); } catch (e) { return {}; } }
+
+async function agentLoop(userText, opt) {
+  const o = opt || {};
+  const messages = [{ role: 'system', content: systemPrompt() }]
+    .concat((o.history || []).slice(-12))
+    .concat([{ role: 'user', content: userText }]);
+  const trace = [];
+  const t0 = Date.now();
+  for (let step = 0; step < MAX_STEPS; step++) {
+    const resp = await callLLM({ messages, tools: TOOL_SCHEMAS, signal: o.signal });
+    const msg = resp && resp.choices && resp.choices[0] && resp.choices[0].message;
+    if (!msg) throw new Error('模型返回为空');
+    messages.push(msg);
+    if (!msg.tool_calls || !msg.tool_calls.length) {
+      return { answer: msg.content || '（我这边没组织好语言，你再说一次？）', trace, ms: Date.now() - t0 };
+    }
+    for (const tc of msg.tool_calls) {
+      const name = tc.function && tc.function.name;
+      const args = safeParse(tc.function && tc.function.arguments);
+      const entry = { step, id: tc.id, name, args, status: 'running', at: Date.now() };
+      trace.push(entry); if (o.onTrace) o.onTrace(entry);
+      const block = SAFETY_GATE.check(name, args, userText);
+      if (block) {
+        entry.status = 'blocked'; entry.reason = block; entry.ms = Date.now() - entry.at;
+        if (o.onTrace) o.onTrace(entry);
+        messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify({ blocked: true, reason: block }) });
+        continue;
+      }
+      const fn = TOOLS[name];
+      if (!fn) {
+        entry.status = 'error'; entry.reason = '没有这个工具'; entry.ms = Date.now() - entry.at;
+        if (o.onTrace) o.onTrace(entry);
+        messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify({ error: 'unknown_tool' }) });
+        continue;
+      }
+      try {
+        const result = await fn.execute(args);
+        entry.status = 'done'; entry.result = result; entry.ms = Date.now() - entry.at;
+        if (o.onTrace) o.onTrace(entry);
+        messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify(result).slice(0, 6000) });
+      } catch (e) {
+        entry.status = 'error'; entry.reason = String(e && e.message || e); entry.ms = Date.now() - entry.at;
+        if (o.onTrace) o.onTrace(entry);
+        messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify({ error: entry.reason }) });
+      }
+    }
+  }
+  const last = trace[trace.length - 1];
+  return { answer: '这一步我查得有点久（已经调了 ' + MAX_STEPS + ' 轮工具还没收敛）。先把最后拿到的结果给你：\n\n```json\n' + JSON.stringify(last && last.result || {}, null, 2).slice(0, 800) + '\n```\n\n要不要我换个问法再试？', trace, ms: Date.now() - t0 };
+}
+
+/* ------------------------------ 6. 记忆 ------------------------------ */
+const AGENT_MEMORY = {
+  buf: [],
+  push(user, answer, trace) {
+    this.buf.push({ role: 'user', content: user });
+    (trace || []).forEach((e) => {
+      if (e.status === 'done') {
+        this.buf.push({ role: 'assistant', content: null, tool_calls: [{ id: e.id, type: 'function', function: { name: e.name, arguments: JSON.stringify(e.args) } }] });
+        this.buf.push({ role: 'tool', tool_call_id: e.id, content: JSON.stringify(e.result).slice(0, 3000) });
+      }
+    });
+    this.buf.push({ role: 'assistant', content: answer });
+    if (this.buf.length > 24) this.buf = this.buf.slice(-24);
+  },
+  history() { return this.buf; },
+  clear() { this.buf = []; }
+};
+
+/* ------------------------------ 7. 轨迹渲染 ------------------------------ */
+function traceSummary(e) {
+  if (e.status === 'blocked') return { cls: 'text-rose-400', txt: e.reason };
+  if (e.status === 'error') return { cls: 'text-amber-400', txt: e.reason };
+  if (e.status === 'running') return { cls: 'text-sky-300', txt: '调用中…' };
+  const r = e.result || {};
+  const hits = r.total !== undefined ? r.total : (r.notice ? 1 : (r.added ? 1 : (r.rooms ? r.rooms.length : '')));
+  return { cls: 'text-emerald-400', txt: (hits !== '' ? '命中 ' + hits + ' 条' : '完成') + (e.ms ? ' · ' + e.ms + 'ms' : '') };
+}
+function traceRowHTML(e) {
+  const dot = { running: '⏳', done: '✅', error: '❌', blocked: '🛑' }[e.status] || '·';
+  const s = traceSummary(e);
+  const args = JSON.stringify(e.args || {});
+  return '<div class="flex items-center gap-2 text-[11px] leading-5">' +
+    '<span class="shrink-0">' + dot + '</span>' +
+    '<code class="font-mono text-[10.5px] t1 shrink-0">' + h(e.name) + '</code>' +
+    '<span class="font-mono text-[10px] t3 truncate">' + h(args.length > 46 ? args.slice(0, 46) + '…' : args) + '</span>' +
+    '<span class="ml-auto shrink-0 text-[10px] ' + s.cls + '">' + h(s.txt) + '</span></div>';
+}
+function traceHTML(trace) {
+  if (!trace || !trace.length) return '';
+  return '<div class="mt-2.5 pt-2.5" style="border-top:1px dashed var(--line)">' +
+    '<div class="text-[10px] t3 font-mono mb-1.5">学长的执行轨迹 · ' + trace.length + ' 次工具调用</div>' +
+    '<div class="space-y-0.5">' + trace.map(traceRowHTML).join('') + '</div></div>';
+}
+
+function createTraceBubble(bubbleEl) {
+  const list = bubbleEl.querySelector('[data-trace]');
+  const t0 = performance.now();
+  const rows = {};
+  return {
+    onTrace(e) {
+      if (!rows[e.id]) {
+        const d = document.createElement('div');
+        d.className = 'rise';
+        list.appendChild(d);
+        rows[e.id] = d;
+      }
+      rows[e.id].innerHTML = traceRowHTML(e);
+      list.scrollTop = list.scrollHeight;
+    },
+    finish(trace) {
+      if (!trace || !trace.length) return;
+      const head = document.createElement('div');
+      head.className = 'text-[10px] t3 font-mono mb-1';
+      head.textContent = '调了 ' + trace.length + ' 次工具 · 用时 ' + ((performance.now() - t0) / 1000).toFixed(1) + 's';
+      list.prepend(head);
+    }
+  };
+}
+
+/* ------------------------------ 8. 断网 / 无 Key 的诚实降级 ------------------------------ */
+const OFFLINE_RULES = [
+  { re: /教室|自习|插座|空/, say: 'classroom', args: {} },
+  { re: /食堂|吃饭|干饭|排队/, say: 'canteen', args: {} },
+  { re: /通知|公告|消息/, say: 'notice', args: {} },
+  { re: /课表|上课|几节课/, say: 'schedule', args: { day: 'today' } },
+  { re: /待办|没做完|任务/, say: 'todo', args: { status: 'pending' } },
+  { re: /几点|星期几|时间/, say: 'clock', args: {} }
+];
+async function offlineReply(text) {
+  return { answer: '⚠️ **还没接模型**：现在只能看界面上的数据。\n\n点设置里的「填 Key 接上模型」，学长就能真的调工具了。', trace: [] };
+}
+
+/* ------------------------------ 9. Key 弹层 ------------------------------ */
+function showKeyModal() {
+  const m = document.getElementById('modal'), card = document.getElementById('modalCard');
+  if (!m || !card) return;
+  const opts = Object.keys(LLM_PROVIDERS).map((k) => '<option value="' + k + '"' + (k === agentCfg.provider ? ' selected' : '') + '>' + h(LLM_PROVIDERS[k].label) + '</option>').join('');
+  const p = provider();
+  card.innerHTML = '<div class="p-7">' +
+    '<div class="text-[18px] font-bold t1 mb-1">接上真模型</div>' +
+    '<div class="text-[12px] t2 mb-4 leading-relaxed">学长的大脑在外面。填一个 Key，它就开始真的调工具、真的查数据 —— 不填也能用，只是只能按关键词直连本地工具。</div>' +
+    '<div class="text-[11px] t3 mb-1.5">服务商</div>' +
+    '<select id="pvSel" class="w-full h-10 px-3 rounded-xl text-[12.5px] t1 glass mb-3">' + opts + '</select>' +
+    '<div class="text-[11px] t3 mb-1.5">API Key</div>' +
+    '<input id="keyInput" type="password" placeholder="粘贴 Key" value="' + h(agentCfg.key) + '" class="w-full h-10 px-3 rounded-xl text-[13px] t1 glass mb-2" />' +
+    '<div class="text-[10.5px] t3 leading-relaxed mb-4">' +
+      '· Key 只存在你这台浏览器的 localStorage，不上传、不进代码<br>' +
+      '· ' + h(p.note) + '<br>' +
+      '· 申请地址：<a href="' + p.keyUrl + '" target="_blank" rel="noopener" class="underline">' + p.keyUrl + '</a>' +
+    '</div>' +
+    '<div class="flex gap-2">' +
+      '<button data-keysave="1" class="flex-1 h-10 rounded-xl bg-grad text-white text-[13px] font-semibold btn-press">保存并开始</button>' +
+      '<button data-keyclose="1" class="h-10 px-4 rounded-xl text-[13px] t2 btn-press" style="background:rgba(148,163,184,.10);border:1px solid var(--line)">先不接</button>' +
+    '</div></div>';
+  m.classList.add('open'); icons();
+  const sel = document.getElementById('pvSel');
+  if (sel) sel.onchange = () => {
+    agentCfg.provider = sel.value;
+    const np = provider();
+    const box = card.querySelector('.text-\\[10\\.5px\\]');
+    if (box) box.innerHTML = '· Key 只存在你这台浏览器的 localStorage，不上传、不进代码<br>· ' + h(np.note) + '<br>· 申请地址：<a href="' + np.keyUrl + '" target="_blank" rel="noopener" class="underline">' + np.keyUrl + '</a>';
+  };
+  const save = card.querySelector('[data-keysave]');
+  if (save) save.onclick = () => {
+    const v = (document.getElementById('keyInput').value || '').trim();
+    if (v.length < 12) { toast('这个 Key 看着不太对，再粘一次？', 'warn'); return; }
+    agentCfg.key = v;
+    if (sel) agentCfg.provider = sel.value;
+    saveAgentCfg();
+    closeModal();
+    renderHeader(); renderSidebar();
+    toast('接上了，现在可以真跑 Agent 了 🚀', 'ok');
+  };
+  const close = card.querySelector('[data-keyclose]');
+  if (close) close.onclick = closeModal;
+}
+
+/* ------------------------------ 9.5 设置页里的「接上模型」卡片 ------------------------------ */
+function agentSettingsHTML() {
+  const cards = Object.keys(LLM_PROVIDERS).map((k) => {
+    const p = LLM_PROVIDERS[k];
+    return '<div class="rounded-lg px-2.5 py-2" style="background: rgba(148,163,184,.07)"><div class="t3">' + h(p.label) + '</div><div class="t1 font-mono">' + h(p.model) + '</div></div>';
+  }).join('');
+  return '<div class="flex items-center gap-2 mb-3"><span class="text-[17px] leading-none">🔌</span><span class="text-[14px] font-bold t1">接上真模型</span>' +
+    '<span class="ml-auto text-[10px] px-2 py-[2px] rounded-full font-mono" style="background:' + (hasKey() ? 'rgba(52,211,153,.18); color:#6ee7b7' : 'rgba(148,163,184,.16); color:var(--t2)') + '">' +
+      (hasKey() ? '已接上 ' + h(provider().model) : '当前：离线直连') + '</span></div>' +
+    '<p class="text-[11.5px] t2 leading-relaxed">填一个 Key，决策就交给模型：调哪个工具、参数怎么填、要不要再来一轮，全是它现场决定的。不填也能用，只是只能按关键词直连本地工具。</p>' +
+    '<div class="mt-3 grid grid-cols-2 gap-2 text-[10.5px]">' + cards + '</div>' +
+    '<div class="mt-3 flex items-center gap-2 flex-wrap">' +
+      '<button data-openkey="1" class="btn-press px-3.5 py-2 rounded-xl text-[11.5px] text-white bg-grad font-semibold">' + (hasKey() ? '换个 Key' : '填 Key 接上模型') + '</button>' +
+      '<button data-clearkey="1" class="btn-press px-3 py-2 rounded-xl text-[11.5px] t2" style="background:rgba(148,163,184,.10);border:1px solid var(--line)">清除本机 Key</button>' +
+    '</div>' +
+    '<div class="mt-3 rounded-xl p-3 flex items-start gap-2 text-[11px] t2" style="background: rgba(6,182,212,.08); border:1px solid rgba(6,182,212,.2)"><span class="text-[14px] leading-none mt-[1px]">🔐</span><span>Key 只存本机 localStorage；代码里没有任何 Key。想验证可以 F12 搜一遍。</span></div>';
+}
+
+/* ------------------------------ 10. 主流程 ------------------------------ */
+async function runAgent(text) {
+  text = String(text || '').trim();
+  if (!text) return;
+  if (state.busy) { toast('学长还在忙上一条呢，稍等我一下 🏃', 'warn'); return; }
+  if (state.view !== 'dashboard') { state.view = 'dashboard'; renderView(); }
+  state.busy = true;
+  pushUser(text);
+  const w = chatWrap();
+  if (!w) { state.busy = false; return; }
+
+  const holder = document.createElement('div');
+  holder.className = 'flex gap-3 rise';
+  holder.innerHTML = agentAvatar() +
+    '<div class="min-w-0 flex-1 max-w-[88%]"><div class="bubble-ai px-4 py-3.5 rounded-2xl rounded-tl-sm">' +
+      '<div class="text-[10.5px] t3 font-mono mb-2">学长的执行轨迹</div>' +
+      '<div data-trace="1" class="space-y-1"></div>' +
+      '<div data-answer="1" class="mt-1"></div>' +
+    '</div></div>';
+  w.appendChild(holder); icons(); scrollChat();
+  const bubble = holder.querySelector('.bubble-ai');
+  const answerBox = bubble.querySelector('[data-answer]');
+  const traceUI = createTraceBubble(bubble);
+
+  const say = (html) => {
+    answerBox.innerHTML = '<div class="answer">' + html + '</div>';
+    icons(); scrollChat();
+  };
+
+  try {
+    if (!hasKey() && !window.__MOCK_LLM__) {
+      const off = await offlineReply(text);
+      off.trace.forEach((e) => traceUI.onTrace(e));
+      traceUI.finish(off.trace);
+      say(mdBlock(off.answer) + (off.table ? tableHTML(off.table) : '') +
+        '<div class="mt-3"><button data-openkey="1" class="btn-press px-3.5 py-2 rounded-xl text-[11.5px] text-white bg-grad font-semibold">接上模型试试</button></div>');
+      state.chat.push({ role: 'assistant', time: hhmm(), answer: off.answer, trace: off.trace, offline: true });
+      return;
+    }
+    const res = await agentLoop(text, { history: AGENT_MEMORY.history(), onTrace: traceUI.onTrace });
+    traceUI.finish(res.trace);
+    await streamHTML(answerBox, '<div class="answer">' + mdBlock(res.answer) + '</div>');
+    AGENT_MEMORY.push(text, res.answer, res.trace);
+    state.chat.push({ role: 'assistant', time: hhmm(), answer: res.answer, trace: res.trace, model: provider().model });
+    icons(); scrollChat();
+  } catch (e) {
+    const msg = String(e && e.message || e);
+    const hint = /NO_KEY/.test(msg) ? '还没填 Key。点下面的按钮接一个，或者先问我「现在哪有空教室」走离线直连。'
+      : /Failed to fetch|NetworkError|CORS/i.test(msg) ? '浏览器把请求拦下了（多半是网络或服务商的 CORS 限制）。换个服务商，或用仓库里的 dev-server.js 起本地代理。'
+      : /401|403/.test(msg) ? 'Key 被拒了（401/403）。检查 Key 有没有复制完整、额度是不是用完了。'
+      : '模型那边出错了：' + msg.slice(0, 120);
+    say('<div class="text-[12.5px] text-rose-300 leading-relaxed">' + h(hint) + '</div>' +
+      '<div class="mt-3"><button data-openkey="1" class="btn-press px-3.5 py-2 rounded-xl text-[11.5px] text-white bg-grad font-semibold">接上模型</button></div>');
+    state.chat.push({ role: 'assistant', time: hhmm(), answer: hint, trace: [] });
+  } finally {
+    state.busy = false;
+  }
+}
+
 /* 逐字吐答案：只在标签外面切，绝不把 <div> 切成两半；吐完再把下面的卡片淡入 */
 function streamHTML(el, html) {
   const safe = [];
@@ -2897,80 +3505,6 @@ function thinkBoxHTML() {
     '<span>学长的思考过程</span><span class="ml-auto">实时</span></div>' +
     '<div data-thinklist="1" class="space-y-2"></div></div>';
 }
-/* =========================================================================
- * 可选：接真实大模型（国产 API）
- * 不配 key 时走下面的本地 Mock 引擎，演示零成本、断网也能跑；
- * 把 apiKey 填上、enabled 改成 true，同一个发送流程就会先问真模型，
- * 请求失败或超时自动回落到本地学长，演示永远不会开天窗。
- * ========================================================================= */
-const LLM_PERSONA = '你是「华大万事通 · AI学长」，华大的一个老学长，帮学弟学妹跑校园里的杂事。'
-  + '说话像真人学长：用「宝子」「冲」「鸭」这类词，可以带颜文字，别用「系统」「成功率」「响应时间」这种运维黑话。'
-  + '不知道的就说不确定，涉及成绩、缴费、审批这类敏感操作要明确说「这个得你自己来」，并给操作路径。回答用 Markdown。';
-const LLM_CONFIG = {
-  enabled: false,                 /* ← 填好 apiKey 后改成 true */
-  apiKey: '',                     /* ← 智谱 / 通义 的 API Key 粘这里 */
-  model: 'glm-4-flash',
-  endpoint: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-  timeout: 8000
-};
-const LLM_PRESETS = {
-  zhipu: { endpoint: 'https://open.bigmodel.cn/api/paas/v4/chat/completions', model: 'glm-4-flash' },
-  qwen: { endpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', model: 'qwen-turbo' }
-};
-function llmReady() { return !!(LLM_CONFIG.enabled && LLM_CONFIG.apiKey); }
-async function llmCall(text) {
-  if (!llmReady()) return null;
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => { try { ctrl.abort(); } catch (e) {} }, LLM_CONFIG.timeout || 8000);
-  try {
-    const r = await fetch(LLM_CONFIG.endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + LLM_CONFIG.apiKey },
-      body: JSON.stringify({
-        model: LLM_CONFIG.model,
-        messages: [{ role: 'system', content: LLM_PERSONA }].concat(
-          /* 把最近几轮对话一起带上，「刚才那个通知」这种指代才接得住 */
-          state.chat.slice(-6).map((m) => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.role === 'user' ? m.text : (m.answer || '') })).filter((m) => m.content),
-          [{ role: 'user', content: text }]
-        ),
-        temperature: 0.7
-      }),
-      signal: ctrl.signal
-    });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const j = await r.json();
-    const out = j && j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content;
-    return out ? String(out).trim() : null;
-  } catch (e) {
-    console.warn('[LLM] 真模型没答上来，自动回落本地学长：', e.message);
-    return null;
-  } finally { clearTimeout(timer); }
-}
-
-const SIMPLE_RULES = [
-  { re: /教室|自习|插座|空/, say: function () {
-      const free = mockData.classrooms.filter(function (c) { return c.free; }).slice(0, 3);
-      return { answer: '现在还有 **' + free.length + '** 间教室空着，都带插座。',
-        table: { head: ['教室', '容量', '插座', '可用到'], rows: free.map(function (c) { return [c.room, c.cap + ' 人', c.socket ? '有' : '无', c.until]; }) } };
-    } },
-  { re: /食堂|吃饭|干饭|排队/, say: function () {
-      const c = mockData.canteen.slice().sort(function (a, b) { return a.queue - b.queue; })[0];
-      return { answer: '这会儿 **' + c.name + '** 最空，冲鸭 🍚' };
-    } },
-  { re: /通知|消息/, say: function () { return { answer: '最近有 **' + state.notifs.length + '** 条通知。' }; } },
-  { re: /课表|上课|几点/, say: function () { return { answer: '今天周三：上午 **数据结构**（九号楼 321）。' }; } }
-];
-async function runAgent(text) {
-  text = String(text || '').trim(); if (!text) return;
-  if (state.busy) { toast('学长还在忙上一条呢', 'warn'); return; }
-  if (state.view !== 'dashboard') { state.view = 'dashboard'; renderView(); }
-  state.busy = true; pushUser(text); await sleep(650);
-  const hit = SIMPLE_RULES.find(function (r) { return r.re.test(text); });
-  const res = hit ? hit.say() : { answer: '这句我还没学会 😅 现在会的是：**找空教室、看食堂、翻通知、问课表**。' };
-  state.chat.push(Object.assign({ role: 'assistant', time: hhmm() }, res));
-  renderChat(); icons(); state.busy = false;
-}
-
 /* ------------------------------ 待办交互：抽屉 / 子任务 / 拖拽排序 ------------------------------ */
 function toggleTodoDone(id) {
   const t = state.todos.find((x) => String(x.id) === String(id)); if (!t) return;
@@ -2996,6 +3530,12 @@ function delSub(pair) {
   renderView(); renderDrawer();
 }
 function bindTodoUX() {
+  document.addEventListener('click', (e) => {
+    const ok1 = e.target.closest ? e.target.closest('[data-openkey]') : null;
+    if (ok1) { showKeyModal(); return; }
+    const ck = e.target.closest ? e.target.closest('[data-clearkey]') : null;
+    if (ck) { clearKey(); renderView(); return; }
+  });
   /* ⓪ 顶部三张指标卡：点一下就给下一步（去看待办 / 去翻通知 / 找空教室） */
   document.addEventListener('click', (e) => {
     const sc = e.target.closest ? e.target.closest('[data-statcard]') : null;
@@ -3318,6 +3858,7 @@ function degradedCheck() {
 
 /* ------------------------------ 启动 ------------------------------ */
 function boot() {
+  loadAgentCfg();
   const logs = [
     '[ok] 学长起床了 · 洗漱完毕',
     '[ok] 技能树点亮 ' + mockData.tools.length + ' 项 · 扒通知 / 抢教室 / 干饭雷达 …',
