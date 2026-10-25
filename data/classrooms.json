@@ -1,0 +1,122 @@
+[
+  {
+    "room": "一号楼 2105",
+    "building": "一号楼",
+    "floor": 2,
+    "cap": 40,
+    "socket": true,
+    "until": "20:00",
+    "kind": "普通教室",
+    "free": true
+  },
+  {
+    "room": "一号楼 1204",
+    "building": "一号楼",
+    "floor": 12,
+    "cap": 60,
+    "socket": true,
+    "until": "21:00",
+    "kind": "普通教室",
+    "free": true
+  },
+  {
+    "room": "二号楼 3301",
+    "building": "二号楼",
+    "floor": 3,
+    "cap": 90,
+    "socket": false,
+    "until": "19:00",
+    "kind": "阶梯教室",
+    "free": false
+  },
+  {
+    "room": "二号楼 2208",
+    "building": "二号楼",
+    "floor": 2,
+    "cap": 45,
+    "socket": true,
+    "until": "20:00",
+    "kind": "普通教室",
+    "free": true
+  },
+  {
+    "room": "三号楼南楼 3405",
+    "building": "三号楼",
+    "floor": 3,
+    "cap": 55,
+    "socket": true,
+    "until": "18:00",
+    "kind": "普通教室（南楼）",
+    "free": true
+  },
+  {
+    "room": "三号楼南楼 3201",
+    "building": "三号楼",
+    "floor": 3,
+    "cap": 120,
+    "socket": false,
+    "until": "17:30",
+    "kind": "大教室（南楼）",
+    "free": false
+  },
+  {
+    "room": "七号楼 7201",
+    "building": "七号楼",
+    "floor": 7,
+    "cap": 50,
+    "socket": true,
+    "until": "18:00",
+    "kind": "普通教室",
+    "free": true
+  },
+  {
+    "room": "七号楼 7305",
+    "building": "七号楼",
+    "floor": 7,
+    "cap": 80,
+    "socket": true,
+    "until": "21:00",
+    "kind": "普通教室",
+    "free": true
+  },
+  {
+    "room": "八号楼 8305",
+    "building": "八号楼",
+    "floor": 8,
+    "cap": 120,
+    "socket": true,
+    "until": "18:00",
+    "kind": "智慧教室",
+    "free": true
+  },
+  {
+    "room": "八号楼 8102",
+    "building": "八号楼",
+    "floor": 8,
+    "cap": 40,
+    "socket": false,
+    "until": "16:00",
+    "kind": "普通教室",
+    "free": false
+  },
+  {
+    "room": "九号楼 321 机房",
+    "building": "九号楼",
+    "floor": 3,
+    "cap": 60,
+    "socket": true,
+    "until": "22:00",
+    "kind": "机房",
+    "free": true
+  },
+  {
+    "room": "九号楼 9102",
+    "building": "九号楼",
+    "floor": 9,
+    "cap": 30,
+    "socket": false,
+    "until": "17:00",
+    "kind": "研讨室",
+    "free": true
+  }
+]

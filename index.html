@@ -348,7 +348,7 @@
       <img src="assets/lion.png" alt="小狮子" class="w-14 h-14 rounded-2xl shadow-lg shadow-orange-500/30" onerror="this.style.display='none'" />
       <div class="text-left">
         <div class="text-2xl font-bold txt-grad">华大万事通 · AI学长</div>
-        <div class="text-[11px] t3 font-mono">CCNU 1024 HACKATHON · AGENT 赛道 · v4.9.5</div>
+        <div class="text-[11px] t3 font-mono">CCNU 1024 HACKATHON · AGENT 赛道 · v5.1</div>
       </div>
     </div>
     <div id="bootLog" class="font-mono text-[11px] t2 text-left space-y-1 h-[104px]"></div>
@@ -371,7 +371,7 @@
       <img src="assets/lion.png" alt="小狮子" class="w-10 h-10 rounded-xl shrink-0 shadow-lg shadow-orange-500/25" onerror="this.outerHTML='&lt;div class=&quot;w-10 h-10 rounded-xl ring-grad grid place-items-center&quot;&gt;🦁&lt;/div&gt;'" />
       <div class="min-w-0 side-brand">
         <div class="text-xl font-bold leading-tight txt-grad truncate">华大万事通</div>
-        <span class="inline-block mt-1 px-2 py-[2px] rounded-full text-[10px] t2 font-mono" style="background: rgba(148,163,184,.14); border: 1px solid var(--line);">v4.9.5</span>
+        <span class="inline-block mt-1 px-2 py-[2px] rounded-full text-[10px] t2 font-mono" style="background: rgba(148,163,184,.14); border: 1px solid var(--line);">v5.1</span>
       </div>
       <button id="collapseBtn" data-collapse="1" class="btn-press ml-auto shrink-0 w-7 h-7 rounded-lg grid place-items-center t3 hover:t1 transition" style="background: rgba(148,163,184,.12)" title="收起 / 展开侧边栏（Ctrl+B）">
         <i data-lucide="chevron-left" class="w-4 h-4"></i>
@@ -743,18 +743,18 @@ const mockData = {
   /* 办事指南：学长替人跑过无数趟之后，把「去哪儿、带什么、卡在哪」攒成的小抄。
      流程按常见校务整理，窗口与材料以学校最新通知为准 —— 页面上也这么写，不装成官方口径。 */
   howto: [
-    { id: 'repair', emoji: '🛠️', name: '宿舍报修', cat: '宿舍', brief: '灯不亮、水管漏、门锁坏、空调不制冷', time: '一般 4 小时内上门', where: '后勤服务大厅 / 宿舍楼值班室 / 企业微信报修入口',
+    { id: 'repair', emoji: '🛠️', name: '宿舍报修', cat: '宿舍', brief: '灯不亮、水管漏、门锁坏、空调不制冷', time: '一般 4 小时内上门', where: '后勤服务大厅 / 宿舍楼值班室 / 企业微信报修入口（水电报修 027-67861703，水电充值 027-67861701）',
       items: ['楼栋 + 房号（例：7 栋 312）', '故障照片或 10 秒短视频', '能打通的手机号'],
       steps: [['先拍照：故障全景一张 + 细节一张，房号拍进去', '照片不清楚，师傅来了还得再跑一趟'], ['报修写清「在哪、坏了啥、什么时候方便上门」', '只写「灯坏了」，没人知道是哪一层哪一间'], ['留电话等师傅联系；漏水、跳闸这类急修直接找值班室', '急修别只在小程序里排队'], ['超过 4 小时没动静，拿报修单号催一次', '不催就容易沉在单子里']],
       tips: ['先自查电闸、水阀、门锁电池，能自己解决就别让师傅白跑', '师傅上门时本人最好在场，贵重物品提前收好'] },
-    { id: 'net', emoji: '📶', name: '校园网报障', cat: '网络', brief: '连不上、总掉线、网速慢到打不开网页', time: '当天，多数 2 小时内', where: '网络与信息化办公室 / 校园网自助服务页',
+    { id: 'net', emoji: '📶', name: '校园网报障', cat: '网络', brief: '连不上、总掉线、网速慢到打不开网页', time: '当天，多数 2 小时内', where: '信息化办公室 027-67865326 / 校园网自助服务页',
       items: ['学号 + 姓名', '楼栋房号', '光猫或路由器型号（拍机身标签）'],
       steps: [['先看账号：欠费没有、同时在线设备是不是超了', '设备数超限时，先踢掉旧手机'], ['光猫和路由器断电 30 秒再开，换根网线再试', '九成的「网坏了」是网线松了'], ['还不行就报障，写清「哪个楼、哪个房间、什么现象」', '只写「网不好」，师傅没法带工具'], ['修好前先用手机热点应急，别耽误交作业', '报障单号留着，方便追问']],
       tips: ['别装第三方「加速器」，认证冲突多半是它闹的', '公共区域报障写清具体位置，不然师傅找不到'] },
-    { id: 'ecard', emoji: '💳', name: '一卡通丢了', cat: '证件学籍', brief: '卡丢了、刷不开门、余额对不上', time: '挂失即时，补卡当场', where: '一卡通服务点 / 自助补卡机 / 企业微信挂失入口',
-      items: ['身份证或学生证', '卡号（不记得就用学号）', '补卡工本费（现场交）'],
-      steps: [['先在手机或自助机上挂失，别等「找到再说」', '挂失前被人刷了，追回来很麻烦'], ['带证件去一卡通服务点补卡，原卡余额会转到新卡', '补卡后旧卡立即作废'], ['新卡先改密码，再去门禁和食堂各刷一次', '确认门禁权限已经同步'], ['旧卡又找到了也别再刷，交回服务点注销', '两张卡同时在用会锁卡']],
-      tips: ['卡套里别塞身份证，丢一次丢俩', '挂失前的消费记录能在自助机打出来，有异常当场问'] },
+    { id: 'ecard', emoji: '💳', name: '一卡通丢了', cat: '证件学籍', brief: '卡丢了、刷不开门、余额对不上', time: '挂失即时，补卡当场', where: '校园卡管理中心（田家炳楼 8 楼，027-67868564）/ 校务服务中心（田家炳大楼负二楼）/ 南湖综合楼大厅自助补卡机（8:30-17:30）',
+      items: ['身份证或学生证', '卡号（不记得就用学号）', '补卡工本费 20 元（现场交）'],
+      steps: [['先在手机、自助机或 24 小时自助电话 67868484 挂失，别等「找到再说」', '挂失前被人刷了，追回来很麻烦'], ['带证件去一卡通服务点补卡，原卡余额会转到新卡', '补卡后旧卡立即作废'], ['新卡先改密码，再去门禁和食堂各刷一次', '确认门禁权限已经同步'], ['旧卡又找到了也别再刷，交回服务点注销', '两张卡同时在用会锁卡']],
+      tips: ['卡套里别塞身份证，丢一次丢俩', '挂失前的消费记录能在自助机打出来，有异常当场问', '地址口径不完全一致（田家炳 8 楼 / 负二楼都办过），去之前先打 027-67868564 确认'] },
     { id: 'studentcard', emoji: '🎓', name: '补办学生证', cat: '证件学籍', brief: '学生证丢了、磁条消磁、乘车区间要改', time: '3–5 个工作日', where: '学院教务办 → 学工部 / 教务处',
       items: ['一寸照片 2 张', '补办申请（学院教务办领）', '身份证复印件'],
       steps: [['先去学院教务办说明情况，领补办申请表', '不同学院表格不一样，别自己打印'], ['辅导员签字，按学院要求附照片和身份证复印件', '签字前把乘车区间想好'], ['交到学工部 / 教务处，记下受理时间', '问清几天后来取'], ['拿到后核对乘车区间和注册章，再去贴磁条', '区间写错，买票会被拦']],
@@ -818,11 +818,25 @@ const mockData = {
     canteen: { names: ['H', 'M', 'Q', 'S'], colors: ['#22d3ee', '#facc15', '#f472b6', '#a78bfa'], more: '+19', text: '23 位在桂香园二楼香锅窗口排队', sub: '这个窗口出餐最快，跟着人流走准没错' }
   },
   /* 食堂：排队指数每次刷新按容量重算，星级由队长度现算，卡片和学长回答同源 */
+  /* 食堂：名称 / 楼层 / 座位 / 营业时间 / 电话来自后勤保障部《食堂服务》页（原样照录）。
+     queue 与 people 是模拟的排队指数，每次刷新按座位数重算 —— 页面上标了「模拟」。 */
   canteen: [
-    { name: '桂香园一楼', short: '桂香园一楼', queue: 3, win: '8 / 12', cap: 260, people: '约 78 人排队' },
-    { name: '桂香园二楼麻辣香锅', short: '香锅窗口', queue: 1, win: '6 / 10', cap: 120, people: '约 12 人排队' },
-    { name: '博雅园一楼', short: '博雅园一楼', queue: 4, win: '10 / 10', cap: 420, people: '约 126 人排队' },
-    { name: '沁园春一楼', short: '沁园春一楼', queue: 2, win: '5 / 8', cap: 150, people: '约 41 人排队' }
+    { name: '桂香园餐厅', short: '桂香园', campus: '桂子山', floors: 3, area: 7300, cap: 500, queue: 3, win: '1F 大伙 / 2F 特色 / 3F 教工',
+      hours: '早 6:30-10:00 · 中 10:00-13:30 · 晚 16:30-19:30', phone: '027-67865779（3 楼订餐）', people: '约 78 人排队' },
+    { name: '沁园春', short: '沁园春', campus: '桂子山', floors: 6, area: 9220, cap: 400, queue: 2, win: 'B1 超市 / 1-2F 食堂 / 3F 小吃街',
+      hours: '早 6:30-9:00 · 中 10:30-13:00 · 晚 16:30-19:30', phone: '027-68776658（小观园）', people: '约 41 人排队' },
+    { name: '学子餐厅', short: '学子餐厅', campus: '桂子山', floors: 2, area: 2800, cap: 500, queue: 3, win: '1F 大伙 / 2F 特色',
+      hours: '早 6:30-9:00 · 中 10:30-13:00 · 晚 16:00-19:30', phone: '—', people: '约 66 人排队' },
+    { name: '东一食堂', short: '东一', campus: '桂子山', floors: 2, area: 2300, cap: 500, queue: 4, win: '1F 特色 / 2F 大伙',
+      hours: '早 6:30-9:00 · 中 10:30-13:30 · 晚 16:00-19:30', phone: '—', people: '约 124 人排队' },
+    { name: '东二食堂', short: '东二', campus: '桂子山', floors: 2, area: 2900, cap: 300, queue: 2, win: '1F 民族餐厅 / 2F 特色',
+      hours: '早 6:30-10:00 · 中 10:00-13:30 · 晚 16:00-19:30', phone: '027-67867136（山城菜馆）', people: '约 52 人排队' },
+    { name: '北区餐厅', short: '北区', campus: '桂子山', floors: 2, area: 1200, cap: 200, queue: 1, win: '1F 粉面 / 2F 小炒',
+      hours: '早 6:30-9:00 · 中 10:30-13:00 · 晚 17:00-19:00', phone: '—', people: '约 18 人排队' },
+    { name: '南湖食堂', short: '南湖', campus: '南湖', floors: 3, area: 9300, cap: 550, queue: 3, win: '1F 大伙 / 2F 风味 / 3F 教工',
+      hours: '早 6:30-9:00 · 中 10:30-13:30 · 晚 16:00-19:30', phone: '027-67868808（3 楼）', people: '约 92 人排队' },
+    { name: '南二餐厅', short: '南二', campus: '南湖', floors: 1, area: 400, cap: 100, queue: 1, win: '民族风味',
+      hours: '中 10:30-13:30 · 晚 16:30-22:00', phone: '—', people: '约 12 人排队' }
   ],
   /* 空教室：floor 用来做楼层筛选，free=false 表示这会儿有人在上课；
      统计卡的「空闲教室」和这张表读的是同一份数据，每 8 秒按模拟占用重算一次 */
@@ -831,11 +845,11 @@ const mockData = {
     { room: '一号楼 1204', building: '一号楼', floor: 12, cap: 60, socket: true, until: '21:00', kind: '普通教室', free: true },
     { room: '二号楼 3301', building: '二号楼', floor: 3, cap: 90, socket: false, until: '19:00', kind: '阶梯教室', free: false },
     { room: '二号楼 2208', building: '二号楼', floor: 2, cap: 45, socket: true, until: '20:00', kind: '普通教室', free: true },
-    { room: '三号楼 3405', building: '三号楼', floor: 3, cap: 55, socket: true, until: '18:00', kind: '普通教室', free: true },
-    { room: '三号楼 3201', building: '三号楼', floor: 3, cap: 120, socket: false, until: '17:30', kind: '大教室', free: false },
+    { room: '三号楼南楼 3405', building: '三号楼', floor: 3, cap: 55, socket: true, until: '18:00', kind: '普通教室（南楼）', free: true },
+    { room: '三号楼南楼 3201', building: '三号楼', floor: 3, cap: 120, socket: false, until: '17:30', kind: '大教室（南楼）', free: false },
     { room: '七号楼 7201', building: '七号楼', floor: 7, cap: 50, socket: true, until: '18:00', kind: '普通教室', free: true },
     { room: '七号楼 7305', building: '七号楼', floor: 7, cap: 80, socket: true, until: '21:00', kind: '普通教室', free: true },
-    { room: '八号楼 8305', building: '八号楼', floor: 8, cap: 120, socket: true, until: '18:00', kind: '大教室', free: true },
+    { room: '八号楼 8305', building: '八号楼', floor: 8, cap: 120, socket: true, until: '18:00', kind: '智慧教室', free: true },
     { room: '八号楼 8102', building: '八号楼', floor: 8, cap: 40, socket: false, until: '16:00', kind: '普通教室', free: false },
     { room: '九号楼 321 机房', building: '九号楼', floor: 3, cap: 60, socket: true, until: '22:00', kind: '机房', free: true },
     { room: '九号楼 9102', building: '九号楼', floor: 9, cap: 30, socket: false, until: '17:00', kind: '研讨室', free: true }
@@ -1014,22 +1028,38 @@ mockData.courses = [
   { day: '周五', start: '10:10', end: '11:50', name: '计算机组成原理', room: '一号楼 2105', teacher: '周老师' }
 ];
 mockData.library = {
-  name: '文华公书林', open: '08:00', close: '22:00',
+  name: '图书馆总馆（桂子山）', open: '08:00', close: '22:00', fridayClose: '14:00',
+  branches: [
+    { name: '图书馆总馆（桂子山）', hours: '周一至周日 8:00-22:00，周五 8:00-14:00' },
+    { name: '南湖分馆', hours: '与总馆同步' }
+  ],
+  rules: {
+    undergrad: '本科生 15 册，借期 60 天', grad: '研究生 30 册，借期 90 天',
+    renew: '「我的图书馆」→ 当前借阅 → 续借', overdue: '0.1 元 / 册 / 天',
+    stack: '1-5 楼可外借（1 楼期刊仅阅览），6-9 楼为保存本，只阅不外借',
+    ancient: '古籍特藏室在总馆 8 楼西侧，周一至周四 8:00-11:40 / 14:00-17:10，周五仅上午'
+  },
+  /* 各层剩余座位是模拟值，闭馆时间与借阅规则是官方口径 */
   floors: [
-    { floor: 3, free: 46, socket: 12 }, { floor: 4, free: 31, socket: 8 },
-    { floor: 5, free: 18, socket: 6 }, { floor: 6, free: 52, socket: 20 },
-    { floor: 7, free: 9, socket: 4 }, { floor: 8, free: 71, socket: 26 }
+    { floor: 1, zone: '中文社科图书借阅室', free: 46, socket: 12 },
+    { floor: 2, zone: '外文图书借阅室', free: 31, socket: 8 },
+    { floor: 3, zone: '文学与艺术阅览室', free: 18, socket: 6 },
+    { floor: 4, zone: '自习区', free: 52, socket: 20 },
+    { floor: 5, zone: '电子阅览室', free: 9, socket: 30 },
+    { floor: 8, zone: '古籍特藏室（仅阅览）', free: 6, socket: 2 }
   ]
 };
 mockData.bus = {
   routes: [
-    { line: '南湖线', stops: '博雅广场 → 文华公书林 → 南湖校区' },
-    { line: '校内环线', stops: '东门 → 九号楼 → 桂香园 → 佑铭体育场' }
+    { line: '跨校区摆渡车', stops: '南湖食堂 → 南湖校区东门 → 桂子山校区南门 → 博物馆',
+      hours: '7:00-21:30（寒暑假停运）', fare: '1 元 / 人次，刷一卡通实体卡', freq: '高峰约 5 分钟一班，平峰约 15 分钟', note: '除到站外可招手即停' },
+    { line: '校内校车', stops: '桂子山校内环线', hours: '7:00-22:00（节假日照常）', fare: '1 元 / 人次', freq: '按客流发车' }
   ],
+  /* 下一班到站是模拟值：学校按客流灵活发班，没有公开时刻表 */
   next: [
-    { stop: '博雅广场', line: '南湖线', minutes: 3 },
-    { stop: '九号楼', line: '校内环线', minutes: 7 },
-    { stop: '桂香园', line: '校内环线', minutes: 11 }
+    { stop: '博物馆', line: '跨校区摆渡车', minutes: 3 },
+    { stop: '桂子山校区南门', line: '跨校区摆渡车', minutes: 7 },
+    { stop: '南湖食堂', line: '跨校区摆渡车', minutes: 11 }
   ]
 };
 mockData.card = {
@@ -1675,7 +1705,7 @@ function dineShortNum(p) { return String(p).replace(/^约\s*/, '≈').replace(/�
 /* 每列都 shrink-0，只有进度条 flex-1：窄卡片里不会再被挤成一条缝 */
 function dineRowsHTML() {
   const minQ = Math.min.apply(null, mockData.canteen.map((c) => c.queue));
-  return mockData.canteen.map((c) => {
+  return mockData.canteen.slice(0, 4).map((c) => {
     const best = c.queue === minQ;
     return '<div class="flex items-center gap-1.5" title="' + h(c.name + ' · ' + canteenWord(c.queue) + ' · ' + c.people) + '">' +
     '<span class="text-[10.5px] w-[62px] shrink-0 truncate' + (best ? '' : ' t2') + '"' + (best ? ' style="color:#6ee7b7"' : '') + '>' + h(c.short || c.name) + '</span>' +
@@ -1699,11 +1729,14 @@ function refreshDining(manual) {
 /* 文华公书林 8:00—22:00，离闭馆还有多久按现在的时间现算，不写死 */
 function libCloseSub() {
   const now = new Date();
-  const close = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 0, 0, 0);
+  const fri = now.getDay() === 5;
+  const hh = fri ? 14 : 22;
+  const close = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hh, 0, 0, 0);
   const mins = Math.round((close - now) / 60000);
-  if (mins <= 0) return '22:00 已闭馆，明早 8:00 再开';
-  if (mins < 60) return '22:00 闭馆，还有 ' + mins + ' 分钟';
-  return '22:00 闭馆，还有 ' + Math.floor(mins / 60) + ' 小时 ' + (mins % 60) + ' 分';
+  const at = (fri ? '14:00（周五）' : '22:00');
+  if (mins <= 0) return at + ' 已闭馆，' + (fri ? '周六 8:00' : '明早 8:00') + ' 再开';
+  if (mins < 60) return at + ' 闭馆，还有 ' + mins + ' 分钟';
+  return at + ' 闭馆，还有 ' + Math.floor(mins / 60) + ' 小时 ' + (mins % 60) + ' 分';
 }
 function quickPanelHTML() {
   const L = mockData.peers.library, C = mockData.peers.canteen;
@@ -2316,9 +2349,10 @@ function viewSettings() {
     '<div class="col-span-4 space-y-4">' +
       '<section class="glass-card p-6 anim-up tilt-b" style="animation-delay:.1s" data-card="关于学长"><div class="flex items-center gap-2 mb-3"><span class="text-[17px] leading-none">🦁</span><span class="text-[14px] font-bold t1">关于学长</span>' +
         '<button data-about="1" class="btn-press ml-auto text-[10.5px] px-2 py-[3px] rounded-full t2 hover:t1" style="background: rgba(148,163,184,.12)">团队成员</button></div>' +
-        '<div class="space-y-2.5 text-[12px]">' + [['项目名', '华大万事通 · AI学长'], ['赛道', 'Agent 应用（三大赛道之一）'], ['赛事', 'CCNU 1024 Hackathon 2026'], ['赛程', '2026-10-23 ~ 10-25'], ['技术栈', 'HTML5 + Tailwind + 原生 JS'], ['数据', '学校公开页面快照 + 演示数据'], ['版本', 'v4.9.5（Agent 核心 v5）']].map((r) =>
+        '<div class="space-y-2.5 text-[12px]">' + [['项目名', '华大万事通 · AI学长'], ['赛道', 'Agent 应用（三大赛道之一）'], ['赛事', 'CCNU 1024 Hackathon 2026'], ['赛程', '2026-10-23 ~ 10-25'], ['技术栈', 'HTML5 + Tailwind + 原生 JS'], ['数据', '学校公开页面快照 + 演示数据'], ['版本', 'v5.1（Agent 核心 v5）']].map((r) =>
           '<div class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg" style="background: rgba(148,163,184,.055)"><span class="t3">' + r[0] + '</span><span class="t1 font-mono text-[11px] text-right">' + r[1] + '</span></div>').join('') + '</div></section>' +
       '<section class="glass-card p-6 anim-up tilt-b" style="animation-delay:.12s" data-card="接个真模型">' + agentSettingsHTML() + '</section>' +
+      '<section class="glass-card p-6 anim-up tilt-b" style="animation-delay:.13s" data-card="数据从哪来">' + dataSourceHTML() + '</section>' +
       '<section class="glass-card p-6 anim-up tilt-c" style="animation-delay:.15s" data-card="说句实话"><div class="text-[14px] font-bold t1 mb-3">说句实话</div>' +
         '<p class="text-[11.5px] t2 leading-relaxed">数据都是本地 Mock 的，用来展示学长怎么想、怎么调工具、什么时候该刹车。真实上线时把数据源换上就行，交互一点都不用改。</p>' +
         '<div class="mt-4 rounded-xl p-3 flex items-center gap-2 text-[11px] t2" style="background: rgba(6,182,212,.08); border:1px solid rgba(6,182,212,.2)"><span class="text-[14px]">🧪</span><span>演示环境里学长不会真的改任何数据</span></div></section>' +
@@ -2333,7 +2367,7 @@ function aboutHTML() {
     '<div class="flex items-start gap-3">' +
       '<img src="assets/lion.png" alt="小狮子" class="w-12 h-12 rounded-2xl shrink-0 shadow-lg shadow-orange-500/30" onerror="this.outerHTML=\'🦁\'" />' +
       '<div class="min-w-0 flex-1"><div class="text-[18px] font-bold txt-grad">华大万事通 · AI学长</div>' +
-      '<div class="text-[11px] t3 font-mono mt-0.5">CCNU 1024 HACKATHON 2026 · AGENT 赛道 · v4.9.5</div>' +
+      '<div class="text-[11px] t3 font-mono mt-0.5">CCNU 1024 HACKATHON 2026 · AGENT 赛道 · v5.1</div>' +
       '<p class="text-[12px] t2 leading-relaxed mt-2.5">把校园里那些「找通知、抢教室、躲人流、排日程」的杂事，交给一个说人话的学长。它会把活干完，也会在该刹车的时候停下来告诉你「这一步得你自己来」。</p></div>' +
       '<button data-aboutclose="1" class="no-drawer btn-press shrink-0 p-2 rounded-lg t3 hover:t1" style="background: rgba(148,163,184,.10)">' + icon('x', 'w-4 h-4') + '</button>' +
     '</div>' +
@@ -3034,7 +3068,53 @@ const SAFETY_GATE = {
  * 每个工具只做「查/写 + 返回结构化数据」，不写一句人话 —— 话是模型说的。 */
 const TOOLS = {};
 
-function tool(def) { TOOLS[def.schema.name] = def; return def; }
+/* 数据来源：kind 决定「能不能说成实时」。
+   live      真·实时（公网接口）
+   official  学校公开口径（有出处和日期）
+   curated   我们整理的公开信息
+   mixed     一部分官方、一部分模拟
+   simulated 纯演示数据 */
+const DATA_SOURCES = {
+  canteen: { kind: 'official', label: '后勤保障部《食堂服务》', url: 'https://houqin.ccnu.edu.cn/fwzn/stfw.htm', asOf: '2026-10-24', simulated: ['queue 排队指数', 'people 排队人数'] },
+  library: { kind: 'mixed', label: '图书馆开放时间与借阅规则（官方）+ 座位数（模拟）', url: 'https://lib.ccnu.edu.cn', asOf: '2026-10-24', simulated: ['floors[].free 剩余座位'] },
+  bus: { kind: 'mixed', label: '跨校区摆渡车运营信息（官方）+ 到站时间（模拟）', url: 'http://news.cjn.cn/whpd/yw_19947/202605/t5290792.htm', asOf: '2026-10-24', simulated: ['next 下一班'] },
+  classroom: { kind: 'mixed', label: '楼栋功能（公开信息）+ 实时占用（模拟）', url: 'https://m.sohu.com/a/271725818_100005812/', asOf: '2026-10-24', simulated: ['rooms[].free 是否空闲'] },
+  howto: { kind: 'official', label: '信息化办公室 / 后勤保障部办事指南', url: 'https://bwc.ccnu.edu.cn/xxhbgs2024/ITfw/xykfw.htm', asOf: '2026-10-24', simulated: [] },
+  notice: { kind: 'curated', label: '校园通知整理快照', url: '', asOf: '2026-10-24', simulated: [] },
+  feed: { kind: 'curated', label: '校园新闻与招标整理快照', url: '', asOf: '2026-10-24', simulated: [] },
+  card: { kind: 'simulated', label: '演示数据（真实余额需本人登录一卡通）', url: '', asOf: '2026-10-24', simulated: ['balance', 'recent'] },
+  personal: { kind: 'simulated', label: '本机数据（待办 / 课表 / 统计）', url: '', asOf: '2026-10-24', simulated: ['全部'] },
+  weather: { kind: 'live', label: 'open-meteo 实时天气', url: 'https://api.open-meteo.com/v1/forecast', asOf: '实时', simulated: [] },
+  clock: { kind: 'live', label: '本机时间（北京时间）', url: '', asOf: '实时', simulated: [] }
+};
+const TOOL_SOURCES = {
+  classroom_query: 'classroom', classroom_book: 'classroom', notice_search: 'notice', notice_read: 'notice',
+  feed_search: 'feed', canteen_query: 'canteen', library_query: 'library', card_query: 'card',
+  bus_query: 'bus', todo_read: 'personal', calendar_write: 'personal', schedule_read: 'personal',
+  stats_read: 'personal', event_read: 'personal', doc_draft: 'personal', howto_guide: 'howto',
+  clock_read: 'clock', weather_read: 'weather', data_source: 'meta'
+};
+function sourceMeta(name) {
+  const k = TOOL_SOURCES[name];
+  const d = DATA_SOURCES[k];
+  if (!d) return null;
+  return { kind: d.kind, source: d.label, url: d.url || '', asOf: d.asOf, simulated: d.simulated.slice() };
+}
+
+/* 注册工具时统一包一层：结果自动带上 meta，模型和界面都不用自己拼 */
+function tool(def) {
+  const raw = def.execute;
+  def.execute = async function (args) {
+    const r = await raw.call(def, args || {});
+    if (r && typeof r === 'object' && !r.meta) {
+      const m = sourceMeta(def.schema.name);
+      if (m) r.meta = m;
+    }
+    return r;
+  };
+  TOOLS[def.schema.name] = def;
+  return def;
+}
 const pad2 = (n) => String(n).padStart(2, '0');
 function todayISO() { const d = new Date(); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
 function plusDay(iso, n) { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
@@ -3160,7 +3240,10 @@ tool({
   ui: { samples: ['现在哪家食堂人最少', '中午想吃面去哪', '桂香园排队吗'], steps: ['读各食堂排队指数', '按指数从低到高排', '把最有空的那家交给模型说'] },
   async execute(args) {
     const list = (await DB.get('canteen')).slice().sort((a, b) => a.queue - b.queue);
-    return { total: list.length, canteens: list.map((c) => ({ name: c.name, crowd: canteenWord(c.queue), queueIndex: c.queue, people: c.people, windows: c.win })) };
+    return { total: list.length, canteens: list.map((c) => ({
+      name: c.name, campus: c.campus, floors: c.floors, seats: c.cap, hours: c.hours, phone: c.phone,
+      crowd: canteenWord(c.queue), queueIndex: c.queue, people: c.people, windows: c.win, queueSimulated: true
+    })) };
   }
 });
 
@@ -3178,7 +3261,13 @@ tool({
     let floors = lib.floors.slice();
     if (args.floor) floors = floors.filter((f) => f.floor === args.floor);
     if (args.needSocket) floors = floors.filter((f) => f.socket > 0);
-    return { name: lib.name, open: lib.open, close: lib.close, total: floors.reduce((a, f) => a + f.free, 0), floors };
+    const day = new Date().getDay();
+    return {
+      name: lib.name, open: lib.open, close: lib.close, fridayClose: lib.fridayClose,
+      todayClose: day === 5 ? lib.fridayClose : lib.close,
+      branches: lib.branches, rules: lib.rules,
+      total: floors.reduce((a, f) => a + f.free, 0), floors
+    };
   }
 });
 
@@ -3208,7 +3297,7 @@ tool({
   ui: { samples: ['校车还有几分钟到', '去南湖校区的车几点'], steps: ['读线路与班次', '按当前时间算下一班', '返回站名与分钟数'] },
   async execute(args) {
     const bus = await DB.get('bus');
-    return { routes: bus.routes, nextIn: bus.next.map((n) => ({ stop: n.stop, minutes: n.minutes, line: n.line })) };
+    return { routes: bus.routes, nextIn: bus.next.map((n) => ({ stop: n.stop, minutes: n.minutes, line: n.line, simulated: true })) };
   }
 });
 
@@ -3355,6 +3444,28 @@ tool({
   }
 });
 
+/* —— 数据来源 —— */
+tool({
+  schema: {
+    name: 'data_source',
+    description: '说明某个领域的数据从哪来、什么时候更新的、哪些是模拟数据。用户问「这数据准不准」「哪来的」「是不是实时的」时用。',
+    parameters: {
+      type: 'object',
+      properties: { topic: { type: 'string', description: 'canteen / library / bus / classroom / howto / notice / card / weather / all' } }
+    }
+  },
+  source: '内置溯源表',
+  ui: { samples: ['这些数据是哪来的', '食堂营业时间是官方数据吗', '哪些是模拟的'], steps: ['查溯源表', '给出处、日期与模拟字段', '提醒哪些只能参考'] },
+  async execute(args) {
+    const keys = args.topic && args.topic !== 'all' && DATA_SOURCES[args.topic] ? [args.topic] : Object.keys(DATA_SOURCES);
+    return {
+      total: keys.length,
+      items: keys.map((k) => ({ topic: k, kind: DATA_SOURCES[k].kind, source: DATA_SOURCES[k].label, url: DATA_SOURCES[k].url, asOf: DATA_SOURCES[k].asOf, simulated: DATA_SOURCES[k].simulated })),
+      legend: { live: '实时接口', official: '学校官方口径', curated: '公开信息整理', mixed: '官方 + 模拟', simulated: '演示数据' }
+    };
+  }
+});
+
 /* —— 天气（真公网）—— */
 tool({
   schema: {
@@ -3400,6 +3511,15 @@ function systemPrompt() {
     '3. 参数填准：说「明天下午」就填明天的 YYYY-MM-DD，「坐 30 人」填 capacity: 30。',
     '4. 工具返回 total: 0 或 error 时，如实说没查到，不要编。',
     '5. 回答里不要复述 JSON，把数据说成人话；需要对比时用 Markdown 表格。',
+    '',
+    '## 数据的真实性（必须遵守）',
+    '每次工具返回都带 meta.kind，按它决定怎么说：',
+    '- live（实时）：可以说「刚刚查到的」。',
+    '- official（官方）：可以说营业时间、电话、规则，但要带上来源和日期，例：「后勤保障部 10 月 24 日的口径」。',
+    '- mixed：官方部分照实说，meta.simulated 里列出的字段必须说明是模拟/演示。',
+    '- simulated / 无 meta：必须说「演示数据」或「我这边看不到真实系统」，绝不包装成实时。',
+    '- 用户问某条数据准不准、哪来的 → 调 data_source。',
+    '- 宁可说「查不到」，也不编一个像真的数字。',
     '',
     '## 边界（最重要）',
     '- 绝不替用户提交审批、请假、报名、缴费；绝不导出成绩或流水给第三方；绝不代写作业和论文。',
@@ -3495,10 +3615,18 @@ function traceRowHTML(e) {
   const dot = { running: '⏳', done: '✅', error: '❌', blocked: '🛑' }[e.status] || '·';
   const s = traceSummary(e);
   const args = JSON.stringify(e.args || {});
+  const mk = e.result && e.result.meta && e.result.meta.kind;
+  const srcTag = mk ? '<span class="shrink-0 px-1 rounded text-[9px] font-mono" style="' + ({
+    live: 'color:#34d399;background:rgba(52,211,153,.12)',
+    official: 'color:#38bdf8;background:rgba(56,189,248,.12)',
+    curated: 'color:#a78bfa;background:rgba(167,139,250,.12)',
+    mixed: 'color:#fbbf24;background:rgba(251,191,36,.12)',
+    simulated: 'color:#94a3b8;background:rgba(148,163,184,.14)'
+  }[mk] || '') + '">' + h({ live: '实时', official: '官方', curated: '整理', mixed: '混合', simulated: '模拟' }[mk] || mk) + '</span>' : '';
   return '<div class="flex items-center gap-2 text-[11px] leading-5">' +
     '<span class="shrink-0">' + dot + '</span>' +
     '<code class="font-mono text-[10.5px] t1 shrink-0">' + h(e.name) + '</code>' +
-    '<span class="font-mono text-[10px] t3 truncate">' + h(args.length > 46 ? args.slice(0, 46) + '…' : args) + '</span>' +
+    '<span class="font-mono text-[10px] t3 truncate">' + h(args.length > 40 ? args.slice(0, 40) + '…' : args) + '</span>' + srcTag +
     '<span class="ml-auto shrink-0 text-[10px] ' + s.cls + '">' + h(s.txt) + '</span></div>';
 }
 function traceHTML(trace) {
@@ -3604,6 +3732,25 @@ function showKeyModal() {
 }
 
 /* ------------------------------ 9.5 设置页里的「接上模型」卡片 ------------------------------ */
+function dataSourceHTML() {
+  const KIND = { live: ['实时', '#34d399'], official: ['官方', '#38bdf8'], curated: ['整理', '#a78bfa'], mixed: ['混合', '#fbbf24'], simulated: ['模拟', '#94a3b8'] };
+  const rows = Object.keys(DATA_SOURCES).map((k) => {
+    const d = DATA_SOURCES[k];
+    const tag = KIND[d.kind] || [d.kind, '#94a3b8'];
+    const sim = d.simulated && d.simulated.length ? '<div class="text-[9.5px] t3 mt-0.5">模拟字段：' + h(d.simulated.join('、')) + '</div>' : '';
+    return '<div class="flex items-start gap-2 py-1.5" style="border-bottom:1px dashed var(--line)">' +
+      '<span class="shrink-0 px-1.5 py-[1px] rounded text-[9.5px] font-mono mt-[2px]" style="color:' + tag[1] + ';background:' + tag[1] + '1f">' + tag[0] + '</span>' +
+      '<div class="min-w-0 flex-1"><div class="text-[11px] t1 leading-snug">' + h(d.label) + '</div>' + sim + '</div>' +
+      (d.url ? '<a href="' + h(d.url) + '" target="_blank" rel="noopener" class="shrink-0 text-[9.5px] t3 hover:t1 mt-[2px]">出处 ↗</a>' : '') +
+      '</div>';
+  }).join('');
+  return '<div class="flex items-center gap-2 mb-3"><span class="text-[17px] leading-none">🧾</span>' +
+    '<div><div class="text-[14px] font-bold t1">数据从哪来</div>' +
+    '<div class="text-[10.5px] t3">官方口径标出处，模拟数据标「模拟」，不混着说</div></div></div>' +
+    '<div>' + rows + '</div>' +
+    '<div class="text-[10px] t3 mt-2 leading-snug">营业时间、电话、借阅规则取自学校公开页面；排队人数、剩余座位、教室占用是演示数据，页面上不会说成实时。</div>';
+}
+
 function agentSettingsHTML() {
   const cards = Object.keys(LLM_PROVIDERS).map((k) => {
     const p = LLM_PROVIDERS[k];
