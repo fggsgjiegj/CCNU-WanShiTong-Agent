@@ -63,8 +63,8 @@
     --line: rgba(15, 23, 42, 0.09);
     --line-strong: rgba(15, 23, 42, 0.18);
     --t1: #0f172a;
-    --t2: #55637a;
-    --t3: #7b8798;
+    --t2: #46536a;
+    --t3: #5f6b7d;
     --shadow: 0 10px 30px -14px rgba(15, 23, 42, 0.28);
   }
   * { -webkit-font-smoothing: antialiased; }
@@ -145,6 +145,7 @@
 
   /* 逐字输出时的光标 */
   .caret { display: inline-block; width: 7px; height: 13px; margin-left: 2px; vertical-align: -2px; background: #22d3ee; opacity: .75; animation: blink .9s infinite; }
+  @media (prefers-reduced-motion: reduce) { .caret { animation: none; opacity: .9; } }
 
   /* 正在输入：三个蹦跶的小圆点 */
   .typing i { display: inline-block; width: 6px; height: 6px; border-radius: 99px; background: #22d3ee; margin-right: 3px; }
@@ -347,7 +348,7 @@
       <img src="assets/lion.png" alt="小狮子" class="w-14 h-14 rounded-2xl shadow-lg shadow-orange-500/30" onerror="this.style.display='none'" />
       <div class="text-left">
         <div class="text-2xl font-bold txt-grad">华大万事通 · AI学长</div>
-        <div class="text-[11px] t3 font-mono">CCNU 1024 HACKATHON · AGENT 赛道 · v4.8</div>
+        <div class="text-[11px] t3 font-mono">CCNU 1024 HACKATHON · AGENT 赛道 · v4.9</div>
       </div>
     </div>
     <div id="bootLog" class="font-mono text-[11px] t2 text-left space-y-1 h-[104px]"></div>
@@ -370,7 +371,7 @@
       <img src="assets/lion.png" alt="小狮子" class="w-10 h-10 rounded-xl shrink-0 shadow-lg shadow-orange-500/25" onerror="this.outerHTML='&lt;div class=&quot;w-10 h-10 rounded-xl ring-grad grid place-items-center&quot;&gt;🦁&lt;/div&gt;'" />
       <div class="min-w-0 side-brand">
         <div class="text-xl font-bold leading-tight txt-grad truncate">华大万事通</div>
-        <span class="inline-block mt-1 px-2 py-[2px] rounded-full text-[10px] t2 font-mono" style="background: rgba(148,163,184,.14); border: 1px solid var(--line);">v4.8</span>
+        <span class="inline-block mt-1 px-2 py-[2px] rounded-full text-[10px] t2 font-mono" style="background: rgba(148,163,184,.14); border: 1px solid var(--line);">v4.9</span>
       </div>
       <button id="collapseBtn" data-collapse="1" class="btn-press ml-auto shrink-0 w-7 h-7 rounded-lg grid place-items-center t3 hover:t1 transition" style="background: rgba(148,163,184,.12)" title="收起 / 展开侧边栏（Ctrl+B）">
         <i data-lucide="chevron-left" class="w-4 h-4"></i>
@@ -2315,7 +2316,7 @@ function viewSettings() {
     '<div class="col-span-4 space-y-4">' +
       '<section class="glass-card p-6 anim-up tilt-b" style="animation-delay:.1s" data-card="关于学长"><div class="flex items-center gap-2 mb-3"><span class="text-[17px] leading-none">🦁</span><span class="text-[14px] font-bold t1">关于学长</span>' +
         '<button data-about="1" class="btn-press ml-auto text-[10.5px] px-2 py-[3px] rounded-full t2 hover:t1" style="background: rgba(148,163,184,.12)">团队成员</button></div>' +
-        '<div class="space-y-2.5 text-[12px]">' + [['项目名', '华大万事通 · AI学长'], ['赛道', 'Agent 应用（三大赛道之一）'], ['赛事', 'CCNU 1024 Hackathon 2026'], ['赛程', '2026-10-23 ~ 10-25'], ['技术栈', 'HTML5 + Tailwind + 原生 JS'], ['数据', '学校公开页面快照 + 演示数据'], ['版本', 'v4.8（Agent 核心 v5）']].map((r) =>
+        '<div class="space-y-2.5 text-[12px]">' + [['项目名', '华大万事通 · AI学长'], ['赛道', 'Agent 应用（三大赛道之一）'], ['赛事', 'CCNU 1024 Hackathon 2026'], ['赛程', '2026-10-23 ~ 10-25'], ['技术栈', 'HTML5 + Tailwind + 原生 JS'], ['数据', '学校公开页面快照 + 演示数据'], ['版本', 'v4.9（Agent 核心 v5）']].map((r) =>
           '<div class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg" style="background: rgba(148,163,184,.055)"><span class="t3">' + r[0] + '</span><span class="t1 font-mono text-[11px] text-right">' + r[1] + '</span></div>').join('') + '</div></section>' +
       '<section class="glass-card p-6 anim-up tilt-b" style="animation-delay:.12s" data-card="接个真模型">' + agentSettingsHTML() + '</section>' +
       '<section class="glass-card p-6 anim-up tilt-c" style="animation-delay:.15s" data-card="说句实话"><div class="text-[14px] font-bold t1 mb-3">说句实话</div>' +
@@ -2332,7 +2333,7 @@ function aboutHTML() {
     '<div class="flex items-start gap-3">' +
       '<img src="assets/lion.png" alt="小狮子" class="w-12 h-12 rounded-2xl shrink-0 shadow-lg shadow-orange-500/30" onerror="this.outerHTML=\'🦁\'" />' +
       '<div class="min-w-0 flex-1"><div class="text-[18px] font-bold txt-grad">华大万事通 · AI学长</div>' +
-      '<div class="text-[11px] t3 font-mono mt-0.5">CCNU 1024 HACKATHON 2026 · AGENT 赛道 · v4.8</div>' +
+      '<div class="text-[11px] t3 font-mono mt-0.5">CCNU 1024 HACKATHON 2026 · AGENT 赛道 · v4.9</div>' +
       '<p class="text-[12px] t2 leading-relaxed mt-2.5">把校园里那些「找通知、抢教室、躲人流、排日程」的杂事，交给一个说人话的学长。它会把活干完，也会在该刹车的时候停下来告诉你「这一步得你自己来」。</p></div>' +
       '<button data-aboutclose="1" class="no-drawer btn-press shrink-0 p-2 rounded-lg t3 hover:t1" style="background: rgba(148,163,184,.10)">' + icon('x', 'w-4 h-4') + '</button>' +
     '</div>' +
@@ -3542,7 +3543,19 @@ const OFFLINE_RULES = [
   { re: /几点|星期几|时间/, say: 'clock', args: {} }
 ];
 async function offlineReply(text) {
-  return { answer: '⚠️ **还没接模型**：现在只能看界面上的数据。\n\n点设置里的「填 Key 接上模型」，学长就能真的调工具了。', trace: [] };
+  const hit = OFFLINE_RULES.find((r) => r.re.test(text));
+  if (!hit) return { answer: '⚠️ **离线直连模式**（没接模型）：我现在看不懂自由输入。\n\n能做的：空教室 / 食堂 / 通知 / 课表 / 待办 / 时间。\n比如直接问「现在哪有空教室」。\n\n想让我真正听懂你说话，点右上角「接上模型」，填一个 Key 就行。', trace: [] };
+  const map = {
+    classroom: async () => { const r = await TOOLS.classroom_query.execute({ capacity: 30, hasSocket: true }); return { name: 'classroom_query', result: r, answer: '现在空着的有 **' + r.total + '** 间，挑了几间：', table: { head: ['教室', '容量', '插座', '空到'], rows: r.rooms.map((x) => [x.room, x.capacity + ' 人', x.socket ? '有' : '无', x.until]) } }; },
+    canteen: async () => { const r = await TOOLS.canteen_query.execute({}); const c = r.canteens[0]; return { name: 'canteen_query', result: r, answer: '这会儿 **' + c.name + '** 最空（' + c.crowd + '），冲鸭 🍚' }; },
+    notice: async () => { const r = await TOOLS.notice_search.execute({ limit: 3 }); return { name: 'notice_search', result: r, answer: '最近有 **' + r.total + '** 条通知，前几条是：', table: { head: ['通知', '单位', '日期'], rows: r.notices.map((n) => [n.title, n.src, n.date]) } }; },
+    schedule: async () => { const r = await TOOLS.schedule_read.execute({ day: 'today' }); return { name: 'schedule_read', result: r, answer: '今天有 **' + r.total + '** 节课。', table: { head: ['时间', '课程', '地点'], rows: r.courses.map((c) => [c.start + '-' + c.end, c.name, c.room]) } }; },
+    todo: async () => { const r = await TOOLS.todo_read.execute({ status: 'pending' }); return { name: 'todo_read', result: r, answer: '还有 **' + r.total + '** 件没干：', table: { head: ['待办', '截止', '优先级'], rows: r.todos.map((t) => [t.title, t.due, t.priority]) } }; },
+    clock: async () => { const r = await TOOLS.clock_read.execute({}); return { name: 'clock_read', result: r, answer: '现在是 **' + r.time + '**（' + r.date + ' ' + r.weekday + '）。' }; }
+  };
+  const run = await map[hit.say]();
+  const trace = [{ step: 0, id: 'offline-' + hit.say, name: run.name, args: hit.args, status: 'done', result: run.result, ms: 0 }];
+  return { answer: '⚠️ **离线直连**（关键词匹配，没有模型参与理解）\n\n' + run.answer, table: run.table, trace };
 }
 
 /* ------------------------------ 9. Key 弹层 ------------------------------ */
